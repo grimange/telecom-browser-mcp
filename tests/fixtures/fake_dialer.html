@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fake Dialer Harness</title>
+    <style>
+      body { font-family: sans-serif; margin: 2rem; }
+      .badge { padding: 0.2rem 0.5rem; border-radius: 4px; background: #eee; }
+    </style>
+  </head>
+  <body>
+    <h1>Fake Dialer Harness</h1>
+    <p id="registration" class="badge">connecting</p>
+    <p id="call-state" class="badge">idle</p>
+    <script>
+      window.fakeDialer = {
+        registration: "connecting",
+        callState: "idle",
+        incoming: false,
+        connected: false,
+        setRegistered() {
+          this.registration = "registered";
+          document.getElementById("registration").textContent = this.registration;
+        },
+        triggerIncoming() {
+          this.incoming = true;
+          this.callState = "ringing";
+          document.getElementById("call-state").textContent = this.callState;
+        },
+        answer() {
+          if (!this.incoming) return false;
+          this.connected = true;
+          this.callState = "connected";
+          document.getElementById("call-state").textContent = this.callState;
+          return true;
+        },
+        hangup() {
+          this.connected = false;
+          this.incoming = false;
+          this.callState = "ended";
+          document.getElementById("call-state").textContent = this.callState;
+        }
+      };
+    </script>
+  </body>
+</html>

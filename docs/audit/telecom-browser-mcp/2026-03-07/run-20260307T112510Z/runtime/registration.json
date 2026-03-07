@@ -1,0 +1,13 @@
+{
+  "state": "registered",
+  "ui_badge_state": null,
+  "sip_stack_state": null,
+  "ws_connected": null,
+  "registered": true,
+  "last_error": null,
+  "source_confidence": 0.95,
+  "available": true,
+  "reason": null,
+  "source": "harness",
+  "timestamp": "2026-03-07T11:25:10.131843Z"
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "contract_id": "TOOL::get_environment_snapshot",
+    "description": "Missing from exposed tool catalog and invocation path",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--tool-contract-validation.md",
+    "suspected_files": [
+      "src/telecom_browser_mcp/server/stdio_server.py",
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "TOOL::diagnose_one_way_audio",
+    "description": "Missing from exposed tool catalog and invocation path",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--tool-contract-validation.md",
+    "suspected_files": [
+      "src/telecom_browser_mcp/server/stdio_server.py",
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "TOOL::collect_browser_logs",
+    "description": "Missing from exposed tool catalog and evidence path",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--tool-contract-validation.md",
+    "suspected_files": [
+      "src/telecom_browser_mcp/server/stdio_server.py",
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "TOOL::screenshot",
+    "description": "Missing from exposed tool catalog",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--tool-contract-validation.md",
+    "suspected_files": [
+      "src/telecom_browser_mcp/server/stdio_server.py",
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always",
+    "status": "partially fixed"
+  },
+  {
+    "contract_id": "PROTOCOL::wire_initialize_trace_missing",
+    "description": "No wire-level initialize/list-tools capture",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--mcp-protocol-validation.md",
+    "suspected_files": [
+      "scripts/run_mcp_interop_probe.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always",
+    "status": "partially fixed"
+  },
+  {
+    "contract_id": "SCENARIO::registration_flapping",
+    "description": "No flapping scenario harness",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--telecom-flow-validation.md",
+    "suspected_files": [
+      "tests/fixtures/fake_dialer.html",
+      "src/telecom_browser_mcp/adapters/harness.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always",
+    "status": "deferred"
+  },
+  {
+    "contract_id": "SCENARIO::incoming_duplicate_events",
+    "description": "No duplicate event scenario harness",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--telecom-flow-validation.md",
+    "suspected_files": [
+      "tests/fixtures/fake_dialer.html",
+      "src/telecom_browser_mcp/adapters/harness.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always",
+    "status": "deferred"
+  },
+  {
+    "contract_id": "SCENARIO::answer_ui_mismatch",
+    "description": "No UI mismatch scenario injector",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T113620Z--telecom-flow-validation.md",
+    "suspected_files": [
+      "tests/fixtures/fake_dialer.html",
+      "src/telecom_browser_mcp/adapters/harness.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always",
+    "status": "deferred"
+  }
+]

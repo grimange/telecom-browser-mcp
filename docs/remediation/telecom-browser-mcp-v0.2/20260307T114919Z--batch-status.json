@@ -1,0 +1,8 @@
+{
+  "A_protocol_schema": "fixed",
+  "B_browser_lifecycle": "fixed",
+  "C_telecom_flow": "fixed",
+  "D_diagnostics_bundles": "fixed",
+  "E_interop_hardening": "partially fixed",
+  "contract_clarifications": "updated"
+}

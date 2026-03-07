@@ -1,0 +1,92 @@
+[
+  {
+    "contract_id": "TOOL::get_environment_snapshot",
+    "status": "fixed",
+    "description": "Implemented and validated",
+    "evidence_location": "tests/integration/test_harness_flow.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "TOOL::diagnose_one_way_audio",
+    "status": "fixed",
+    "description": "Implemented and validated",
+    "evidence_location": "tests/integration/test_harness_flow.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "TOOL::collect_browser_logs",
+    "status": "fixed",
+    "description": "Implemented and validated",
+    "evidence_location": "tests/integration/test_harness_flow.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "TOOL::screenshot",
+    "status": "fixed",
+    "description": "Fallback artifact support added for harness/no-browser flow",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "high",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "PROTOCOL::wire_initialize_trace_missing",
+    "status": "blocked by environment",
+    "description": "Wire-level stdio probe times out after 30s; no stderr emitted by spawned server",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260307T115705Z/logs/mcp-interop-probe.json",
+    "suspected_files": [
+      "scripts/run_mcp_interop_probe.py",
+      "src/telecom_browser_mcp/server/stdio_server.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always in this environment"
+  },
+  {
+    "contract_id": "SCENARIO::registration_flapping",
+    "status": "fixed",
+    "description": "Harness scenario implemented and tested",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "SCENARIO::incoming_duplicate_events",
+    "status": "fixed",
+    "description": "Harness scenario implemented and tested",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always"
+  },
+  {
+    "contract_id": "SCENARIO::answer_ui_mismatch",
+    "status": "fixed",
+    "description": "Harness scenario implemented and warning surfaced",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py",
+      "src/telecom_browser_mcp/tools/orchestrator.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "always"
+  }
+]

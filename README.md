@@ -1,345 +1,112 @@
 # telecom-browser-mcp
 
-**Telecom-aware browser MCP server for testing and debugging WebRTC softphones and dialer UIs.**
+Telecom-aware browser MCP server for debugging WebRTC softphones and browser dialers with domain-specific tools.
 
-`telecom-browser-mcp` is a Model Context Protocol (MCP) server that enables AI agents to automate, inspect, and diagnose telecom web applications such as browser softphones, WebRTC dialers, and ARI-driven call platforms.
+## What it does
 
-Unlike generic browser automation tools, this MCP server exposes **telecom domain operations** like:
+`telecom-browser-mcp` exposes telecom intent through MCP tools, including:
 
-- `wait_for_incoming_call`
-- `answer_call`
-- `get_registration_status`
-- `get_peer_connection_summary`
-- `diagnose_answer_failure`
+- session lifecycle: `open_app`, `list_sessions`, `close_session`, `reset_session`
+- registration: `get_registration_status`, `wait_for_registration`, `assert_registered`
+- inbound/answer flow: `wait_for_incoming_call`, `answer_call`, `hangup_call`
+- runtime inspection: `get_active_session_snapshot`, `get_store_snapshot`, `get_peer_connection_summary`, `get_webrtc_stats`
+- diagnostics and evidence: `diagnose_registration_failure`, `diagnose_incoming_call_failure`, `diagnose_answer_failure`, `collect_debug_bundle`
 
-This allows AI agents to reason about **telecom behavior**, not just DOM interactions.
+All tool outputs follow a structured response envelope with explicit failure metadata.
 
-The project is built using the **official MCP Python SDK** and **Playwright**.
+## Architecture
 
----
+Package root: `src/telecom_browser_mcp/`
 
-# Why This Project Exists
+- `server/`: MCP entrypoints (`stdio`, `streamable-http`, `sse` compatibility)
+- `sessions/`, `browser/`: browser lifecycle and session tracking
+- `adapters/`: app-specific selectors/runtime hooks (APNTalk + generic scaffolds + harness)
+- `inspectors/`: read-only inspection helpers
+- `diagnostics/`: explainable failure analysis
+- `evidence/`: artifact and debug-bundle generation
+- `models/`: stable schemas and enums
+- `tools/`: orchestration layer for MCP-exposed operations
 
-Testing telecom browser applications is hard because problems occur across multiple layers:
+## Install
 
-| Layer | Example Problems |
-|-----|-----|
-| UI | incoming call popup not appearing |
-| App State | frontend store stuck in RINGING |
-| SIP/WebRTC | session terminated unexpectedly |
-| Media | peer connection exists but no RTP |
-| Backend | ARI event delivered but UI ignored it |
-
-Traditional tools only see part of the system.
-
-| Tool | Visibility |
-|----|----|
-| Selenium / Playwright | UI only |
-| SIP tools | signaling only |
-| PBX logs | backend only |
-
-`telecom-browser-mcp` bridges the gap by allowing AI agents to inspect **UI, SIP runtime, and WebRTC state together**.
-
----
-
-# Key Capabilities
-
-## Browser Automation
-Automate telecom web applications using Playwright.
-
-Examples:
-
-- open dialer UI
-- login agent
-- click answer button
-- dial numbers
-- capture screenshots
-
-## SIP / WebRTC Runtime Inspection
-
-Inspect telecom runtime state inside the browser.
-
-Examples:
-
-- SIP registration status
-- active SIP session state
-- WebSocket connectivity
-- WebRTC peer connections
-- ICE connection state
-- inbound/outbound RTP stats
-
-## Call Flow Interaction
-
-Perform telecom actions directly through the UI.
-
-Supported operations:
-
-- dial
-- answer
-- hangup
-- mute / unmute
-- hold / resume
-
-## Diagnostics
-
-Detect and explain common telecom failures.
-
-Examples:
-
-- incoming call visible but no session object
-- answered but backend never confirmed
-- peer connection created but no audio tracks
-
-## Debug Bundles
-
-Automatically collect artifacts:
-
-- screenshots
-- console logs
-- network traces
-- runtime snapshots
-- WebRTC statistics
-
-These are persisted for CI pipelines and audits.
-
----
-
-# Architecture
-
-```
-AI Agent (Codex / Claude)
-        |
-        v
-telecom-browser-mcp
-        |
-        |--- Playwright Browser Driver
-        |
-        |--- Runtime Inspectors
-        |      • UI Inspector
-        |      • Store Inspector
-        |      • SIP Inspector
-        |      • WebRTC Inspector
-        |
-        |--- Diagnostics Engine
-        |
-        |--- Evidence Collector
+```bash
+python -m pip install -e .[dev]
+python -m playwright install chromium
 ```
 
-Optionally integrate with:
+Or use the bootstrap script:
 
-```
-telecom-mcp (PBX)
-     |
-     |--- ARI
-     |--- AMI
-     |--- Redis state
+```bash
+./scripts/bootstrap.sh
 ```
 
-This allows full **end-to-end telecom verification**.
+## Run
 
----
+Default (stdio):
 
-# Example MCP Tools
-
-## Session Management
-
-- `open_app(url)`
-- `login_agent(username, password)`
-- `wait_for_ready()`
-- `reset_session()`
-
-## Registration
-
-- `get_registration_status()`
-- `wait_for_registration()`
-- `assert_registered()`
-
-## Call Operations
-
-- `dial(number)`
-- `wait_for_incoming_call()`
-- `answer_call()`
-- `hangup_call()`
-
-## Runtime Inspection
-
-- `get_store_snapshot()`
-- `get_active_session_snapshot()`
-- `get_peer_connection_summary()`
-- `get_webrtc_stats()`
-
-## Diagnostics
-
-- `diagnose_registration_failure()`
-- `diagnose_incoming_call_failure()`
-- `diagnose_answer_failure()`
-
-## Evidence
-
-- `screenshot()`
-- `collect_browser_logs()`
-- `collect_debug_bundle()`
-
----
-
-# Example Usage
-
-Example call flow verification:
-
-```
-open_app()
-login_agent()
-wait_for_registration()
-
-wait_for_incoming_call()
-answer_call()
-
-assert_call_state("connected")
-
-get_peer_connection_summary()
-
-hangup_call()
+```bash
+python -m telecom_browser_mcp
 ```
 
----
+Explicit entrypoints:
 
-# Installation
-
-Clone repository:
-
-```
-git clone https://github.com/your-org/telecom-browser-mcp.git
-cd telecom-browser-mcp
+```bash
+telecom-browser-mcp-stdio
+telecom-browser-mcp-http
+telecom-browser-mcp-sse
 ```
 
-Install dependencies:
+## Environment
 
-```
-pip install -e .
-playwright install
-```
+Copy `.env.example` and adjust:
 
-Run MCP server:
+- `TELECOM_BROWSER_MCP_TRANSPORT`
+- `TELECOM_BROWSER_MCP_HOST`
+- `TELECOM_BROWSER_MCP_PORT`
+- `TELECOM_BROWSER_MCP_DEFAULT_ADAPTER`
+- `TELECOM_BROWSER_MCP_ALLOWED_ORIGINS`
+- `TELECOM_BROWSER_MCP_ARTIFACT_ROOT`
 
-```
-python -m telecom_browser_mcp.server
-```
+## Fake dialer harness
 
----
+A deterministic harness fixture is provided at:
 
-# Example Project Structure
+- `tests/fixtures/fake_dialer.html`
+- `adapters/harness.py` for predictable registration/inbound/answer paths
 
-```
-telecom-browser-mcp
-│
-├─ src/
-│   ├─ server/
-│   │   └─ mcp_server.py
-│   │
-│   ├─ browser/
-│   │   ├─ playwright_driver.py
-│   │   └─ browser_session.py
-│   │
-│   ├─ adapters/
-│   │   ├─ base_adapter.py
-│   │   └─ apntalk_adapter.py
-│   │
-│   ├─ inspectors/
-│   │   ├─ sip_inspector.py
-│   │   ├─ store_inspector.py
-│   │   └─ webrtc_inspector.py
-│   │
-│   ├─ diagnostics/
-│   │   ├─ answer_failure.py
-│   │   └─ registration_failure.py
-│   │
-│   └─ evidence/
-│       └─ debug_bundle.py
-│
-├─ tests/
-│
-├─ docs/
-│
-└─ README.md
+Use `adapter_name="harness"` in tests and local tool-smoke runs.
+
+## Testing
+
+```bash
+pytest -q
 ```
 
----
+Test coverage currently focuses on:
 
-# Adapters
+- import/bootstrap integrity
+- schema/envelope validation
+- adapter registry shape
+- harness-based integration flow
+- stdio quickstart smoke behavior
 
-Adapters allow the MCP server to support different dialer platforms.
+## Artifact layout
 
-Example adapters:
+Debug bundles are written under:
 
-- APNTalk
-- SIP.js softphones
-- JsSIP dialers
-- generic WebRTC softphones
+```text
+docs/audit/telecom-browser-mcp/YYYY-MM-DD/run-YYYYMMDDTHHMMSSZ/
+```
 
-Adapters define:
+Bundle contents include:
 
-- UI selectors
-- login flows
-- store access paths
-- runtime session models
+- `summary.json`
+- `report.md`
+- `runtime/*.json`
+- screenshots/logs when available in environment
 
----
+## Notes
 
-# CI / Automation Use Cases
-
-telecom-browser-mcp is designed for:
-
-- AI-driven debugging
-- CI telecom UI testing
-- dialer regression tests
-- WebRTC troubleshooting
-- contract verification between backend and frontend
-
----
-
-# Related Projects
-
-Often used together with:
-
-- `telecom-mcp`
-- ARI / AMI automation
-- Asterisk-based platforms
-- WebRTC dialer platforms
-
----
-
-# Roadmap
-
-Planned features:
-
-- conference support
-- transfer testing
-- multi-call sessions
-- contract validation mode
-- SIP trace integration
-- WebRTC media quality checks
-
----
-
-# License
-
-MIT License
-
----
-
-# Contributing
-
-Contributions are welcome.
-
-Please open an issue or discussion before major changes.
-
----
-
-# Acknowledgements
-
-Built using:
-
-- Model Context Protocol Python SDK
-- Playwright
-- WebRTC
-- SIP-based telecom systems
+- Browser launch failures are classified as environment limitations with structured failure output.
+- Adapter-specific selectors and runtime hooks remain isolated in `adapters/`.
+- v1 intentionally avoids arbitrary JS/selector tools.

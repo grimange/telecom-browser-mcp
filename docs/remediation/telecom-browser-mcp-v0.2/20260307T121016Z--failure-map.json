@@ -1,0 +1,102 @@
+[
+  {
+    "contract_id": "PROTOCOL::stdio_initialize_timeout",
+    "description": "Wire-level stdio initialize/list-tools probe times out",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260307T120939Z/logs/mcp-interop-probe.json",
+    "suspected_files": [
+      "scripts/run_mcp_interop_probe.py"
+    ],
+    "severity": "high",
+    "reproducibility": "reproducible",
+    "classification": "2_mcp_protocol_server_issue",
+    "status": "blocked by environment"
+  },
+  {
+    "contract_id": "BROWSER::crash_recovery_unvalidated",
+    "description": "No deterministic crash-recovery lifecycle scenario",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T120228Z--browser-session-validation.md",
+    "suspected_files": [
+      "tests/scenarios/"
+    ],
+    "severity": "medium",
+    "reproducibility": "unknown",
+    "classification": "4_browser_lifecycle_issue",
+    "status": "deferred"
+  },
+  {
+    "contract_id": "BROWSER::stale_selector_recovery_unvalidated",
+    "description": "No stale-selector recovery scenario coverage",
+    "evidence_location": "docs/validation/telecom-browser-mcp-v0.2/20260307T120228Z--browser-session-validation.md",
+    "suspected_files": [
+      "tests/scenarios/"
+    ],
+    "severity": "medium",
+    "reproducibility": "unknown",
+    "classification": "4_browser_lifecycle_issue",
+    "status": "deferred"
+  },
+  {
+    "contract_id": "TELECOM::registration_delayed_scenario_missing",
+    "description": "Delayed-registration scenario was missing",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py",
+      "tests/scenarios/test_telecom_scenario_injectors.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "reproducible",
+    "classification": "5_telecom_flow_issue",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "TELECOM::incoming_signal_absent_partial",
+    "description": "Incoming-signal-absent path lacked deterministic scenario",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py",
+      "tests/scenarios/test_telecom_scenario_injectors.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "reproducible",
+    "classification": "5_telecom_flow_issue",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "TELECOM::answer_timeout_scenario_missing",
+    "description": "Answer-timeout path lacked deterministic scenario",
+    "evidence_location": "tests/scenarios/test_telecom_scenario_injectors.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/adapters/harness.py",
+      "tests/scenarios/test_telecom_scenario_injectors.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "reproducible",
+    "classification": "5_telecom_flow_issue",
+    "status": "fixed"
+  },
+  {
+    "contract_id": "DIAGNOSTICS::browser_logs_placeholder_depth",
+    "description": "Browser logs are structured but placeholder-level (available=false)",
+    "evidence_location": "src/telecom_browser_mcp/tools/orchestrator.py",
+    "suspected_files": [
+      "src/telecom_browser_mcp/tools/orchestrator.py",
+      "src/telecom_browser_mcp/browser/playwright_driver.py"
+    ],
+    "severity": "medium",
+    "reproducibility": "reproducible",
+    "classification": "6_diagnostics_evidence_issue",
+    "status": "partially fixed"
+  },
+  {
+    "contract_id": "CONTRACT::one_way_audio_depth_ambiguity",
+    "description": "v0.2 depth requirement ambiguous between schema reservation and richer diagnostics",
+    "evidence_location": "docs/telecom-browser-mcp-implementation-plan-v0.2.md",
+    "suspected_files": [
+      "docs/telecom-browser-mcp-implementation-plan-v0.2.md"
+    ],
+    "severity": "low",
+    "reproducibility": "n/a",
+    "classification": "1_contract_definition_issue",
+    "status": "blocked by ambiguity"
+  }
+]

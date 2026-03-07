@@ -1,0 +1,210 @@
+{
+  "timestamp": "20260307T120228Z",
+  "results": [
+    {
+      "tool": "open_app",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "login_agent",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "wait_for_ready",
+      "status": "PARTIAL",
+      "reason": "contract present, but no dedicated scenario assertion in current tests",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "list_sessions",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "close_session",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "reset_session",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_registration_status",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "wait_for_registration",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "assert_registered",
+      "status": "PARTIAL",
+      "reason": "covered indirectly via wait_for_registration path; no dedicated assertion test",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "wait_for_incoming_call",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "answer_call",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "hangup_call",
+      "status": "PARTIAL",
+      "reason": "implemented and callable but no dedicated positive/negative scenario in current tests",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_ui_call_state",
+      "status": "PARTIAL",
+      "reason": "implemented but not explicitly asserted in scenario tests",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_active_session_snapshot",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_store_snapshot",
+      "status": "PARTIAL",
+      "reason": "implemented but no dedicated content-contract assertion in tests",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_peer_connection_summary",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_webrtc_stats",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "get_environment_snapshot",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py",
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "tool": "screenshot",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py",
+        "tests/integration/test_harness_flow.py",
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "tool": "collect_browser_logs",
+      "status": "PARTIAL",
+      "reason": "contract shape passes; payload depth is placeholder-level until browser hooks are wired",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py",
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "tool": "collect_debug_bundle",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "diagnose_registration_failure",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "diagnose_incoming_call_failure",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "diagnose_answer_failure",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "tool": "diagnose_one_way_audio",
+      "status": "PASS",
+      "reason": "validated by discovery + harness/test evidence",
+      "evidence": [
+        "tests/unit/test_tool_discovery_contract.py",
+        "tests/integration/test_harness_flow.py"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,500 @@
+{
+  "open_app": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109369Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "session_id": "sess_537cb7c85c",
+      "run_id": "run-20260307T113620Z",
+      "adapter": "harness",
+      "current_page_url": "http://fake.local",
+      "page_title": "Fake Dialer"
+    },
+    "message": "application opened"
+  },
+  "login_agent": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109468Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "tenant": "demo"
+    },
+    "message": "harness login ok"
+  },
+  "wait_for_ready": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109486Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "ready": true
+    },
+    "message": "harness ready"
+  },
+  "list_sessions": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109502Z",
+    "duration_ms": 0,
+    "session_id": null,
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "sessions": [
+        {
+          "session_id": "sess_537cb7c85c",
+          "run_id": "run-20260307T113620Z",
+          "status": "active",
+          "adapter_name": "harness",
+          "current_page_url": "http://fake.local",
+          "artifacts_dir": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z"
+        }
+      ],
+      "count": 1
+    },
+    "message": "sessions listed"
+  },
+  "get_registration_status": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109541Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "state": "connecting",
+      "ui_badge_state": null,
+      "sip_stack_state": null,
+      "ws_connected": null,
+      "registered": false,
+      "last_error": null,
+      "source_confidence": 0.95,
+      "available": true,
+      "reason": null,
+      "source": "harness",
+      "timestamp": "2026-03-07T11:36:20.109525Z"
+    },
+    "message": "registration snapshot"
+  },
+  "wait_for_registration": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109569Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "state": "registered",
+      "ui_badge_state": null,
+      "sip_stack_state": null,
+      "ws_connected": null,
+      "registered": true,
+      "last_error": null,
+      "source_confidence": 0.95,
+      "available": true,
+      "reason": null,
+      "source": "harness",
+      "timestamp": "2026-03-07T11:36:20.109561Z"
+    },
+    "message": "registration reached expected state"
+  },
+  "assert_registered": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109591Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "state": "registered",
+      "ui_badge_state": null,
+      "sip_stack_state": null,
+      "ws_connected": null,
+      "registered": true,
+      "last_error": null,
+      "source_confidence": 0.95,
+      "available": true,
+      "reason": null,
+      "source": "harness",
+      "timestamp": "2026-03-07T11:36:20.109584Z"
+    },
+    "message": "registration reached expected state"
+  },
+  "wait_for_incoming_call": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109629Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "call_id": "harness-call-001",
+      "direction": "incoming",
+      "state": "ringing",
+      "ui_state": "ringing",
+      "store_state": "ringing",
+      "sip_session_state": null,
+      "remote_number": null,
+      "local_number": null,
+      "started_at": null,
+      "connected_at": null,
+      "ended_at": null,
+      "is_muted": null,
+      "is_on_hold": null,
+      "correlation_keys": {},
+      "available": true,
+      "reason": null
+    },
+    "message": "incoming call detected"
+  },
+  "answer_call": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109671Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "call": {
+        "call_id": "harness-call-001",
+        "direction": "incoming",
+        "state": "connected",
+        "ui_state": "connected",
+        "store_state": "connected",
+        "sip_session_state": null,
+        "remote_number": null,
+        "local_number": null,
+        "started_at": null,
+        "connected_at": null,
+        "ended_at": null,
+        "is_muted": null,
+        "is_on_hold": null,
+        "correlation_keys": {},
+        "available": true,
+        "reason": null
+      },
+      "webrtc": {
+        "peer_connection_present": true,
+        "connection_state": "connected",
+        "ice_connection_state": null,
+        "signaling_state": null,
+        "local_audio_tracks": 1,
+        "remote_audio_tracks": 1,
+        "candidate_pair_state": null,
+        "inbound_rtp_audio_packets": 100,
+        "outbound_rtp_audio_packets": 120,
+        "available": true,
+        "reason": null,
+        "source": "harness",
+        "timestamp": "2026-03-07T11:36:20.109653Z"
+      }
+    },
+    "message": "call answered"
+  },
+  "get_ui_call_state": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109685Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "available": true,
+      "state": "connected"
+    },
+    "message": "ui call state"
+  },
+  "get_active_session_snapshot": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109698Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "call_id": "harness-call-001",
+      "direction": "incoming",
+      "state": "connected",
+      "ui_state": null,
+      "store_state": null,
+      "sip_session_state": null,
+      "remote_number": null,
+      "local_number": null,
+      "started_at": null,
+      "connected_at": null,
+      "ended_at": null,
+      "is_muted": null,
+      "is_on_hold": null,
+      "correlation_keys": {},
+      "available": true,
+      "reason": null
+    },
+    "message": "active session snapshot"
+  },
+  "get_store_snapshot": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109709Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "available": true,
+      "source": "harness",
+      "registration": "registered",
+      "call_state": "connected"
+    },
+    "message": "store snapshot"
+  },
+  "get_peer_connection_summary": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109723Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "peer_connection_present": true,
+      "connection_state": "connected",
+      "ice_connection_state": null,
+      "signaling_state": null,
+      "local_audio_tracks": 1,
+      "remote_audio_tracks": 1,
+      "candidate_pair_state": null,
+      "inbound_rtp_audio_packets": 100,
+      "outbound_rtp_audio_packets": 120,
+      "available": true,
+      "reason": null,
+      "source": "harness",
+      "timestamp": "2026-03-07T11:36:20.109717Z"
+    },
+    "message": "peer connection summary"
+  },
+  "get_webrtc_stats": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109735Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "peer_connection_present": true,
+      "inbound_rtp_audio_packets": 100,
+      "outbound_rtp_audio_packets": 120,
+      "connection_state": "connected",
+      "timestamp": "2026-03-07T11:36:20.109732Z"
+    },
+    "message": "webrtc stats"
+  },
+  "diagnose_registration_failure": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109775Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "summary": "Registration did not satisfy expected state",
+      "findings": [
+        "registration_state=registered"
+      ],
+      "likely_causes": [],
+      "severity": "medium",
+      "failure_category": "registration",
+      "retryable": false,
+      "artifacts": [],
+      "next_recommended_tools": [
+        "get_registration_status",
+        "collect_debug_bundle"
+      ],
+      "timestamp": "2026-03-07T11:36:20.109764Z"
+    },
+    "message": "registration diagnosis"
+  },
+  "diagnose_incoming_call_failure": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109798Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "summary": "Incoming call detection did not reach ringing state",
+      "findings": [
+        "call_state=ringing"
+      ],
+      "likely_causes": [],
+      "severity": "high",
+      "failure_category": "call_control",
+      "retryable": true,
+      "artifacts": [],
+      "next_recommended_tools": [
+        "collect_debug_bundle",
+        "get_active_session_snapshot"
+      ],
+      "timestamp": "2026-03-07T11:36:20.109792Z"
+    },
+    "message": "incoming call diagnosis"
+  },
+  "diagnose_answer_failure": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.109823Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "summary": "Answer flow did not converge to connected media state",
+      "findings": [
+        "call_state=connected",
+        "peer_connection_present=True"
+      ],
+      "likely_causes": [],
+      "severity": "high",
+      "failure_category": "call_control",
+      "retryable": false,
+      "artifacts": [],
+      "next_recommended_tools": [
+        "get_active_session_snapshot",
+        "get_peer_connection_summary",
+        "collect_debug_bundle"
+      ],
+      "timestamp": "2026-03-07T11:36:20.109817Z"
+    },
+    "message": "answer flow diagnosis"
+  },
+  "collect_debug_bundle": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.111914Z",
+    "duration_ms": 2,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [
+      {
+        "type": "runtime",
+        "label": "registration",
+        "path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/runtime/registration.json",
+        "redacted": true,
+        "created_at": "2026-03-07T11:36:20.111235Z"
+      },
+      {
+        "type": "runtime",
+        "label": "active-session",
+        "path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/runtime/active-session.json",
+        "redacted": true,
+        "created_at": "2026-03-07T11:36:20.111375Z"
+      },
+      {
+        "type": "runtime",
+        "label": "webrtc-summary",
+        "path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/runtime/webrtc-summary.json",
+        "redacted": true,
+        "created_at": "2026-03-07T11:36:20.111507Z"
+      },
+      {
+        "type": "runtime",
+        "label": "environment",
+        "path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/runtime/environment.json",
+        "redacted": true,
+        "created_at": "2026-03-07T11:36:20.111631Z"
+      },
+      {
+        "type": "manifest",
+        "label": "summary",
+        "path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/summary.json",
+        "redacted": true,
+        "created_at": "2026-03-07T11:36:20.111802Z"
+      }
+    ],
+    "warnings": [],
+    "data": {
+      "artifacts_dir": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z",
+      "report_path": "docs/audit/telecom-browser-mcp/2026-03-07/run-20260307T113620Z/report.md"
+    },
+    "message": "debug bundle collected"
+  },
+  "hangup_call": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.112021Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {
+      "call_id": "harness-call-001",
+      "direction": null,
+      "state": "ended",
+      "ui_state": null,
+      "store_state": null,
+      "sip_session_state": null,
+      "remote_number": null,
+      "local_number": null,
+      "started_at": null,
+      "connected_at": null,
+      "ended_at": null,
+      "is_muted": null,
+      "is_on_hold": null,
+      "correlation_keys": {},
+      "available": true,
+      "reason": null
+    },
+    "message": "call hangup executed"
+  },
+  "reset_session": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.112043Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {},
+    "message": "session reset"
+  },
+  "close_session": {
+    "ok": true,
+    "timestamp": "2026-03-07T11:36:20.112056Z",
+    "duration_ms": 0,
+    "session_id": "sess_537cb7c85c",
+    "artifacts": [],
+    "warnings": [],
+    "data": {},
+    "message": "session closed"
+  },
+  "failure_missing_session": {
+    "ok": false,
+    "timestamp": "2026-03-07T11:36:20.112071Z",
+    "duration_ms": 0,
+    "session_id": null,
+    "artifacts": [],
+    "warnings": [],
+    "data": {},
+    "message": "session not found: sess_missing",
+    "error_code": "SESSION_NOT_FOUND",
+    "failure_category": "session",
+    "retryable": false,
+    "likely_causes": [
+      "invalid session id",
+      "session already closed"
+    ],
+    "next_recommended_tools": [
+      "list_sessions",
+      "open_app"
+    ]
+  },
+  "failure_invalid_args": {
+    "ok": false,
+    "type": "TypeError",
+    "message": "ToolOrchestrator.open_app() missing 1 required positional argument: 'url'"
+  },
+  "failure_unknown_tool": {
+    "ok": false,
+    "type": "ValueError",
+    "message": "unknown tool: unknown_tool"
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "timestamp": "20260307T121500Z",
+  "results": [
+    {
+      "tool": "open_app",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "login_agent",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "wait_for_ready",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "list_sessions",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "close_session",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "reset_session",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_registration_status",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "wait_for_registration",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "assert_registered",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "wait_for_incoming_call",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "answer_call",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "hangup_call",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_ui_call_state",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_active_session_snapshot",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_store_snapshot",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_peer_connection_summary",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_webrtc_stats",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "get_environment_snapshot",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "screenshot",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "collect_browser_logs",
+      "status": "PARTIAL",
+      "reason": "contract-shape passes but payload depth remains placeholder-level"
+    },
+    {
+      "tool": "collect_debug_bundle",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "diagnose_registration_failure",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "diagnose_incoming_call_failure",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "diagnose_answer_failure",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    },
+    {
+      "tool": "diagnose_one_way_audio",
+      "status": "PASS",
+      "reason": "validated by tool discovery + test coverage"
+    }
+  ]
+}

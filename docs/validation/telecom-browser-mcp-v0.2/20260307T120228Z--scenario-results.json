@@ -1,0 +1,110 @@
+{
+  "timestamp": "20260307T120228Z",
+  "results": [
+    {
+      "scenario": "registration::success",
+      "status": "PASS",
+      "reason": "harness flow covers successful registration",
+      "evidence": [
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "scenario": "registration::delayed_registration",
+      "status": "INCONCLUSIVE",
+      "reason": "no deterministic delayed-registration fixture in current harness tests",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "scenario": "registration::missing",
+      "status": "PARTIAL",
+      "reason": "missing-session and failure envelopes validated, but no dedicated missing-registration fixture",
+      "evidence": [
+        "src/telecom_browser_mcp/tools/orchestrator.py",
+        "tests/unit/test_models.py"
+      ]
+    },
+    {
+      "scenario": "registration::flapping",
+      "status": "PASS",
+      "reason": "scenario injector test asserts state flapping",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "scenario": "incoming::detected",
+      "status": "PASS",
+      "reason": "incoming ringing asserted in harness flow",
+      "evidence": [
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "scenario": "incoming::signal_absent",
+      "status": "PARTIAL",
+      "reason": "covered by diagnostic/timeout-style paths but no dedicated end-to-end absent-signal fixture",
+      "evidence": [
+        "tests/integration/test_diagnostics.py"
+      ]
+    },
+    {
+      "scenario": "incoming::duplicate_events",
+      "status": "PASS",
+      "reason": "duplicate event marker asserted",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "scenario": "answer::success",
+      "status": "PASS",
+      "reason": "connected call asserted",
+      "evidence": [
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "scenario": "answer::timeout",
+      "status": "INCONCLUSIVE",
+      "reason": "no deterministic answer-timeout fixture",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "scenario": "answer::ui_mismatch",
+      "status": "PASS",
+      "reason": "warning surfaced and asserted",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    },
+    {
+      "scenario": "session_snapshot::valid",
+      "status": "PASS",
+      "reason": "active session and debug bundle flow validated",
+      "evidence": [
+        "tests/integration/test_harness_flow.py"
+      ]
+    },
+    {
+      "scenario": "session_snapshot::partial",
+      "status": "PARTIAL",
+      "reason": "no dedicated partial-session fixture",
+      "evidence": [
+        "src/telecom_browser_mcp/adapters/harness.py"
+      ]
+    },
+    {
+      "scenario": "session_snapshot::inconsistent",
+      "status": "PARTIAL",
+      "reason": "ui/store mismatch warning covered; broader inconsistency matrix not covered",
+      "evidence": [
+        "tests/scenarios/test_telecom_scenario_injectors.py"
+      ]
+    }
+  ]
+}

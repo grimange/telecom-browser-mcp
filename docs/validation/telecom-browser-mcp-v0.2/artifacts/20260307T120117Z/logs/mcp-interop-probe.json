@@ -1,0 +1,10 @@
+{
+  "timestamp": "20260307T120117Z",
+  "probe": "wire-level-stdio-initialize-and-discovery",
+  "ok": false,
+  "failure": "timeout",
+  "reason": "probe exceeded 30s timeout",
+  "evidence": {
+    "stderr_log": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260307T120117Z/logs/mcp-interop-probe-stderr.log"
+  }
+}

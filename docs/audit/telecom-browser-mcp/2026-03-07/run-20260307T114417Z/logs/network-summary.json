@@ -1,0 +1,5 @@
+{
+  "available": false,
+  "reason": "network trace hooks are not yet wired in browser driver",
+  "captured_at": "2026-03-07T11:44:17.492543+00:00"
+}
