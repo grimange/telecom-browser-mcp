@@ -1,0 +1,15 @@
+{
+  "run_id": "run-20260307T131300Z",
+  "session_id": "scenario-parallel_session_isolation",
+  "scenario_id": "parallel_session_isolation",
+  "fault_type": "lifecycle_fault_injection",
+  "injection_point": "parallel_session_isolation",
+  "status": "ok",
+  "failure_classification": "none",
+  "attempted_selector": null,
+  "context_id": null,
+  "page_id": null,
+  "page_url": null,
+  "page_title": null,
+  "captured_at": "2026-03-07T13:13:01.958801+00:00"
+}

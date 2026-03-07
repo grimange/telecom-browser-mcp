@@ -1,0 +1,391 @@
+{
+  "timestamp": "20260307T123026Z",
+  "source_validation_summary": "docs/validation/telecom-browser-mcp-v0.2/20260307T123026Z--validation-summary.json",
+  "total_pass": 24,
+  "total_fail": 0,
+  "total_partial": 2,
+  "total_inconclusive": 2,
+  "diagnostics_coverage_score": 7.14,
+  "linked_contracts": 2,
+  "total_contracts": 28,
+  "enriched_contracts": [
+    {
+      "contract_id": "TOOL::open_app",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::login_agent",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::wait_for_ready",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::list_sessions",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::close_session",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::reset_session",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_registration_status",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::wait_for_registration",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::assert_registered",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::wait_for_incoming_call",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::answer_call",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::hangup_call",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_ui_call_state",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_active_session_snapshot",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_store_snapshot",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_peer_connection_summary",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_webrtc_stats",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::get_environment_snapshot",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::screenshot",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::collect_browser_logs",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PARTIAL",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::collect_debug_bundle",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::diagnose_registration_failure",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::diagnose_incoming_call_failure",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::diagnose_answer_failure",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "TOOL::diagnose_one_way_audio",
+      "implementation": "src/telecom_browser_mcp/tools/orchestrator.py",
+      "validation_status": "PASS",
+      "validation_method": "pytest + source review",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "PROTOCOL::initialize_and_discovery",
+      "implementation": "scripts/run_mcp_interop_probe.py",
+      "validation_status": "PARTIAL",
+      "validation_method": "probe execution timed out",
+      "bundle_path": null,
+      "manifest_path": null,
+      "primary_root_cause": "diagnostics_collection_gap",
+      "supporting_signals": [],
+      "collection_gaps": [
+        "no linked diagnostics bundle"
+      ]
+    },
+    {
+      "contract_id": "LIFECYCLE::crash_recovery",
+      "implementation": "src/telecom_browser_mcp/sessions/manager.py",
+      "validation_status": "INCONCLUSIVE",
+      "validation_method": "no deterministic crash injection test",
+      "bundle_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery",
+      "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery/manifest.json",
+      "primary_root_cause": "browser_unavailable",
+      "supporting_signals": [
+        "console",
+        "network",
+        "page_errors"
+      ],
+      "collection_gaps": [
+        "synthetic lifecycle scenario does not run a live Playwright page/context",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "bundle_health": "partial"
+    },
+    {
+      "contract_id": "LIFECYCLE::stale_selector_recovery",
+      "implementation": "src/telecom_browser_mcp/adapters/",
+      "validation_status": "INCONCLUSIVE",
+      "validation_method": "no dedicated stale selector scenario",
+      "bundle_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery",
+      "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery/manifest.json",
+      "primary_root_cause": "selector_stale_or_dom_drift",
+      "supporting_signals": [
+        "console",
+        "network",
+        "page_errors"
+      ],
+      "collection_gaps": [
+        "synthetic lifecycle scenario does not run a live Playwright page/context",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "bundle_health": "partial"
+    }
+  ]
+}

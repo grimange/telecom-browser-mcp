@@ -1,0 +1,36 @@
+{
+  "timestamp": "20260307T123026Z",
+  "overall_verdict": "PARTIAL",
+  "release_recommendation": "limited beta only",
+  "scores": {
+    "mcp_protocol_correctness": "PARTIAL",
+    "tool_correctness": "PASS",
+    "browser_lifecycle": "PARTIAL",
+    "telecom_flows": "PASS",
+    "diagnostics_usefulness": "PARTIAL",
+    "safety": "PASS",
+    "host_interoperability": "PARTIAL"
+  },
+  "highest_risk_failures": [
+    "wire-level interop timeout",
+    "crash/stale-selector lifecycle gaps",
+    "browser log capture placeholder depth"
+  ],
+  "environment_blockers": [
+    "interop probe timed out at artifact timestamp 20260307T123030Z"
+  ],
+  "contracts_needing_clarification": [
+    "protocol PASS evidence threshold",
+    "diagnose_one_way_audio minimum depth"
+  ],
+  "execution_evidence": {
+    "pytest": {
+      "command": ".venv/bin/pytest -q",
+      "result": "15 passed in 0.15s"
+    },
+    "interop_probe": {
+      "command": ".venv/bin/python scripts/run_mcp_interop_probe.py",
+      "artifact": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260307T123030Z/logs/mcp-interop-probe.json"
+    }
+  }
+}

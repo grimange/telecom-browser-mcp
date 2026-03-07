@@ -1,0 +1,24 @@
+{
+  "categories": [
+    {
+      "category": "browser_unavailable",
+      "count": 1,
+      "scenarios": [
+        "browser_crash_recovery"
+      ],
+      "contracts": [
+        "LIFECYCLE::crash_recovery"
+      ]
+    },
+    {
+      "category": "selector_stale_or_dom_drift",
+      "count": 1,
+      "scenarios": [
+        "stale_selector_recovery"
+      ],
+      "contracts": [
+        "LIFECYCLE::stale_selector_recovery"
+      ]
+    }
+  ]
+}

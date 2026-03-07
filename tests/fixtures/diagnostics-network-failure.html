@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Diagnostics Network Fixture</title>
+  </head>
+  <body>
+    <h1>Network Failure Fixture</h1>
+    <script>
+      fetch("http://127.0.0.1:9/unreachable-endpoint")
+        .then(() => console.log("unexpected-network-success"))
+        .catch(() => console.error("fixture-network-failed"));
+    </script>
+  </body>
+</html>

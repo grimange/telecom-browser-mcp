@@ -1,0 +1,203 @@
+{
+  "source_contract_matrix": "docs/validation/telecom-browser-mcp-v0.2/20260307T123026Z--contract-matrix.json",
+  "entries": [
+    {
+      "contract_id": "TOOL::open_app",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::login_agent",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::wait_for_ready",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::list_sessions",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::close_session",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::reset_session",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_registration_status",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::wait_for_registration",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::assert_registered",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::wait_for_incoming_call",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::answer_call",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::hangup_call",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_ui_call_state",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_active_session_snapshot",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_store_snapshot",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_peer_connection_summary",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_webrtc_stats",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::get_environment_snapshot",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::screenshot",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::collect_browser_logs",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::collect_debug_bundle",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::diagnose_registration_failure",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::diagnose_incoming_call_failure",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::diagnose_answer_failure",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "TOOL::diagnose_one_way_audio",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "PROTOCOL::initialize_and_discovery",
+      "scenario_id": null,
+      "bundle_path": null,
+      "manifest_path": null,
+      "linkage_status": "missing"
+    },
+    {
+      "contract_id": "LIFECYCLE::crash_recovery",
+      "scenario_id": "browser_crash_recovery",
+      "bundle_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery",
+      "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery/manifest.json",
+      "linkage_status": "linked",
+      "run_id": "browser-diagnostics"
+    },
+    {
+      "contract_id": "LIFECYCLE::stale_selector_recovery",
+      "scenario_id": "stale_selector_recovery",
+      "bundle_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery",
+      "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery/manifest.json",
+      "linkage_status": "linked",
+      "run_id": "browser-diagnostics"
+    }
+  ]
+}

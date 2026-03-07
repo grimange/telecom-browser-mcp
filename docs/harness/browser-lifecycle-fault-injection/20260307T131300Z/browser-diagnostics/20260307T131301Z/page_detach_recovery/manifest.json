@@ -1,0 +1,40 @@
+{
+  "run_id": "run-20260307T131300Z",
+  "scenario_id": "page_detach_recovery",
+  "session_id": "scenario-page_detach_recovery",
+  "page_id": null,
+  "context_id": null,
+  "fault_type": "lifecycle_fault_injection",
+  "injection_point": "page_detach_recovery",
+  "status": "ok",
+  "failure_classification": "none",
+  "timestamps": {
+    "generated_at": "2026-03-07T13:13:01.425353+00:00",
+    "timing_markers": [
+      {
+        "name": "scenario_completed",
+        "timestamp": "2026-03-07T13:13:01.423687+00:00"
+      },
+      {
+        "name": "bundle_write_started",
+        "timestamp": "2026-03-07T13:13:01.424762+00:00"
+      }
+    ]
+  },
+  "artifact_paths": {
+    "manifest": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/manifest.json",
+    "summary": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/summary.md",
+    "console": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/console.json",
+    "network": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/network.json",
+    "page_errors": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/page-errors.json",
+    "metadata": "docs/harness/browser-lifecycle-fault-injection/20260307T131300Z/browser-diagnostics/20260307T131301Z/page_detach_recovery/metadata.json",
+    "screenshot": null,
+    "dom_snapshot": null,
+    "trace": null
+  },
+  "collection_gaps": [
+    "synthetic lifecycle scenario does not run a live Playwright page/context",
+    "dom snapshot skipped: page unavailable",
+    "screenshot skipped: page unavailable"
+  ]
+}

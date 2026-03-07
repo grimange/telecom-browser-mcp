@@ -1,0 +1,64 @@
+{
+  "started_at": "20260307T131324Z",
+  "output_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run",
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "browser_crash_recovery",
+      "nodeid": "tests/lifecycle/test_browser_crash_recovery.py",
+      "ok": true,
+      "return_code": 0,
+      "duration_ms": 278,
+      "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s",
+      "stderr_tail": "",
+      "diagnostics_bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery",
+      "diagnostics_manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/browser_crash_recovery/manifest.json"
+    },
+    {
+      "name": "context_closure_recovery",
+      "nodeid": "tests/lifecycle/test_context_closure_recovery.py",
+      "ok": true,
+      "return_code": 0,
+      "duration_ms": 278,
+      "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s",
+      "stderr_tail": "",
+      "diagnostics_bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/context_closure_recovery",
+      "diagnostics_manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/context_closure_recovery/manifest.json"
+    },
+    {
+      "name": "page_detach_recovery",
+      "nodeid": "tests/lifecycle/test_page_detach_recovery.py",
+      "ok": true,
+      "return_code": 0,
+      "duration_ms": 280,
+      "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s",
+      "stderr_tail": "",
+      "diagnostics_bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/page_detach_recovery",
+      "diagnostics_manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131324Z/page_detach_recovery/manifest.json"
+    },
+    {
+      "name": "stale_selector_recovery",
+      "nodeid": "tests/lifecycle/test_stale_selector_recovery.py",
+      "ok": true,
+      "return_code": 0,
+      "duration_ms": 260,
+      "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s",
+      "stderr_tail": "",
+      "diagnostics_bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery",
+      "diagnostics_manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/stale_selector_recovery/manifest.json"
+    },
+    {
+      "name": "parallel_session_isolation",
+      "nodeid": "tests/lifecycle/test_parallel_session_isolation.py",
+      "ok": true,
+      "return_code": 0,
+      "duration_ms": 260,
+      "stdout_tail": ".                                                                        [100%]\n1 passed in 0.01s",
+      "stderr_tail": "",
+      "diagnostics_bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/parallel_session_isolation",
+      "diagnostics_manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T131300Z-lifecycle-run/browser-diagnostics/20260307T131325Z/parallel_session_isolation/manifest.json"
+    }
+  ]
+}

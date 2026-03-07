@@ -1,0 +1,8 @@
+{
+  "A_protocol_and_schema": "partially fixed",
+  "B_browser_lifecycle": "deferred",
+  "C_telecom_flow": "fixed",
+  "D_diagnostics_and_bundles": "partially fixed",
+  "E_interop_hardening": "blocked by environment",
+  "contract_clarifications": "updated"
+}

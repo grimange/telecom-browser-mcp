@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Diagnostics Page Error Fixture</title>
+  </head>
+  <body>
+    <h1>Page Error Fixture</h1>
+    <script>
+      setTimeout(() => {
+        throw new Error("fixture-page-error");
+      }, 0);
+    </script>
+  </body>
+</html>
