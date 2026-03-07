@@ -35,6 +35,9 @@ async def test_harness_inbound_answer_flow(tmp_path) -> None:
     browser_logs = await tools.collect_browser_logs(session_id=session_id)
     assert browser_logs["ok"] is True
     assert len(browser_logs["artifacts"]) == 2
+    assert "manifest_path" in browser_logs["data"]
+    assert "bundle_dir" in browser_logs["data"]
+    assert browser_logs["warnings"]
 
     one_way = await tools.diagnose_one_way_audio(session_id=session_id)
     assert one_way["ok"] is True

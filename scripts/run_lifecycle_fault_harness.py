@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import asyncio
 import json
 import subprocess
 import sys
@@ -28,6 +29,42 @@ class ScenarioResult:
     duration_ms: int
     stdout_tail: str
     stderr_tail: str
+    diagnostics_bundle_dir: str
+    diagnostics_manifest_path: str
+
+
+def _write_scenario_diagnostics_bundle(
+    *,
+    output_dir: Path,
+    started_at: str,
+    scenario: str,
+    status: str,
+    failure_classification: str,
+) -> tuple[str, str, list[str]]:
+    from telecom_browser_mcp.browser.diagnostics import BrowserDiagnosticsCollector
+
+    collector = BrowserDiagnosticsCollector(trace_enabled=False)
+    collector.collection_gaps.append(
+        "synthetic lifecycle scenario does not run a live Playwright page/context"
+    )
+    collector.mark("scenario_completed")
+    bundle = asyncio.run(
+        collector.write_bundle(
+            base_dir=str(output_dir),
+            run_id=f"run-{started_at}",
+            scenario_id=scenario,
+            session_id=f"scenario-{scenario}",
+            fault_type="lifecycle_fault_injection",
+            injection_point=scenario,
+            status=status,
+            failure_classification=failure_classification,
+        )
+    )
+    return (
+        str(bundle["bundle_dir"]),
+        str(bundle["manifest_path"]),
+        list(bundle["collection_gaps"]),
+    )
 
 
 def _parse_args() -> argparse.Namespace:
@@ -53,7 +90,7 @@ def _tail(text: str, lines: int = 25) -> str:
     return "\n".join(split[-lines:])
 
 
-def _run_one(name: str, nodeid: str) -> ScenarioResult:
+def _run_one(name: str, nodeid: str, *, output_dir: Path, started_at: str) -> ScenarioResult:
     started = perf_counter()
     proc = subprocess.run(
         [sys.executable, "-m", "pytest", "-q", nodeid],
@@ -62,6 +99,15 @@ def _run_one(name: str, nodeid: str) -> ScenarioResult:
         check=False,
     )
     duration_ms = int((perf_counter() - started) * 1000)
+    status = "ok" if proc.returncode == 0 else "failed"
+    failure_classification = "none" if proc.returncode == 0 else "session"
+    bundle_dir, manifest_path, collection_gaps = _write_scenario_diagnostics_bundle(
+        output_dir=output_dir,
+        started_at=started_at,
+        scenario=name,
+        status=status,
+        failure_classification=failure_classification,
+    )
     return ScenarioResult(
         name=name,
         nodeid=nodeid,
@@ -70,6 +116,8 @@ def _run_one(name: str, nodeid: str) -> ScenarioResult:
         duration_ms=duration_ms,
         stdout_tail=_tail(proc.stdout),
         stderr_tail=_tail(proc.stderr),
+        diagnostics_bundle_dir=bundle_dir,
+        diagnostics_manifest_path=manifest_path,
     )
 
 
@@ -90,7 +138,8 @@ def _write_summary(path: Path, *, started_at: str, results: list[ScenarioResult]
     for result in results:
         status = "PASS" if result.ok else "FAIL"
         lines.append(
-            f"- `{result.name}`: {status} ({result.duration_ms} ms) [{result.nodeid}]"
+            f"- `{result.name}`: {status} ({result.duration_ms} ms) [{result.nodeid}] "
+            f"(bundle: {result.diagnostics_manifest_path})"
         )
     lines.append("")
     lines.append("## Failure Tails")
@@ -126,7 +175,10 @@ def main() -> int:
     )
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    results = [_run_one(name, SCENARIOS[name]) for name in selected]
+    results = [
+        _run_one(name, SCENARIOS[name], output_dir=output_dir, started_at=started_at)
+        for name in selected
+    ]
     passed = sum(1 for r in results if r.ok)
     failed = len(results) - passed
 

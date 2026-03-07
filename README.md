@@ -90,6 +90,31 @@ Test coverage currently focuses on:
 - harness-based integration flow
 - stdio quickstart smoke behavior
 
+Lifecycle fault-injection harness (deterministic crash/closure/stale-selector scenarios):
+
+```bash
+.venv/bin/python scripts/run_lifecycle_fault_harness.py
+```
+
+Browser diagnostics bundles (manifest + console/network/pageerror metadata):
+
+```bash
+# via MCP tools: collect_browser_logs / collect_debug_bundle
+# artifacts are written under each session run directory in browser-diagnostics/
+```
+
+Diagnostics-aware validation integration:
+
+```bash
+.venv/bin/python scripts/validate_v0_2_contracts.py
+```
+
+Telecom UI failure signature library build:
+
+```bash
+.venv/bin/python scripts/build_failure_signature_library.py
+```
+
 ## Artifact layout
 
 Debug bundles are written under:

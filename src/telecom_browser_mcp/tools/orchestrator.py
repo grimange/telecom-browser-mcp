@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
 from pathlib import Path
 from time import perf_counter
 
 from telecom_browser_mcp.adapters.registry import AdapterRegistry
+from telecom_browser_mcp.browser.diagnostics import BrowserDiagnosticsCollector
 from telecom_browser_mcp.config.settings import Settings
 from telecom_browser_mcp.diagnostics.answer_flow import diagnose_answer_flow
 from telecom_browser_mcp.diagnostics.incoming_call import diagnose_incoming_call
@@ -47,6 +47,67 @@ class ToolOrchestrator:
 
     def _now(self) -> str:
         return datetime.now(timezone.utc).isoformat()
+
+    async def _collect_browser_diagnostics_bundle(
+        self,
+        *,
+        session,
+        scenario_id: str,
+        fault_type: str,
+        injection_point: str,
+        status: str,
+        failure_classification: str,
+    ) -> tuple[list[dict], list[str], dict]:
+        if session.driver is not None and hasattr(session.driver, "collect_diagnostics_bundle"):
+            result = await session.driver.collect_diagnostics_bundle(
+                base_dir=session.artifacts_dir,
+                run_id=session.run_id,
+                scenario_id=scenario_id,
+                session_id=session.session_id,
+                fault_type=fault_type,
+                injection_point=injection_point,
+                status=status,
+                failure_classification=failure_classification,
+            )
+        else:
+            collector = BrowserDiagnosticsCollector(trace_enabled=False)
+            collector.collection_gaps.append(
+                "no active Playwright runtime bound to session; captured bundle with explicit gaps"
+            )
+            result = await collector.write_bundle(
+                base_dir=session.artifacts_dir,
+                run_id=session.run_id,
+                scenario_id=scenario_id,
+                session_id=session.session_id,
+                fault_type=fault_type,
+                injection_point=injection_point,
+                status=status,
+                failure_classification=failure_classification,
+            )
+
+        artifacts = [
+            {
+                "type": "manifest",
+                "label": "browser-diagnostics-manifest",
+                "path": result["manifest_path"],
+                "redacted": self.settings.redact,
+                "created_at": self._now(),
+            },
+            {
+                "type": "report",
+                "label": "browser-diagnostics-summary",
+                "path": result["summary_path"],
+                "redacted": self.settings.redact,
+                "created_at": self._now(),
+            },
+        ]
+        data = {
+            "bundle_dir": result["bundle_dir"],
+            "manifest_path": result["manifest_path"],
+            "summary_path": result["summary_path"],
+            "artifact_paths": result["artifact_paths"],
+        }
+        return artifacts, result["collection_gaps"], data
 
     async def open_app(self, url: str, adapter_name: str | None = None) -> dict:
         start = self._timer()
@@ -451,6 +512,14 @@ class ToolOrchestrator:
             webrtc=webrtc,
             environment=environment,
         )
+        diag_artifacts, diag_warnings, diag_data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="collect-debug-bundle",
+            fault_type="manual_collection",
+            injection_point="collect_debug_bundle",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         report_path = write_markdown_report(
             session,
             {
@@ -464,8 +533,13 @@ class ToolOrchestrator:
             message="debug bundle collected",
             duration_ms=self._duration_ms(start),
             session_id=session_id,
-            artifacts=artifacts,
-            data={"artifacts_dir": session.artifacts_dir, "report_path": report_path},
+            artifacts=artifacts + diag_artifacts,
+            warnings=diag_warnings,
+            data={
+                "artifacts_dir": session.artifacts_dir,
+                "report_path": report_path,
+                "browser_diagnostics": diag_data,
+            },
         )
 
     async def get_environment_snapshot(self, session_id: str) -> dict:
@@ -534,50 +608,21 @@ class ToolOrchestrator:
         session = self.session_manager.get(session_id)
         if session is None:
             return self._session_missing(session_id, start)
-
-        logs_dir = Path(session.artifacts_dir) / "logs"
-        logs_dir.mkdir(parents=True, exist_ok=True)
-        console_path = logs_dir / "browser-console.json"
-        network_path = logs_dir / "network-summary.json"
-        # Current v0.1 browser layer does not persist event subscriptions yet.
-        console_payload = {
-            "available": False,
-            "reason": "console capture hooks are not yet wired in browser driver",
-            "captured_at": self._now(),
-        }
-        network_payload = {
-            "available": False,
-            "reason": "network trace hooks are not yet wired in browser driver",
-            "captured_at": self._now(),
-        }
-        console_path.write_text(json.dumps(console_payload, indent=2), encoding="utf-8")
-        network_path.write_text(json.dumps(network_payload, indent=2), encoding="utf-8")
-        artifacts = [
-            {
-                "type": "log",
-                "label": "browser-console",
-                "path": str(console_path),
-                "redacted": self.settings.redact,
-                "created_at": self._now(),
-            },
-            {
-                "type": "log",
-                "label": "network-summary",
-                "path": str(network_path),
-                "redacted": self.settings.redact,
-                "created_at": self._now(),
-            },
-        ]
+        artifacts, warnings, data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="collect-browser-logs",
+            fault_type="manual_collection",
+            injection_point="collect_browser_logs",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         return success_response(
             message="browser logs collected",
             duration_ms=self._duration_ms(start),
             session_id=session_id,
             artifacts=artifacts,
-            warnings=[
-                "console capture hooks are not yet wired in browser driver",
-                "network trace hooks are not yet wired in browser driver",
-            ],
-            data={"console_path": str(console_path), "network_path": str(network_path)},
+            warnings=warnings,
+            data=data,
         )
 
     async def diagnose_registration_failure(self, session_id: str) -> dict:
