@@ -15,6 +15,13 @@ from mcp.client.session import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
 
+def _server_env() -> dict[str, str]:
+    src_root = str(Path(__file__).resolve().parents[1] / "src")
+    existing = os.environ.get("PYTHONPATH", "").strip()
+    pythonpath = f"{src_root}{os.pathsep}{existing}" if existing else src_root
+    return {"PYTHONPATH": pythonpath}
+
+
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run MCP stdio interop probe with environment diagnostics")
     parser.add_argument(
@@ -78,6 +85,7 @@ async def _run_probe(ts: str, logs_dir: Path, *, timeout_seconds: float, step_ti
     server_params = StdioServerParameters(
         command=sys.executable,
         args=["-m", "telecom_browser_mcp"],
+        env=_server_env(),
     )
     phase = "spawn_server"
     with errlog_path.open("w", encoding="utf-8") as errlog:
