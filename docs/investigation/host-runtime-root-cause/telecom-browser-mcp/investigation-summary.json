@@ -1,0 +1,24 @@
+{
+  "generated_at": "2026-03-08T07:03:00Z",
+  "project": "telecom-browser-mcp",
+  "pipeline": "025--investigate-root-cause-host-mcp-browser",
+  "mcp": {
+    "classification": "environment_specific_stdio_behavior",
+    "confidence": 0.82,
+    "summary": "Both raw and official SDK probes time out before initialize response, while server startup is fast and uncontaminated; async stdio reader controls hang on this host while plain blocking stdin works."
+  },
+  "browser": {
+    "classification": "chromium_sandbox_policy_block",
+    "confidence": 0.96,
+    "summary": "Playwright and direct chrome-headless-shell launches fail identically with sandbox_host_linux.cc fatal even with explicit no-sandbox flags."
+  },
+  "next_remediation": [
+    "replace or bypass async stdio on the host verification path",
+    "run browser verification on a host or runtime where Chromium launch is permitted"
+  ],
+  "evidence_paths": [
+    "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T070104Z/logs/mcp-interop-probe.json",
+    "docs/live-verification/telecom-browser-mcp/evidence/mcp-interop-probe.json",
+    "docs/live-verification/telecom-browser-mcp/evidence/live-tool-checks.json"
+  ]
+}
