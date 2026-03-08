@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-03-08T06:38:52Z",
+  "project": "telecom-browser-mcp",
+  "run_id": "20260308T063852Z",
+  "objective": "controlled live verification",
+  "overall_status": "blocked",
+  "stage_counts": {
+    "pass": 3,
+    "blocked": 3,
+    "verification_incomplete": 0
+  },
+  "blocking_reasons": [
+    "host startup state is not ready: startup_timeout_without_handshake",
+    "mcp handshake failed: handshake_timeout",
+    "browser lifecycle failed: host_runtime_constraint"
+  ],
+  "known_limitations": [
+    "minimal tool execution validated with harness adapter only"
+  ],
+  "evidence_root": "docs/live-verification/telecom-browser-mcp/evidence"
+}

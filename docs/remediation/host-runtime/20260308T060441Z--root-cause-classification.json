@@ -1,0 +1,23 @@
+{
+  "generated_at": "2026-03-08T06:08:00Z",
+  "pipeline": "023--debug-host-mcp-browser-constraints",
+  "project": "telecom-browser-mcp",
+  "mcp": {
+    "primary": "server_startup_block_before_handshake",
+    "secondary": "transport_deadlock",
+    "evidence": [
+      "docs/remediation/host-runtime/evidence/20260308T060441Z--automated-mcp-probe.json",
+      "docs/remediation/host-runtime/evidence/20260308T060441Z--manual-mcp-probe.json"
+    ],
+    "reasoning": "Both manual and automated initialize probes show no response bytes and empty stderr/stdout evidence in the timeout window."
+  },
+  "browser": {
+    "primary": "chromium_sandbox_policy_block",
+    "secondary": "browser_env_mismatch",
+    "evidence": [
+      "docs/remediation/host-runtime/evidence/20260308T060441Z--standalone-browser-launch.json",
+      "docs/remediation/host-runtime/evidence/20260308T060441Z--live-tool-checks.json"
+    ],
+    "reasoning": "Standalone and integrated launches fail with the same sandbox-host fatal Operation not permitted signal."
+  }
+}

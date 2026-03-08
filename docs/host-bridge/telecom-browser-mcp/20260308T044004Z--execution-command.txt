@@ -1,0 +1,25 @@
+cd /home/ramjf/python-projects/telecom-browser-mcp
+
+# Recommended: run on designated release host (not AI sandbox)
+# Ensure dependencies are available
+.venv/bin/python -m pip install -e .[dev]
+.venv/bin/python -m playwright install chromium
+
+# Execute controlled live verification pipeline steps and write outputs to docs/live-verification/telecom-browser-mcp/
+# Stage 1: release eligibility read
+cat docs/pipeline-governor/telecom-browser-mcp/governor-verdict.json
+cat docs/release-hardening/telecom-browser-mcp/release-hardening-verdict.json
+cat docs/release-hardening/telecom-browser-mcp/release-check-results.json
+
+# Stage 2/3: startup + MCP handshake
+timeout 10s .venv/bin/python -m telecom_browser_mcp
+.venv/bin/python scripts/run_mcp_interop_probe.py --timeout-seconds 30 --step-timeout-seconds 10
+
+# Stage 4/5: browser lifecycle + minimal telecom tool execution
+# Follow docs/pipelines/015--controlled-live-verification.md and update all required files under docs/live-verification/telecom-browser-mcp/
+
+# Stage 6/7/8: environment capture, risk register, verdict
+# Ensure required JSON/MD artifacts exist and are updated.
+
+# Post-run governor integration
+.venv/bin/python scripts/run_pipeline_governor.py

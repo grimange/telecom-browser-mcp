@@ -1,0 +1,48 @@
+{
+  "pipeline_name": "controlled_live_verification",
+  "run_id": "20260308T044004Z",
+  "target_host_class": "release-host",
+  "host_required": true,
+  "execution_status": "host_execution_required",
+  "working_directory": "/home/ramjf/python-projects/telecom-browser-mcp",
+  "required_env": [
+    "PATH",
+    "PYTHONPATH",
+    "TELECOM_BROWSER_MCP_TRANSPORT",
+    "TELECOM_BROWSER_MCP_HOST",
+    "TELECOM_BROWSER_MCP_PORT",
+    "TELECOM_BROWSER_MCP_DEFAULT_ADAPTER",
+    "TELECOM_BROWSER_MCP_ARTIFACT_ROOT",
+    "PLAYWRIGHT_BROWSERS_PATH"
+  ],
+  "expected_outputs": [
+    "docs/live-verification/telecom-browser-mcp/live-readiness-summary.md",
+    "docs/live-verification/telecom-browser-mcp/host-startup-check.md",
+    "docs/live-verification/telecom-browser-mcp/mcp-handshake-check.md",
+    "docs/live-verification/telecom-browser-mcp/browser-lifecycle-check.md",
+    "docs/live-verification/telecom-browser-mcp/tool-execution-check.md",
+    "docs/live-verification/telecom-browser-mcp/environment-notes.md",
+    "docs/live-verification/telecom-browser-mcp/live-risk-register.md",
+    "docs/live-verification/telecom-browser-mcp/live-verification-verdict.md",
+    "docs/live-verification/telecom-browser-mcp/live-verification-summary.json",
+    "docs/live-verification/telecom-browser-mcp/live-check-results.json",
+    "docs/live-verification/telecom-browser-mcp/live-risk-register.json",
+    "docs/live-verification/telecom-browser-mcp/live-verification-verdict.json"
+  ],
+  "artifact_return_contract": {
+    "must_write_to_repo": true,
+    "validation_method": "path_exists_and_json_parseable_for_json_targets"
+  },
+  "success_criteria": [
+    "docs/live-verification/telecom-browser-mcp/live-verification-verdict.json exists",
+    "live_verification_verdict in {passed, passed_with_known_limitations}",
+    "mcp initialize + tool discovery succeeded on host",
+    "browser lifecycle sanity succeeded on host"
+  ],
+  "failure_criteria": [
+    "live_verification_verdict == blocked",
+    "missing required outputs",
+    "host execution command failed"
+  ],
+  "post_run_next_step": "rerun_pipeline_governor"
+}

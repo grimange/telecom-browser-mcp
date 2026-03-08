@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-03-08T06:38:52Z",
+  "project": "telecom-browser-mcp",
+  "pipeline": "016--controlled-live-verification",
+  "run_id": "20260308T063852Z",
+  "verdict": "blocked",
+  "decision_basis": {
+    "host_startup_succeeds": false,
+    "mcp_initialize_succeeds": false,
+    "tool_discovery_succeeds": false,
+    "browser_lifecycle_succeeds": false,
+    "minimal_tools_execute": true
+  },
+  "blocking_reasons": [
+    "host startup state is not ready: startup_timeout_without_handshake",
+    "mcp handshake failed: handshake_timeout",
+    "browser lifecycle failed: host_runtime_constraint"
+  ]
+}

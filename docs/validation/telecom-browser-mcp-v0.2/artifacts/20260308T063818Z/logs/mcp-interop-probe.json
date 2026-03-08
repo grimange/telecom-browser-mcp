@@ -1,0 +1,29 @@
+{
+  "timestamp": "20260308T063818Z",
+  "probe": "raw-stdio-jsonrpc-initialize-and-tools-list",
+  "ok": false,
+  "classification": "handshake_timeout",
+  "failure": "handshake_read_timeout",
+  "startup_state": "startup_timeout_without_handshake",
+  "elapsed_seconds": 8.016,
+  "requests": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "initialize",
+      "params": {
+        "protocolVersion": "2024-11-05",
+        "capabilities": {},
+        "clientInfo": {
+          "name": "live-verification",
+          "version": "0.1"
+        }
+      }
+    }
+  ],
+  "responses": [],
+  "tools_list_ok": false,
+  "evidence": {
+    "stderr_log": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T063818Z/logs/mcp-interop-probe-stderr.log"
+  }
+}

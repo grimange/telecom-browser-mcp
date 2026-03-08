@@ -1,0 +1,15 @@
+{
+  "peer_connection_present": true,
+  "connection_state": "connected",
+  "ice_connection_state": null,
+  "signaling_state": null,
+  "local_audio_tracks": 1,
+  "remote_audio_tracks": 1,
+  "candidate_pair_state": null,
+  "inbound_rtp_audio_packets": 100,
+  "outbound_rtp_audio_packets": 120,
+  "available": true,
+  "reason": null,
+  "source": "harness",
+  "timestamp": "2026-03-08T06:38:26.662478Z"
+}

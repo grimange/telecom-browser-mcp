@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-03-08T05:24:37Z",
+  "pipeline": "remediate_live_verification_blockers",
+  "project": "telecom-browser-mcp",
+  "status": "blocked_by_host_runtime_constraints",
+  "fixes_applied": [
+    "startup_classification_fix",
+    "handshake_probe_classification_fix",
+    "browser_runtime_failure_classification_fix",
+    "governor_live_verification_override_fix",
+    "regression_tests_added"
+  ],
+  "recheck_results": {
+    "live_verification_verdict": "blocked",
+    "pipeline_governor_verdict": "blocked_by_live_verification"
+  },
+  "remaining_blockers": [
+    "mcp initialize timeout on current host runtime",
+    "chromium sandbox-host operation not permitted on current host"
+  ],
+  "recommended_next_steps": [
+    "run controlled live verification on designated release host with compatible browser sandbox policy",
+    "capture successful MCP initialize/tools-list evidence on target host",
+    "rerun pipeline governor after successful live recheck"
+  ]
+}

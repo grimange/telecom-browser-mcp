@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-03-08T06:08:00Z",
+  "pipeline": "023--debug-host-mcp-browser-constraints",
+  "project": "telecom-browser-mcp",
+  "status": "root_causes_identified",
+  "mcp_root_cause": "server_startup_block_before_handshake",
+  "browser_root_cause": "chromium_sandbox_policy_block",
+  "confidence": "medium",
+  "next_pipeline": "targeted host transport + browser policy remediation"
+}

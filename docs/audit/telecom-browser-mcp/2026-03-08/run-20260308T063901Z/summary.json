@@ -1,0 +1,35 @@
+{
+  "session_id": "sess_806122330a",
+  "run_id": "run-20260308T063901Z",
+  "generated_at": "2026-03-08T06:39:01.150185+00:00",
+  "artifacts": [
+    {
+      "type": "runtime",
+      "label": "registration",
+      "path": "docs/audit/telecom-browser-mcp/2026-03-08/run-20260308T063901Z/runtime/registration.json",
+      "redacted": true,
+      "created_at": "2026-03-08T06:39:01.149712Z"
+    },
+    {
+      "type": "runtime",
+      "label": "active-session",
+      "path": "docs/audit/telecom-browser-mcp/2026-03-08/run-20260308T063901Z/runtime/active-session.json",
+      "redacted": true,
+      "created_at": "2026-03-08T06:39:01.149851Z"
+    },
+    {
+      "type": "runtime",
+      "label": "webrtc-summary",
+      "path": "docs/audit/telecom-browser-mcp/2026-03-08/run-20260308T063901Z/runtime/webrtc-summary.json",
+      "redacted": true,
+      "created_at": "2026-03-08T06:39:01.149999Z"
+    },
+    {
+      "type": "runtime",
+      "label": "environment",
+      "path": "docs/audit/telecom-browser-mcp/2026-03-08/run-20260308T063901Z/runtime/environment.json",
+      "redacted": true,
+      "created_at": "2026-03-08T06:39:01.150170Z"
+    }
+  ]
+}
