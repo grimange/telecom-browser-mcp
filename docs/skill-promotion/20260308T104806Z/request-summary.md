@@ -1,0 +1,8 @@
+# Request Summary
+
+- skill: telecom-mcp-audit
+- eval_report: /home/ramjf/python-projects/telecom-browser-mcp/docs/evals/skills/telecom-mcp-audit/20260308T104215Z/eval-report.md
+- scorecard: /home/ramjf/python-projects/telecom-browser-mcp/docs/evals/skills/telecom-mcp-audit/20260308T104215Z/scorecard.json
+- live_vs_candidate: /home/ramjf/python-projects/telecom-browser-mcp/docs/evals/skills/telecom-mcp-audit/20260308T104215Z/live-vs-candidate.md
+- rollback_notes: /home/ramjf/python-projects/telecom-browser-mcp/docs/skill-evolution/20260308T104215Z/rollback-notes.md
+- promotion_checklist: /home/ramjf/python-projects/telecom-browser-mcp/docs/skill-evolution/20260308T104215Z/promotion-checklist.md

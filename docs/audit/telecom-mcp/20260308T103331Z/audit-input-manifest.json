@@ -1,0 +1,27 @@
+{
+  "timestamp": "20260308T103331Z",
+  "repository": "/home/ramjf/python-projects/telecom-browser-mcp",
+  "discovered": [
+    {
+      "path": "AGENTS.md",
+      "type": "file"
+    },
+    {
+      "path": "docs",
+      "type": "dir"
+    },
+    {
+      "path": ".codex",
+      "type": "dir"
+    },
+    {
+      "path": "pyproject.toml",
+      "type": "file"
+    }
+  ],
+  "priority_docs": [
+    "docs/audit",
+    "docs/remediation",
+    "docs/pipelines"
+  ]
+}

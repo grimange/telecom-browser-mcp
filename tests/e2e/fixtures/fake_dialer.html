@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fake Dialer Harness</title>
+</head>
+<body>
+  <div id="app-ready" data-state="ready">ready</div>
+  <div id="registration-state">pending</div>
+  <div id="incoming-call-state">idle</div>
+  <div id="active-call-state">none</div>
+  <button id="answer-btn" type="button">Answer</button>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const scenario = params.get("scenario") || "success";
+
+      const registration = document.getElementById("registration-state");
+      const incoming = document.getElementById("incoming-call-state");
+      const active = document.getElementById("active-call-state");
+      const answer = document.getElementById("answer-btn");
+
+      window.__fakeDialer = {
+        scenario,
+        peerConnection: scenario === "no_peer" ? null : {
+          connectionState: "connected",
+          iceConnectionState: "completed"
+        }
+      };
+
+      if (scenario === "missing_answer") {
+        answer.remove();
+      }
+
+      if (scenario !== "no_registration") {
+        setTimeout(() => {
+          registration.textContent = "registered";
+        }, 100);
+      }
+
+      setTimeout(() => {
+        incoming.textContent = "ringing";
+      }, 200);
+
+      if (answer) {
+        answer.addEventListener("click", () => {
+          if (scenario === "answer_fails") {
+            active.textContent = "failed";
+            return;
+          }
+          active.textContent = "connected";
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
