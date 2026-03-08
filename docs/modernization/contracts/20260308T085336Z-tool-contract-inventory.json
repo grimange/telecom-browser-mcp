@@ -1,0 +1,818 @@
+[
+  {
+    "tool": "health",
+    "signature": "() -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {},
+      "title": "healthArguments",
+      "type": "object"
+    },
+    "params": []
+  },
+  {
+    "tool": "capabilities",
+    "signature": "(include_groups: 'bool' = True) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "include_groups": {
+          "default": true,
+          "title": "Include Groups",
+          "type": "boolean"
+        }
+      },
+      "title": "capabilitiesArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "include_groups",
+        "required": false,
+        "annotation": "bool",
+        "default": true
+      }
+    ]
+  },
+  {
+    "tool": "open_app",
+    "signature": "(url: 'str', adapter_name: 'str | None' = None) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "adapter_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Adapter Name"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "open_appArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "url",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "adapter_name",
+        "required": false,
+        "annotation": "str | None",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "login_agent",
+    "signature": "(session_id: 'str', username: 'str', password: 'str', tenant: 'str | None' = None) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "username": {
+          "title": "Username",
+          "type": "string"
+        },
+        "password": {
+          "title": "Password",
+          "type": "string"
+        },
+        "tenant": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tenant"
+        }
+      },
+      "required": [
+        "session_id",
+        "username",
+        "password"
+      ],
+      "title": "login_agentArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "username",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "password",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "tenant",
+        "required": false,
+        "annotation": "str | None",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "wait_for_ready",
+    "signature": "(session_id: 'str', timeout_ms: 'int' = 30000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 30000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "wait_for_readyArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 30000
+      }
+    ]
+  },
+  {
+    "tool": "list_sessions",
+    "signature": "() -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {},
+      "title": "list_sessionsArguments",
+      "type": "object"
+    },
+    "params": []
+  },
+  {
+    "tool": "close_session",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "close_sessionArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "reset_session",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "reset_sessionArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_registration_status",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_registration_statusArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "wait_for_registration",
+    "signature": "(session_id: 'str', expected: 'str' = 'registered', timeout_ms: 'int' = 30000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "expected": {
+          "default": "registered",
+          "title": "Expected",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 30000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "wait_for_registrationArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "expected",
+        "required": false,
+        "annotation": "str",
+        "default": "registered"
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 30000
+      }
+    ]
+  },
+  {
+    "tool": "assert_registered",
+    "signature": "(session_id: 'str', timeout_ms: 'int' = 30000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 30000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "assert_registeredArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 30000
+      }
+    ]
+  },
+  {
+    "tool": "wait_for_incoming_call",
+    "signature": "(session_id: 'str', timeout_ms: 'int' = 30000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 30000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "wait_for_incoming_callArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 30000
+      }
+    ]
+  },
+  {
+    "tool": "answer_call",
+    "signature": "(session_id: 'str', timeout_ms: 'int' = 15000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 15000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "answer_callArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 15000
+      }
+    ]
+  },
+  {
+    "tool": "hangup_call",
+    "signature": "(session_id: 'str', timeout_ms: 'int' = 15000) -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "timeout_ms": {
+          "default": 15000,
+          "title": "Timeout Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "hangup_callArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "timeout_ms",
+        "required": false,
+        "annotation": "int",
+        "default": 15000
+      }
+    ]
+  },
+  {
+    "tool": "get_ui_call_state",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_ui_call_stateArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_active_session_snapshot",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_active_session_snapshotArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_store_snapshot",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_store_snapshotArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_peer_connection_summary",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_peer_connection_summaryArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_webrtc_stats",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_webrtc_statsArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "get_environment_snapshot",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "get_environment_snapshotArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "screenshot",
+    "signature": "(session_id: 'str', label: 'str' = 'manual-capture') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        },
+        "label": {
+          "default": "manual-capture",
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "screenshotArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      },
+      {
+        "name": "label",
+        "required": false,
+        "annotation": "str",
+        "default": "manual-capture"
+      }
+    ]
+  },
+  {
+    "tool": "collect_browser_logs",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "collect_browser_logsArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "collect_debug_bundle",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "collect_debug_bundleArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "diagnose_registration_failure",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "diagnose_registration_failureArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "diagnose_incoming_call_failure",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "diagnose_incoming_call_failureArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "diagnose_answer_failure",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "diagnose_answer_failureArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  },
+  {
+    "tool": "diagnose_one_way_audio",
+    "signature": "(session_id: 'str') -> 'dict'",
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "title": "Session Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id"
+      ],
+      "title": "diagnose_one_way_audioArguments",
+      "type": "object"
+    },
+    "params": [
+      {
+        "name": "session_id",
+        "required": true,
+        "annotation": "str",
+        "default": null
+      }
+    ]
+  }
+]

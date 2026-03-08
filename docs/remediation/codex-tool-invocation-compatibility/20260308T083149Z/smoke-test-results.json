@@ -1,0 +1,124 @@
+{
+  "generated_at": "2026-03-08T08:36:11.090147+00:00",
+  "transport": "in-process-dispatch-smoke",
+  "environment_limitations": [
+    "stdio client to local server process failed in sandbox with ModuleNotFoundError(anyio) during server bootstrap"
+  ],
+  "results": [
+    {
+      "step": "resource_query_reference",
+      "tool": "list_sessions",
+      "kwargs": {},
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "sessions listed",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "safe_no_arg_health",
+      "tool": "health",
+      "kwargs": {},
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "service healthy",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "safe_no_arg_capabilities",
+      "tool": "capabilities",
+      "kwargs": {},
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "capabilities",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "safe_no_arg_list_sessions",
+      "tool": "list_sessions",
+      "kwargs": {},
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "sessions listed",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "legacy_kwargs_empty_object",
+      "tool": "list_sessions",
+      "kwargs": {
+        "kwargs": "{}"
+      },
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "sessions listed",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "optional_arg_omitted",
+      "tool": "capabilities",
+      "kwargs": {},
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "capabilities",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "optional_arg_explicit_false",
+      "tool": "capabilities",
+      "kwargs": {
+        "include_groups": false
+      },
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "capabilities",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "optional_arg_via_legacy_kwargs",
+      "tool": "capabilities",
+      "kwargs": {
+        "kwargs": "{\"include_groups\": false}"
+      },
+      "ok": true,
+      "error": null,
+      "result_ok": true,
+      "message": "capabilities",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "debug_tool_minimal_required_args",
+      "tool": "collect_debug_bundle",
+      "kwargs": {
+        "session_id": "missing-session"
+      },
+      "ok": true,
+      "error": null,
+      "result_ok": false,
+      "message": "session not found: missing-session",
+      "contains_kwargs_binding_error": false
+    },
+    {
+      "step": "debug_tool_via_legacy_kwargs",
+      "tool": "collect_debug_bundle",
+      "kwargs": {
+        "kwargs": "{\"session_id\": \"missing-session\"}"
+      },
+      "ok": true,
+      "error": null,
+      "result_ok": false,
+      "message": "session not found: missing-session",
+      "contains_kwargs_binding_error": false
+    }
+  ],
+  "resource_query": {
+    "operation": "list_mcp_resources(server=\"telecom-browser\")",
+    "status": "environment_limited",
+    "details": "Transport closed during this pipeline run; earlier run returned server reachable with empty resources list."
+  }
+}

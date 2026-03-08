@@ -6,6 +6,7 @@ Telecom-aware browser MCP server for debugging WebRTC softphones and browser dia
 
 `telecom-browser-mcp` exposes telecom intent through MCP tools, including:
 
+- safe first contact: `health`, `capabilities`
 - session lifecycle: `open_app`, `list_sessions`, `close_session`, `reset_session`
 - registration: `get_registration_status`, `wait_for_registration`, `assert_registered`
 - inbound/answer flow: `wait_for_incoming_call`, `answer_call`, `hangup_call`
@@ -56,6 +57,40 @@ telecom-browser-mcp-http
 telecom-browser-mcp-sse
 ```
 
+## Codex MCP registration
+
+Canonical registration command:
+
+```bash
+codex mcp add telecom-browser -- python -m telecom_browser_mcp
+```
+
+Alternate command (console script):
+
+```bash
+codex mcp add telecom-browser -- telecom-browser-mcp-stdio
+```
+
+`codex` config snippet:
+
+```toml
+[mcp_servers.telecom-browser]
+command = "python"
+args = ["-m", "telecom_browser_mcp"]
+cwd = "/home/ramjf/python-projects/telecom-browser-mcp"
+```
+
+See also:
+
+- `docs/setup/codex-mcp.md`
+- `docs/usage/codex-agent-usage.md`
+
+Recommended first-call smoke sequence after registration:
+
+1. Call `health` with no arguments.
+2. Call `capabilities` with no arguments.
+3. Call `list_sessions` with no arguments.
+
 ## Environment
 
 Copy `.env.example` and adjust:
@@ -66,6 +101,12 @@ Copy `.env.example` and adjust:
 - `TELECOM_BROWSER_MCP_DEFAULT_ADAPTER`
 - `TELECOM_BROWSER_MCP_ALLOWED_ORIGINS`
 - `TELECOM_BROWSER_MCP_ARTIFACT_ROOT`
+
+## Host vs sandbox guidance
+
+- Browser automation tools (`open_app`, `wait_for_registration`, `answer_call`) should run on a host/runtime that can launch Chromium.
+- Sandbox transport/runtime failures should be treated as environment limitations unless host evidence confirms product regressions.
+- Use `scripts/run_mcp_interop_probe.py` for MCP handshake diagnostics and capture evidence before remediation.
 
 ## Fake dialer harness
 

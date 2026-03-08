@@ -48,6 +48,56 @@ class ToolOrchestrator:
     def _now(self) -> str:
         return datetime.now(timezone.utc).isoformat()
 
+    async def health(self) -> dict:
+        start = self._timer()
+        sessions = self.session_manager.list_sessions()
+        return success_response(
+            message="service healthy",
+            duration_ms=self._duration_ms(start),
+            data={
+                "service": "telecom-browser-mcp",
+                "status": "ok",
+                "active_sessions": len(sessions),
+                "default_adapter": self.settings.default_adapter,
+            },
+        )
+
+    async def capabilities(self, include_groups: bool = True) -> dict:
+        start = self._timer()
+        tool_groups = {
+            "session_lifecycle": ["open_app", "list_sessions", "close_session", "reset_session"],
+            "registration": ["get_registration_status", "wait_for_registration", "assert_registered"],
+            "call_control": ["wait_for_incoming_call", "answer_call", "hangup_call"],
+            "runtime_inspection": [
+                "get_ui_call_state",
+                "get_active_session_snapshot",
+                "get_store_snapshot",
+                "get_peer_connection_summary",
+                "get_webrtc_stats",
+                "get_environment_snapshot",
+            ],
+            "diagnostics_and_evidence": [
+                "screenshot",
+                "collect_browser_logs",
+                "collect_debug_bundle",
+                "diagnose_registration_failure",
+                "diagnose_incoming_call_failure",
+                "diagnose_answer_failure",
+                "diagnose_one_way_audio",
+            ],
+        }
+        data = {
+            "safe_first_contact_tools": ["health", "capabilities", "list_sessions"],
+            "include_groups": include_groups,
+        }
+        if include_groups:
+            data["tool_groups"] = tool_groups
+        return success_response(
+            message="capabilities",
+            duration_ms=self._duration_ms(start),
+            data=data,
+        )
+
     async def _collect_browser_diagnostics_bundle(
         self,
         *,

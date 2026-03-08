@@ -610,7 +610,14 @@ class PipelineGovernor:
                 global_verdict = "release_hardening_incomplete"
 
         live_verification_verdict = _normalize_text(live_verification.get("live_verification_verdict"))
-        if global_verdict == "release_candidate" and live_verification_verdict == "blocked":
+        live_verification_blocking_verdicts = {
+            "blocked",
+            "blocked_by_environment",
+            "blocked_by_transport",
+            "blocked_by_browser_runtime",
+            "blocked_by_integration",
+        }
+        if global_verdict == "release_candidate" and live_verification_verdict in live_verification_blocking_verdicts:
             global_verdict = "blocked_by_live_verification"
 
         recommended_action = {

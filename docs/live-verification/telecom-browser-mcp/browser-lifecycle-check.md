@@ -1,4 +1,4 @@
 # Browser Lifecycle Check
 
-- status: `exception`
-- classification: `host_runtime_constraint`
+- status: `skipped`
+- classification: `environment_not_authoritative`

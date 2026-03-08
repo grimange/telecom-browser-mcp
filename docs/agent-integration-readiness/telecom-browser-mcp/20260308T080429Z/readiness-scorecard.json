@@ -1,0 +1,133 @@
+{
+  "project": "telecom-browser-mcp",
+  "pipeline": "026--telecom-agent-integration-readiness",
+  "timestamp": "20260308T080429Z",
+  "dimensions": [
+    {
+      "name": "MCP registration",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "README.md",
+        "docs/setup/codex-mcp.md",
+        "pyproject.toml"
+      ]
+    },
+    {
+      "name": "MCP startup",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "src/telecom_browser_mcp/__main__.py",
+        "src/telecom_browser_mcp/server/stdio_server.py"
+      ]
+    },
+    {
+      "name": "MCP handshake",
+      "status": "partial",
+      "score": 1,
+      "evidence": [
+        "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T031001Z/logs/mcp-interop-probe.json",
+        "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T080243Z/logs/mcp-interop-probe.json"
+      ],
+      "note": "Host pass with sandbox-only initialize timeout variance."
+    },
+    {
+      "name": "tool discoverability",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "src/telecom_browser_mcp/server/stdio_server.py",
+        "tests/unit/test_tool_discovery_contract.py"
+      ]
+    },
+    {
+      "name": "tool naming clarity",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "src/telecom_browser_mcp/server/stdio_server.py",
+        "README.md"
+      ]
+    },
+    {
+      "name": "schema quality",
+      "status": "partial",
+      "score": 1,
+      "evidence": [
+        "src/telecom_browser_mcp/models/envelope.py",
+        "src/telecom_browser_mcp/tools/orchestrator.py"
+      ],
+      "note": "Stable envelope exists, but some action methods do not branch into explicit failure envelopes on adapter-level failure."
+    },
+    {
+      "name": "error classification",
+      "status": "partial",
+      "score": 1,
+      "evidence": [
+        "src/telecom_browser_mcp/models/enums.py",
+        "src/telecom_browser_mcp/tools/orchestrator.py"
+      ],
+      "note": "Classification model is present; consistency can be improved in a few tool paths."
+    },
+    {
+      "name": "sandbox awareness",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "AGENTS.md",
+        "README.md",
+        "docs/release-hardening/telecom-browser-mcp/transport-readiness.md"
+      ]
+    },
+    {
+      "name": "host execution guidance",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "AGENTS.md",
+        "docs/guides/host-setup.md",
+        "docs/usage/codex-agent-usage.md"
+      ]
+    },
+    {
+      "name": "operator setup clarity",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "README.md",
+        "docs/setup/codex-mcp.md",
+        "docs/guides/host-setup.md"
+      ]
+    },
+    {
+      "name": "Codex instruction compatibility",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "AGENTS.md",
+        "docs/usage/codex-agent-usage.md"
+      ]
+    },
+    {
+      "name": "observability",
+      "status": "ready",
+      "score": 2,
+      "evidence": [
+        "src/telecom_browser_mcp/evidence",
+        "src/telecom_browser_mcp/browser/diagnostics.py",
+        "docs/audit/telecom-browser-mcp"
+      ]
+    }
+  ],
+  "total_score": 21,
+  "score_band": "integration ready",
+  "gates": {
+    "A_registration": "pass",
+    "B_guidance": "pass",
+    "C_interoperability": "pass_with_environment_caveat",
+    "D_tool_contracts": "pass_with_followups",
+    "E_operator_setup": "pass"
+  },
+  "overall_status": "integration_ready"
+}

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T05:23:55.551529+00:00",
+  "generated_at": "2026-03-08T08:45:26.356360+00:00",
   "global_verdict": "blocked_by_live_verification",
   "recommended_global_action": "remediate_live_verification_blockers",
   "conflict_count": 0,
@@ -16,5 +16,5 @@
     "live_verification_blocked"
   ],
   "release_hardening_required": false,
-  "live_verification_verdict": "blocked"
+  "live_verification_verdict": "blocked_by_environment"
 }

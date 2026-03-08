@@ -9,5 +9,5 @@
 - guardrails_postcheck: guardrails_pass
 - drift_severity: low
 - release_hardening_verdict: release_ready
-- live_verification_verdict: blocked
+- live_verification_verdict: blocked_by_environment
 - release_track_allowed: False

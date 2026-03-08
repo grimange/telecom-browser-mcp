@@ -6,11 +6,15 @@ import sys
 import anyio
 import mcp.types as mcp_types
 from anyio.streams.memory import MemoryObjectReceiveStream, MemoryObjectSendStream
+from mcp.server.fastmcp.utilities.func_metadata import ArgModelBase
 from mcp.shared.message import SessionMessage
+from pydantic import ConfigDict
 
 from telecom_browser_mcp.server.app import TelecomBrowserApp
 
 TOOL_NAMES = [
+    "health",
+    "capabilities",
     "open_app",
     "login_agent",
     "wait_for_ready",
@@ -40,15 +44,16 @@ TOOL_NAMES = [
 
 
 def _register_tools_with_fastmcp(server, app: TelecomBrowserApp) -> None:
-    def _make_tool(name: str):
-        async def _tool(**kwargs):
-            return await app.dispatch(name, **kwargs)
-
-        _tool.__name__ = name
-        return _tool
+    # Force strict tool arguments so tools/list schema and runtime both reject unknown fields.
+    if ArgModelBase.model_config.get("extra") != "forbid":
+        ArgModelBase.model_config = ConfigDict(**ArgModelBase.model_config, extra="forbid")
+        ArgModelBase.model_rebuild(force=True)
 
     for tool_name in TOOL_NAMES:
-        server.tool()(_make_tool(tool_name))
+        handler = getattr(app.orchestrator, tool_name, None)
+        if handler is None:
+            raise ValueError(f"missing orchestrator handler for tool: {tool_name}")
+        server.tool(name=tool_name)(handler)
 
 
 async def _run_stdio_server_safe(server) -> None:

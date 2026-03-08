@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-03-08T08:39:02.825434+00:00",
+  "pipeline": "028--hardening-codex-tool-invocation-compatibility-telecom-browser-mcp",
+  "tool_count": 27,
+  "acceptance": {
+    "at_least_two_tools_successful": true,
+    "at_least_one_no_arg_tool_successful": true,
+    "at_least_one_optional_arg_tool_successful": true,
+    "no_kwargs_binding_errors": true
+  },
+  "result": "pass",
+  "notes": [
+    "wire-level stdio probe remains environment-limited in sandbox (anyio import mismatch during subprocess bootstrap)"
+  ]
+}

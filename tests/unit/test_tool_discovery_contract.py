@@ -1,6 +1,8 @@
 from telecom_browser_mcp.server.stdio_server import TOOL_NAMES
 
 EXPECTED_V02_TOOLS = {
+    "health",
+    "capabilities",
     "open_app",
     "login_agent",
     "wait_for_ready",

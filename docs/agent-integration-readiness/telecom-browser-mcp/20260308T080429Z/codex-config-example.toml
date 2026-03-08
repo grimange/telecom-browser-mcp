@@ -1,0 +1,11 @@
+# Example Codex MCP configuration for telecom-browser-mcp
+
+[mcp_servers.telecom-browser]
+command = "python"
+args = ["-m", "telecom_browser_mcp"]
+cwd = "/home/ramjf/python-projects/telecom-browser-mcp"
+
+[mcp_servers.telecom-browser.env]
+TELECOM_BROWSER_MCP_TRANSPORT = "stdio"
+TELECOM_BROWSER_MCP_DEFAULT_ADAPTER = "generic_sipjs"
+TELECOM_BROWSER_MCP_ARTIFACT_ROOT = "docs/audit/telecom-browser-mcp"

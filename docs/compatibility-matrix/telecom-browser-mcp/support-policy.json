@@ -1,0 +1,30 @@
+{
+  "project": "telecom-browser-mcp",
+  "policy_version": "2026-03-08.v1",
+  "runtime_policy": {
+    "authoritative_required": true,
+    "allowed_runtime_classes": [
+      "authoritative_host",
+      "container_runtime"
+    ],
+    "rejected_runtime_classes": [
+      "sandbox_runtime",
+      "restricted_runtime",
+      "unknown_environment",
+      "wsl_runtime"
+    ],
+    "container_requires_browser_capability": true
+  },
+  "transport_policy": {
+    "allowed_modes": [
+      "stdio"
+    ],
+    "default_mode": "stdio"
+  },
+  "browser_policy": {
+    "allowed_execution_modes": [
+      "playwright_headless_chromium"
+    ],
+    "require_launch_probe": true
+  }
+}
