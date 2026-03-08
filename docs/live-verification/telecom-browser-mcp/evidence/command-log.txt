@@ -1,3 +1,0 @@
-generated_at=2026-03-08T07:47:09Z
-.venv/bin/python scripts/run_mcp_handshake_probe.py --timeout-seconds 20.0 --step-timeout-seconds 8.0
-.venv/bin/python - <<tool-checks>>

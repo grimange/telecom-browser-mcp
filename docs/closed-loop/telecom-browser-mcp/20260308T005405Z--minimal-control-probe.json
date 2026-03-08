@@ -1,7 +1,0 @@
-{
-  "probe": "minimal-known-good-stdio-initialize-and-discovery",
-  "ok": true,
-  "phase": "list_tools",
-  "elapsed_seconds": 0.506,
-  "tool_count": 0
-}
