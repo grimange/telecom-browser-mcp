@@ -11,6 +11,18 @@ from telecom_browser_mcp.server.app import TelecomBrowserApp
 from telecom_browser_mcp.server.stdio_server import TOOL_NAMES, _register_tools_with_fastmcp
 
 
+class _FakeFastMCP:
+    def __init__(self) -> None:
+        self.registered: dict[str, object] = {}
+
+    def tool(self, name: str | None = None, **_kwargs):
+        def _decorator(fn):
+            self.registered[name or fn.__name__] = fn
+            return fn
+
+        return _decorator
+
+
 def _build_server() -> tuple[TelecomBrowserApp, FastMCP]:
     app = TelecomBrowserApp()
     server = FastMCP("telecom-browser-mcp-contract-tests")
@@ -20,6 +32,26 @@ def _build_server() -> tuple[TelecomBrowserApp, FastMCP]:
 
 def _tool_map(tools) -> dict[str, object]:
     return {tool.name: tool for tool in tools}
+
+
+def test_registration_uses_direct_bound_handlers_without_kwargs_wrappers() -> None:
+    app = TelecomBrowserApp()
+    fake_server = _FakeFastMCP()
+    _register_tools_with_fastmcp(fake_server, app)
+
+    for tool_name in TOOL_NAMES:
+        registered_handler = fake_server.registered[tool_name]
+        expected_handler = getattr(app.orchestrator, tool_name)
+        assert inspect.ismethod(registered_handler)
+        assert registered_handler.__self__ is app.orchestrator
+        assert registered_handler.__func__ is expected_handler.__func__
+
+        signature = inspect.signature(registered_handler)
+        expected_signature = inspect.signature(expected_handler)
+        assert signature == expected_signature
+        assert all(
+            p.kind is not inspect.Parameter.VAR_KEYWORD for p in signature.parameters.values()
+        ), f"synthetic **kwargs wrapper detected for tool: {tool_name}"
 
 
 @pytest.mark.asyncio
@@ -69,6 +101,14 @@ async def test_all_tools_publish_strict_input_schema() -> None:
     tools = await server.list_tools()
     for tool in tools:
         assert tool.inputSchema.get("additionalProperties") is False
+
+
+@pytest.mark.asyncio
+async def test_no_tool_publishes_synthetic_kwargs_field() -> None:
+    _, server = _build_server()
+    tools = await server.list_tools()
+    for tool in tools:
+        assert "kwargs" not in tool.inputSchema.get("properties", {})
 
 
 @pytest.mark.asyncio

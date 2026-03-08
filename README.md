@@ -91,6 +91,13 @@ Recommended first-call smoke sequence after registration:
 2. Call `capabilities` with no arguments.
 3. Call `list_sessions` with no arguments.
 
+Tool input contract notes:
+
+- Public MCP tool inputs are explicit per-tool JSON object fields from tool signatures.
+- `kwargs` is not a public MCP input field and must not be sent as top-level tool input.
+- Internal `TelecomBrowserApp.dispatch(...)` calls should use native keyword maps (for example `dispatch("list_sessions")`, `dispatch("open_app", url=...)`).
+- The legacy `{ "kwargs": ... }` envelope is a deprecated internal compatibility path only and remains non-contractual.
+
 ## Environment
 
 Copy `.env.example` and adjust:

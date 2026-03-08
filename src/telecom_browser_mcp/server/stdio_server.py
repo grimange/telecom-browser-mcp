@@ -53,6 +53,9 @@ def _register_tools_with_fastmcp(server, app: TelecomBrowserApp) -> None:
         handler = getattr(app.orchestrator, tool_name, None)
         if handler is None:
             raise ValueError(f"missing orchestrator handler for tool: {tool_name}")
+        # Contract invariant: register bound orchestrator handlers directly.
+        # Do not reintroduce synthetic wrapper callables (for example `**kwargs`) because
+        # they can drift public schemas away from runtime signatures.
         server.tool(name=tool_name)(handler)
 
 
