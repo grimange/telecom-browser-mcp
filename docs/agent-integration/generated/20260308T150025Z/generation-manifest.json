@@ -1,0 +1,10 @@
+{
+  "extraction_strategy_used": "runtime_export",
+  "generated_at": "2026-03-08T15:00:25Z",
+  "generation_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+  "generation_status": "full",
+  "registry_hash": "fb07e1f5a7cb6a6492d759df0eb8758eb35e5d073b304031eb2dd5c8a2f4302e",
+  "template_version": "v0.3",
+  "unavailable_sources": [],
+  "unknown_field_count": 0
+}

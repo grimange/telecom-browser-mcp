@@ -1,0 +1,18 @@
+{
+  "agent_name": "codex-cli",
+  "config_provenance": [
+    "pyproject.toml:[project.scripts].telecom-browser-mcp-stdio",
+    "docs/verification/multi-client-compatibility/telecom-browser-mcp/20260308T144214Z/01-client-target-definition.md"
+  ],
+  "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+  "last_verified_timestamp": "2026-03-08T15:27:57Z",
+  "runtime_evidence_references": [
+    "/home/ramjf/python-projects/telecom-browser-mcp/docs/agent-integration/generated/20260308T152757Z/runtime-evidence.json"
+  ],
+  "source_failures": [],
+  "unsupported_claims": [
+    "fully compatible",
+    "production ready",
+    "successfully tested for this specific client"
+  ]
+}

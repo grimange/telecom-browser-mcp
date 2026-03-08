@@ -1,0 +1,65 @@
+{
+  "patterns": [
+    {
+      "agent_name": "codex-cli",
+      "configuration_snippet_template": "```json\n{\n  \"mcpServers\": {\n    \"telecom-browser-mcp\": {\n      \"command\": \"telecom-browser-mcp-stdio\",\n      \"args\": [],\n      \"env\": {\n        \"TELECOM_BROWSER_MCP_DOCGEN\": \"1\"\n      }\n    }\n  }\n}\n```",
+      "integration_surface": "stdio",
+      "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+      "last_verified_timestamp": "2026-03-08T15:27:57Z",
+      "runtime_verification_status": "unverified_integration_pattern",
+      "syntax_provenance": [
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-stdio",
+        "docs/verification/multi-client-compatibility/telecom-browser-mcp/20260308T144214Z/01-client-target-definition.md"
+      ]
+    },
+    {
+      "agent_name": "claude-desktop",
+      "configuration_snippet_template": "```json\n{\n  \"mcpServers\": {\n    \"telecom-browser-mcp\": {\n      \"command\": \"telecom-browser-mcp-stdio\",\n      \"args\": [],\n      \"env\": {\n        \"TELECOM_BROWSER_MCP_DOCGEN\": \"1\"\n      }\n    }\n  }\n}\n```",
+      "integration_surface": "stdio",
+      "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+      "last_verified_timestamp": "2026-03-08T15:27:57Z",
+      "runtime_verification_status": "unverified_integration_pattern",
+      "syntax_provenance": [
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-stdio",
+        "docs/verification/multi-client-compatibility/telecom-browser-mcp/20260308T144214Z/01-client-target-definition.md"
+      ]
+    },
+    {
+      "agent_name": "openai-agents",
+      "configuration_snippet_template": "```python\n# Requires an MCP client bridge in your runtime.\n# Use stdio for local runs or streamable HTTP for remote service deployment.\nMCP_SERVER = {\n    \"name\": \"telecom-browser-mcp\",\n    \"transport\": \"stdio\",\n    \"command\": [\"telecom-browser-mcp-stdio\"],\n    \"env\": {\"TELECOM_BROWSER_MCP_DOCGEN\": \"1\"},\n}\n```",
+      "integration_surface": "stdio or streamable-http",
+      "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+      "last_verified_timestamp": "2026-03-08T15:27:57Z",
+      "runtime_verification_status": "unverified_integration_pattern",
+      "syntax_provenance": [
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-stdio",
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-http",
+        "docs/verification/multi-client-compatibility/telecom-browser-mcp/20260308T144214Z/07-transport-and-configuration-assumptions.md"
+      ]
+    },
+    {
+      "agent_name": "langchain",
+      "configuration_snippet_template": "```python\n# Local launch example:\n# FASTMCP_HOST=127.0.0.1 FASTMCP_PORT=8000 telecom-browser-mcp-http\nMCP_ENDPOINT = \"http://127.0.0.1:8000/mcp\"\n```",
+      "integration_surface": "streamable-http",
+      "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+      "last_verified_timestamp": "2026-03-08T15:27:57Z",
+      "runtime_verification_status": "unverified_integration_pattern",
+      "syntax_provenance": [
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-http",
+        "src/telecom_browser_mcp/server/streamable_http_server.py"
+      ]
+    },
+    {
+      "agent_name": "crewai",
+      "configuration_snippet_template": "```python\n# Local launch example:\n# FASTMCP_HOST=127.0.0.1 FASTMCP_PORT=8000 telecom-browser-mcp-http\nMCP_ENDPOINT = \"http://127.0.0.1:8000/mcp\"\n```",
+      "integration_surface": "streamable-http",
+      "last_verified_commit": "1461704fbbb287768af1660b1ecc2c40820f98f2",
+      "last_verified_timestamp": "2026-03-08T15:27:57Z",
+      "runtime_verification_status": "unverified_integration_pattern",
+      "syntax_provenance": [
+        "pyproject.toml:[project.scripts].telecom-browser-mcp-http",
+        "src/telecom_browser_mcp/server/streamable_http_server.py"
+      ]
+    }
+  ]
+}

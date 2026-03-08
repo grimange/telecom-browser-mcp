@@ -1,0 +1,100 @@
+{
+  "answer_call": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "capabilities": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "verified"
+  },
+  "close_session": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "collect_debug_bundle": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "diagnose_answer_failure": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "get_active_session_snapshot": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "get_peer_connection_summary": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "health": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "verified"
+  },
+  "list_sessions": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "verified"
+  },
+  "login_agent": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "open_app": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "wait_for_incoming_call": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "wait_for_ready": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  },
+  "wait_for_registration": {
+    "description": "medium",
+    "extraction_confidence": "high",
+    "input_schema": "high",
+    "metadata_annotations": "medium",
+    "operational_confidence": "unverified"
+  }
+}

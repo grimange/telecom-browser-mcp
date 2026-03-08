@@ -1,0 +1,94 @@
+{
+  "agents": [
+    {
+      "agent_name": "codex-cli",
+      "configuration_pattern": "Status: unverified integration pattern",
+      "integration_surface": "stdio",
+      "known_caveats": [
+        "runtime verification not executed by this pipeline",
+        "host browser prerequisites may block telecom flows"
+      ],
+      "last_verified_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+      "last_verified_timestamp": "2026-03-08T15:00:25Z",
+      "runtime_evidence_source": "none",
+      "runtime_verified": false,
+      "syntax_evidence_source": "templates/agent-integration/*.md.j2",
+      "unsupported_claims": [
+        "end-to-end runtime compatibility"
+      ],
+      "verification_scope": "documentation-only"
+    },
+    {
+      "agent_name": "claude-desktop",
+      "configuration_pattern": "Status: unverified integration pattern",
+      "integration_surface": "stdio",
+      "known_caveats": [
+        "runtime verification not executed by this pipeline",
+        "host browser prerequisites may block telecom flows"
+      ],
+      "last_verified_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+      "last_verified_timestamp": "2026-03-08T15:00:25Z",
+      "runtime_evidence_source": "none",
+      "runtime_verified": false,
+      "syntax_evidence_source": "templates/agent-integration/*.md.j2",
+      "unsupported_claims": [
+        "end-to-end runtime compatibility"
+      ],
+      "verification_scope": "documentation-only"
+    },
+    {
+      "agent_name": "openai-agents",
+      "configuration_pattern": "Status: unverified integration pattern",
+      "integration_surface": "stdio or streamable-http",
+      "known_caveats": [
+        "runtime verification not executed by this pipeline",
+        "host browser prerequisites may block telecom flows"
+      ],
+      "last_verified_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+      "last_verified_timestamp": "2026-03-08T15:00:25Z",
+      "runtime_evidence_source": "none",
+      "runtime_verified": false,
+      "syntax_evidence_source": "templates/agent-integration/*.md.j2",
+      "unsupported_claims": [
+        "end-to-end runtime compatibility"
+      ],
+      "verification_scope": "documentation-only"
+    },
+    {
+      "agent_name": "langchain",
+      "configuration_pattern": "Status: unverified integration pattern",
+      "integration_surface": "streamable-http",
+      "known_caveats": [
+        "runtime verification not executed by this pipeline",
+        "host browser prerequisites may block telecom flows"
+      ],
+      "last_verified_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+      "last_verified_timestamp": "2026-03-08T15:00:25Z",
+      "runtime_evidence_source": "none",
+      "runtime_verified": false,
+      "syntax_evidence_source": "templates/agent-integration/*.md.j2",
+      "unsupported_claims": [
+        "end-to-end runtime compatibility"
+      ],
+      "verification_scope": "documentation-only"
+    },
+    {
+      "agent_name": "crewai",
+      "configuration_pattern": "Status: unverified integration pattern",
+      "integration_surface": "streamable-http",
+      "known_caveats": [
+        "runtime verification not executed by this pipeline",
+        "host browser prerequisites may block telecom flows"
+      ],
+      "last_verified_commit": "e74a071253a7de718e7a28dfc352f2c57f91fd39",
+      "last_verified_timestamp": "2026-03-08T15:00:25Z",
+      "runtime_evidence_source": "none",
+      "runtime_verified": false,
+      "syntax_evidence_source": "templates/agent-integration/*.md.j2",
+      "unsupported_claims": [
+        "end-to-end runtime compatibility"
+      ],
+      "verification_scope": "documentation-only"
+    }
+  ]
+}

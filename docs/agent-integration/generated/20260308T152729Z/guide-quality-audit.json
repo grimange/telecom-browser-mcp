@@ -1,0 +1,41 @@
+{
+  "failed_guides": [],
+  "guide_results": {
+    "claude-desktop.md": {
+      "failures": [],
+      "missing_sections": [],
+      "pass": true,
+      "section_count": 10,
+      "word_count": 334
+    },
+    "codex-cli.md": {
+      "failures": [],
+      "missing_sections": [],
+      "pass": true,
+      "section_count": 10,
+      "word_count": 334
+    },
+    "crewai.md": {
+      "failures": [],
+      "missing_sections": [],
+      "pass": true,
+      "section_count": 10,
+      "word_count": 327
+    },
+    "langchain.md": {
+      "failures": [],
+      "missing_sections": [],
+      "pass": true,
+      "section_count": 10,
+      "word_count": 327
+    },
+    "openai-agents.md": {
+      "failures": [],
+      "missing_sections": [],
+      "pass": true,
+      "section_count": 10,
+      "word_count": 356
+    }
+  },
+  "overall_pass": true
+}

@@ -1,0 +1,35 @@
+{
+  "captured_at": "2026-03-08T15:27:57Z",
+  "evidence": [
+    {
+      "source": "pyproject.toml + server entrypoint modules",
+      "status": "available_from_static_evidence",
+      "type": "server_startup_contract"
+    },
+    {
+      "source": "scripts/docs/export_mcp_registry.py",
+      "status": "available_from_registry_export",
+      "type": "tool_discovery"
+    },
+    {
+      "classification": "unverified_runtime",
+      "reason": "No live MCP transport run executed by this doc generation pipeline.",
+      "status": "not_captured_in_this_run",
+      "type": "tools_call_transcript"
+    },
+    {
+      "notes": "Host-required tests define validated and failure branches; execution can be skipped in constrained environments.",
+      "source": "tests/e2e/test_fake_dialer_harness.py",
+      "status": "evidence_from_test_sources",
+      "type": "host_required_workflow_tests"
+    },
+    {
+      "source": [
+        "tests/integration/test_stdio_smoke.py",
+        "tests/integration/test_http_transport_smoke.py"
+      ],
+      "status": "evidence_from_test_sources",
+      "type": "transport_smoke_tests"
+    }
+  ]
+}
