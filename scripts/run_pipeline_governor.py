@@ -21,6 +21,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--drift-dir", default="docs/drift-detection/telecom-browser-mcp")
     parser.add_argument("--investigations-dir", default="docs/investigations/runtime-transport")
     parser.add_argument("--release-hardening-dir", default="docs/release-hardening/telecom-browser-mcp")
+    parser.add_argument("--live-verification-dir", default="docs/live-verification/telecom-browser-mcp")
     parser.add_argument("--output-dir", default="docs/pipeline-governor/telecom-browser-mcp")
     return parser.parse_args()
 
@@ -37,6 +38,7 @@ def main() -> int:
         drift_dir=Path(args.drift_dir),
         investigations_dir=Path(args.investigations_dir),
         release_hardening_dir=Path(args.release_hardening_dir),
+        live_verification_dir=Path(args.live_verification_dir),
         output_dir=Path(args.output_dir),
     )
     sys.stderr.write(json.dumps(result, indent=2) + "\n")

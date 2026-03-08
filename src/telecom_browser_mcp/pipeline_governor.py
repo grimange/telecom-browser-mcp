@@ -54,6 +54,7 @@ class PipelineVerdictCollector:
         drift_dir: Path,
         investigations_dir: Path,
         release_hardening_dir: Path,
+        live_verification_dir: Path,
     ) -> None:
         self.closed_loop_dir = closed_loop_dir
         self.stability_dir = stability_dir
@@ -62,6 +63,7 @@ class PipelineVerdictCollector:
         self.drift_dir = drift_dir
         self.investigations_dir = investigations_dir
         self.release_hardening_dir = release_hardening_dir
+        self.live_verification_dir = live_verification_dir
 
     def collect(self) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -99,6 +101,13 @@ class PipelineVerdictCollector:
                 "release_block_reason": [],
                 "release_hardening_required": True,
                 "missing_artifacts": [],
+                "source_paths": {},
+            },
+            "live_verification": {
+                "available": False,
+                "reason": "live verification artifacts not found",
+                "live_verification_verdict": "live_verification_not_available",
+                "blocking_reasons": [],
                 "source_paths": {},
             },
             "meta": {
@@ -293,6 +302,33 @@ class PipelineVerdictCollector:
                 },
             }
 
+        live_verdict_path = self.live_verification_dir / "live-verification-verdict.json"
+        live_results_path = self.live_verification_dir / "live-check-results.json"
+        live_summary_path = self.live_verification_dir / "live-verification-summary.json"
+        live_files = {
+            "live_verification_verdict": live_verdict_path,
+            "live_check_results": live_results_path,
+            "live_verification_summary": live_summary_path,
+        }
+        existing_live_files = {key: path for key, path in live_files.items() if path.exists()}
+        if existing_live_files:
+            verdict_payload = _load_json(live_verdict_path) if live_verdict_path.exists() else {}
+            verdict_name = _normalize_text(verdict_payload.get("verdict"))
+            if not verdict_name:
+                verdict_name = "live_verification_incomplete"
+
+            blocking_reasons: list[str] = []
+            for reason in verdict_payload.get("blocking_reasons", []):
+                if isinstance(reason, str) and reason:
+                    blocking_reasons.append(reason)
+
+            payload["live_verification"] = {
+                "available": True,
+                "live_verification_verdict": verdict_name,
+                "blocking_reasons": blocking_reasons,
+                "source_paths": {key: str(path) for key, path in existing_live_files.items()},
+            }
+
         return payload
 
 
@@ -435,6 +471,31 @@ class NextActionPlanner:
                     "reason": "global verdict is blocked; limit scope until blocker cleared",
                 }
             )
+        if global_verdict == "blocked_by_live_verification":
+            blocked_actions.append(
+                {
+                    "pipeline": "release_progression",
+                    "reason": "live verification gate failed",
+                }
+            )
+            actions.append(
+                {
+                    "pipeline": "remediate_live_verification_blockers",
+                    "reason": "repair live verification blockers before release progression",
+                }
+            )
+            actions.append(
+                {
+                    "pipeline": "controlled_live_verification_recheck",
+                    "reason": "re-run live verification after remediation",
+                }
+            )
+            actions.append(
+                {
+                    "pipeline": "pipeline_governor",
+                    "reason": "re-evaluate global state after live verification refresh",
+                }
+            )
         release_hardening = collected.get("release_hardening", {})
         if global_verdict in {"blocked_by_release_hardening", "release_hardening_incomplete"}:
             blocked_actions.append(
@@ -479,6 +540,8 @@ class NextActionPlanner:
 
 class GovernorStateManager:
     def determine_state(self, *, collected: dict[str, Any], global_verdict: str) -> str:
+        if global_verdict == "blocked_by_live_verification":
+            return "live-verification-blocked"
         if global_verdict == "blocked_by_release_hardening":
             return "release-blocked"
         if global_verdict == "release_hardening_incomplete":
@@ -506,6 +569,7 @@ class PipelineGovernor:
         guardrails = collected["guardrails"]
         drift = collected["drift"]
         release_hardening = collected.get("release_hardening", {})
+        live_verification = collected.get("live_verification", {})
 
         runtime_class = _normalize_text(closed_loop.get("runtime_transport_classification"))
         runtime_block = "ambiguous" in runtime_class or "unresolved" in runtime_class
@@ -545,6 +609,10 @@ class PipelineGovernor:
             elif release_hardening_verdict in {"release_hardening_incomplete", "release_hardening_not_available", ""}:
                 global_verdict = "release_hardening_incomplete"
 
+        live_verification_verdict = _normalize_text(live_verification.get("live_verification_verdict"))
+        if global_verdict == "release_candidate" and live_verification_verdict == "blocked":
+            global_verdict = "blocked_by_live_verification"
+
         recommended_action = {
             "safe_meaningful_improvement": "continue cycle",
             "partial_improvement_continue": "narrow remediation scope",
@@ -553,11 +621,18 @@ class PipelineGovernor:
             "blocked_by_stability": "pause and analyze regression",
             "blocked_by_drift_constraints": "restrict subsystem changes",
             "blocked_by_release_hardening": "remediate_release_blockers",
+            "blocked_by_live_verification": "remediate_live_verification_blockers",
             "release_hardening_incomplete": "complete_release_hardening_checks",
             "pause_for_human_review": "stop automated progression",
             "architecture_cleanup_required": "run architecture cleanup",
             "release_candidate": "run release hardening checks",
         }[global_verdict]
+
+        release_track_allowed = bool(release_hardening.get("release_track_allowed", False))
+        release_block_reason = list(release_hardening.get("release_block_reason", []))
+        if global_verdict == "blocked_by_live_verification":
+            release_track_allowed = False
+            release_block_reason.append("live_verification_blocked")
 
         return {
             "generated_at": _now_iso(),
@@ -572,9 +647,10 @@ class PipelineGovernor:
                 "release_hardening_available": bool(release_hardening.get("available")),
             },
             "release_hardening_verdict": release_hardening_verdict or "release_hardening_not_available",
-            "release_track_allowed": bool(release_hardening.get("release_track_allowed", False)),
-            "release_block_reason": release_hardening.get("release_block_reason", []),
+            "release_track_allowed": release_track_allowed,
+            "release_block_reason": release_block_reason,
             "release_hardening_required": bool(release_hardening.get("release_hardening_required", True)),
+            "live_verification_verdict": live_verification_verdict or "live_verification_not_available",
         }
 
 
@@ -587,8 +663,15 @@ def run_pipeline_governor(
     drift_dir: Path,
     investigations_dir: Path,
     release_hardening_dir: Path | None = None,
+    live_verification_dir: Path | None = None,
     output_dir: Path,
 ) -> dict[str, Any]:
+    resolved_release_hardening_dir = release_hardening_dir or Path("docs/release-hardening/telecom-browser-mcp")
+    resolved_live_verification_dir = (
+        live_verification_dir
+        if live_verification_dir is not None
+        else resolved_release_hardening_dir.parent / "live-verification"
+    )
     collector = PipelineVerdictCollector(
         closed_loop_dir=closed_loop_dir,
         stability_dir=stability_dir,
@@ -596,8 +679,8 @@ def run_pipeline_governor(
         learning_dir=learning_dir,
         drift_dir=drift_dir,
         investigations_dir=investigations_dir,
-        release_hardening_dir=release_hardening_dir
-        or Path("docs/release-hardening/telecom-browser-mcp"),
+        release_hardening_dir=resolved_release_hardening_dir,
+        live_verification_dir=resolved_live_verification_dir,
     )
     collected = collector.collect()
     conflicts = ConflictResolutionEngine().resolve(collected=collected)
@@ -686,6 +769,7 @@ def _write_markdown(
             f"- guardrails_postcheck: {collected.get('guardrails', {}).get('postcheck_verdict', 'unknown')}",
             f"- drift_severity: {collected.get('drift', {}).get('drift_severity', 'unknown')}",
             f"- release_hardening_verdict: {verdict.get('release_hardening_verdict', 'release_hardening_not_available')}",
+            f"- live_verification_verdict: {verdict.get('live_verification_verdict', 'live_verification_not_available')}",
             f"- release_track_allowed: {verdict.get('release_track_allowed', False)}",
         ],
         "pipeline-conflict-resolution.md": [

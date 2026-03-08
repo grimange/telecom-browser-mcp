@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import os
 from typing import Any
 
 from telecom_browser_mcp.browser.diagnostics import BrowserDiagnosticsCollector
@@ -22,6 +23,11 @@ class PlaywrightDriver:
         self.headless = headless
         self.browser_type = browser_type
         self.runtime = PlaywrightRuntime()
+        raw_args = os.environ.get(
+            "TELECOM_BROWSER_MCP_CHROMIUM_ARGS",
+            "--no-sandbox,--disable-setuid-sandbox,--disable-dev-shm-usage",
+        )
+        self.launch_args = [arg.strip() for arg in raw_args.split(",") if arg.strip()]
 
     async def open(self, url: str) -> dict[str, str | bool]:
         try:
@@ -35,7 +41,11 @@ class PlaywrightDriver:
 
         self.runtime.playwright = await async_playwright().start()
         browser_launcher = getattr(self.runtime.playwright, self.browser_type)
-        self.runtime.browser = await browser_launcher.launch(headless=self.headless)
+        self.runtime.browser = await browser_launcher.launch(
+            headless=self.headless,
+            args=self.launch_args,
+            chromium_sandbox=False,
+        )
         self.runtime.context = await self.runtime.browser.new_context()
         self.runtime.page = await self.runtime.context.new_page()
         self.runtime.diagnostics = BrowserDiagnosticsCollector(trace_enabled=True)

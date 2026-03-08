@@ -1,4 +1,4 @@
 # Global Cycle Verdict
 
-- verdict: release_candidate
-- action: run release hardening checks
+- verdict: blocked_by_live_verification
+- action: remediate_live_verification_blockers

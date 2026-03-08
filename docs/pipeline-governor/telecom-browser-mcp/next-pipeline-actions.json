@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-08T03:15:16.869678+00:00",
+  "generated_at": "2026-03-08T05:23:55.551539+00:00",
   "allowed_actions": [
     {
       "pipeline": "closed_loop_validation_remediation",
@@ -22,9 +22,26 @@
       "reason": "eligible by cadence/release policy"
     },
     {
-      "pipeline": "release_progression",
-      "reason": "release hardening indicates release track is allowed"
+      "pipeline": "remediate_live_verification_blockers",
+      "reason": "repair live verification blockers before release progression"
+    },
+    {
+      "pipeline": "controlled_live_verification_recheck",
+      "reason": "re-run live verification after remediation"
+    },
+    {
+      "pipeline": "pipeline_governor",
+      "reason": "re-evaluate global state after live verification refresh"
     }
   ],
-  "blocked_actions": []
+  "blocked_actions": [
+    {
+      "pipeline": "expansionary_remediation",
+      "reason": "global verdict is blocked; limit scope until blocker cleared"
+    },
+    {
+      "pipeline": "release_progression",
+      "reason": "live verification gate failed"
+    }
+  ]
 }
