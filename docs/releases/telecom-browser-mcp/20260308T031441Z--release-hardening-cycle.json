@@ -1,0 +1,15 @@
+{
+  "timestamp": "20260308T031441Z",
+  "generated_at": "2026-03-08T03:15:14Z",
+  "project": "telecom-browser-mcp",
+  "release_hardening_verdict": "release_ready",
+  "inputs": {
+    "guardrails_postcheck": "docs/architecture-guardrails/telecom-browser-mcp/20260308T031149Z--postcheck-verdict.json",
+    "stability_verdict": "docs/stability-governor/telecom-browser-mcp/20260308T031149Z--governor-verdict.json",
+    "transport_probe": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T031410Z/logs/mcp-interop-probe.json"
+  },
+  "warnings": [
+    "configuration_error_ergonomics",
+    "docs_troubleshooting_depth"
+  ]
+}

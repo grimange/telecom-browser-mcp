@@ -1,0 +1,30 @@
+{
+  "generated_at": "2026-03-08T03:15:16.869678+00:00",
+  "allowed_actions": [
+    {
+      "pipeline": "closed_loop_validation_remediation",
+      "reason": "architecture pre-check satisfied"
+    },
+    {
+      "pipeline": "closed_loop_stability_governor",
+      "reason": "closed-loop cycle available for stability evaluation"
+    },
+    {
+      "pipeline": "architecture_guardrails_postcheck",
+      "reason": "post-remediation guardrail validation required"
+    },
+    {
+      "pipeline": "cross_cycle_learning_engine",
+      "reason": "eligible by cycle cadence threshold (>=2 cycles)"
+    },
+    {
+      "pipeline": "system_drift_detector",
+      "reason": "eligible by cadence/release policy"
+    },
+    {
+      "pipeline": "release_progression",
+      "reason": "release hardening indicates release track is allowed"
+    }
+  ],
+  "blocked_actions": []
+}

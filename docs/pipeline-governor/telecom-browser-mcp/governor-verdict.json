@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-03-08T03:15:16.869666+00:00",
+  "global_verdict": "release_candidate",
+  "recommended_global_action": "run release hardening checks",
+  "conflict_count": 0,
+  "inputs_used": {
+    "closed_loop_available": true,
+    "stability_available": true,
+    "guardrails_available": true,
+    "drift_available": true,
+    "release_hardening_available": true
+  },
+  "release_hardening_verdict": "release_ready",
+  "release_track_allowed": true,
+  "release_block_reason": [],
+  "release_hardening_required": false
+}
