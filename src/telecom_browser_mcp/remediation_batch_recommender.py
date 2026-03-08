@@ -7,6 +7,9 @@ from typing import Any
 def recommend_batches(ranked_signatures: list[dict[str, Any]]) -> list[dict[str, Any]]:
     grouped: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
     for item in ranked_signatures:
+        if int(item.get("occurrence_count", 0)) <= 0:
+            # Ignore template-only signatures that have not been observed in evidence.
+            continue
         grouped[(item["priority_bucket"], item["domain"])].append(item)
 
     batches: list[dict[str, Any]] = []

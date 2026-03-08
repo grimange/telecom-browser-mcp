@@ -10,7 +10,7 @@ def test_dom_replacement_after_selector_resolution_is_normalized() -> None:
 
     result = stale_selector_attempt(driver=driver, injector=injector)
 
-    assert result["ok"] is False
-    assert result["error_code"] == "UI_SELECTOR_FAILURE"
+    assert result["ok"] is True
     assert result["observed"]["selector_stale"] is True
-    assert result["retryable"] is True
+    assert result["recovery_attempted"] is True
+    assert result["recovery_strategy"] == "refresh_selector_handle_and_retry"

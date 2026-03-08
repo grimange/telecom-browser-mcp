@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-03-07T22:52:20.762731+00:00",
+  "entries": [
+    {
+      "signature_id": "SIG-002",
+      "signature_name": "javascript_runtime_error",
+      "category": "javascript_runtime_error",
+      "classification": "known_but_regressing",
+      "current_occurrence_count": 3,
+      "previous_occurrence_count": 0,
+      "delta": 3
+    }
+  ]
+}

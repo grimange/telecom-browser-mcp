@@ -1,0 +1,18 @@
+{
+  "call_id": null,
+  "direction": null,
+  "state": "idle",
+  "ui_state": null,
+  "store_state": null,
+  "sip_session_state": null,
+  "remote_number": null,
+  "local_number": null,
+  "started_at": null,
+  "connected_at": null,
+  "ended_at": null,
+  "is_muted": null,
+  "is_on_hold": null,
+  "correlation_keys": {},
+  "available": true,
+  "reason": null
+}

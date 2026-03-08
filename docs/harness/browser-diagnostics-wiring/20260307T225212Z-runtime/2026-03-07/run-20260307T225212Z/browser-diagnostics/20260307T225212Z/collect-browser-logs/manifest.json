@@ -1,0 +1,36 @@
+{
+  "run_id": "run-20260307T225212Z",
+  "scenario_id": "collect-browser-logs",
+  "session_id": "sess_ddf784631e",
+  "page_id": null,
+  "context_id": null,
+  "fault_type": "manual_collection",
+  "injection_point": "collect_browser_logs",
+  "status": "ok",
+  "failure_classification": "diagnostic",
+  "timestamps": {
+    "generated_at": "2026-03-07T22:52:12.989092+00:00",
+    "timing_markers": [
+      {
+        "name": "bundle_write_started",
+        "timestamp": "2026-03-07T22:52:12.988592+00:00"
+      }
+    ]
+  },
+  "artifact_paths": {
+    "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/manifest.json",
+    "summary": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/summary.md",
+    "console": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/console.json",
+    "network": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/network.json",
+    "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/page-errors.json",
+    "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/collect-browser-logs/metadata.json",
+    "screenshot": null,
+    "dom_snapshot": null,
+    "trace": null
+  },
+  "collection_gaps": [
+    "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+    "dom snapshot skipped: page unavailable",
+    "screenshot skipped: page unavailable"
+  ]
+}

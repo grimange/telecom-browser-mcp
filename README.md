@@ -115,6 +115,18 @@ Telecom UI failure signature library build:
 .venv/bin/python scripts/build_failure_signature_library.py
 ```
 
+Closed-loop pipeline governor orchestration:
+
+```bash
+.venv/bin/python scripts/run_pipeline_governor.py
+```
+
+Architecture guardrails pre/post governance checks:
+
+```bash
+.venv/bin/python scripts/run_architecture_guardrails.py
+```
+
 ## Artifact layout
 
 Debug bundles are written under:

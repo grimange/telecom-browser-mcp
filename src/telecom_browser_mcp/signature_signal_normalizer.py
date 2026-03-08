@@ -12,6 +12,8 @@ def normalize_failure_signal(
     collection_gaps = list(contract_row.get("collection_gaps", []))
     supporting_signals = list(contract_row.get("supporting_signals", []))
     bundle_health = str(contract_row.get("bundle_health", "missing"))
+    bundle_status = str(contract_row.get("bundle_status", "unknown"))
+    bundle_failure_classification = str(contract_row.get("bundle_failure_classification", "unknown"))
     manifest_artifacts = (bundle_manifest or {}).get("artifact_paths", {})
 
     normalized = {
@@ -24,16 +26,30 @@ def normalize_failure_signal(
         "page_closed_before_action": root_cause == "page_closed_or_detached",
         "context_closed_during_wait": root_cause == "context_invalidated",
         "browser_unavailable": root_cause == "browser_unavailable",
-        "js_error_present": "page_errors" in supporting_signals,
-        "request_failed_present": "network" in supporting_signals,
+        "js_error_present": (
+            "page_errors" in supporting_signals
+            and not (bundle_failure_classification == "diagnostic" and bundle_status == "ok")
+        ),
+        "request_failed_present": (
+            "network" in supporting_signals
+            and not (bundle_failure_classification == "diagnostic" and bundle_status == "ok")
+        ),
         "trace_available": bool(manifest_artifacts.get("trace")),
         "screenshot_missing_due_to_page_death": (
             not manifest_artifacts.get("screenshot")
             and any("page" in gap and "closed" in gap for gap in collection_gaps)
         ),
         "cleanup_succeeded": False,
-        "diagnostics_gap_present": bool(collection_gaps) or bundle_health in {"missing", "malformed"},
+        "diagnostics_gap_present": (
+            bundle_health in {"missing", "malformed"}
+            or (
+                bool(collection_gaps)
+                and not (bundle_failure_classification == "diagnostic" and bundle_status == "ok")
+            )
+        ),
         "bundle_health": bundle_health,
+        "bundle_status": bundle_status,
+        "bundle_failure_classification": bundle_failure_classification,
         "collection_gaps": collection_gaps,
         "signals_present": supporting_signals,
     }

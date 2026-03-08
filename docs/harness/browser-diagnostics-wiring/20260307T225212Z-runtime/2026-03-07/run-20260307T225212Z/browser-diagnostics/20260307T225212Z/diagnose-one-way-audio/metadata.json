@@ -1,0 +1,15 @@
+{
+  "run_id": "run-20260307T225212Z",
+  "session_id": "sess_ddf784631e",
+  "scenario_id": "diagnose-one-way-audio",
+  "fault_type": "diagnostic_observation",
+  "injection_point": "diagnose_one_way_audio",
+  "status": "ok",
+  "failure_classification": "diagnostic",
+  "attempted_selector": null,
+  "context_id": null,
+  "page_id": null,
+  "page_url": null,
+  "page_title": null,
+  "captured_at": "2026-03-07T22:52:12.987769+00:00"
+}

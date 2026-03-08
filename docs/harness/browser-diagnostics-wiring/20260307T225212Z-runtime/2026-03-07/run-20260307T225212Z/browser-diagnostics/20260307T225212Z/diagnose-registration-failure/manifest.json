@@ -1,0 +1,36 @@
+{
+  "run_id": "run-20260307T225212Z",
+  "scenario_id": "diagnose-registration-failure",
+  "session_id": "sess_ddf784631e",
+  "page_id": null,
+  "context_id": null,
+  "fault_type": "diagnostic_observation",
+  "injection_point": "diagnose_registration_failure",
+  "status": "ok",
+  "failure_classification": "diagnostic",
+  "timestamps": {
+    "generated_at": "2026-03-07T22:52:12.984472+00:00",
+    "timing_markers": [
+      {
+        "name": "bundle_write_started",
+        "timestamp": "2026-03-07T22:52:12.983995+00:00"
+      }
+    ]
+  },
+  "artifact_paths": {
+    "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/manifest.json",
+    "summary": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/summary.md",
+    "console": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/console.json",
+    "network": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/network.json",
+    "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/page-errors.json",
+    "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225212Z-runtime/2026-03-07/run-20260307T225212Z/browser-diagnostics/20260307T225212Z/diagnose-registration-failure/metadata.json",
+    "screenshot": null,
+    "dom_snapshot": null,
+    "trace": null
+  },
+  "collection_gaps": [
+    "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+    "dom snapshot skipped: page unavailable",
+    "screenshot skipped: page unavailable"
+  ]
+}

@@ -1,6 +1,6 @@
-from telecom_browser_mcp.adapters.generic_sipjs import GenericSipJsAdapter
+from telecom_browser_mcp.adapters.base import SipJsScaffoldAdapter
 
 
-class GenericJsSipAdapter(GenericSipJsAdapter):
+class GenericJsSipAdapter(SipJsScaffoldAdapter):
     name = "generic_jssip"
     version = "0.1.0"

@@ -1,0 +1,119 @@
+{
+  "generated_at": "2026-03-07T22:56:57.370281+00:00",
+  "ranked_signatures": [
+    {
+      "signature_id": "SIG-002",
+      "signature_name": "selector_stale_after_dom_refresh",
+      "category": "selector_stale_after_dom_refresh",
+      "domain": "product_logic",
+      "novelty_classification": "known_signature",
+      "score": 52,
+      "priority_bucket": "P2",
+      "components": {
+        "severity": 30,
+        "novelty": 5,
+        "frequency": 0,
+        "contract_impact": 0,
+        "trend": 0,
+        "confidence": 2,
+        "diagnostics_quality": 5,
+        "domain": 10
+      },
+      "occurrence_count": 0,
+      "contract_count": 0,
+      "contract_ids": []
+    },
+    {
+      "signature_id": "SIG-003",
+      "signature_name": "page_closed_before_action",
+      "category": "page_closed_before_action",
+      "domain": "product_logic",
+      "novelty_classification": "known_signature",
+      "score": 50,
+      "priority_bucket": "P2",
+      "components": {
+        "severity": 28,
+        "novelty": 5,
+        "frequency": 0,
+        "contract_impact": 0,
+        "trend": 0,
+        "confidence": 2,
+        "diagnostics_quality": 5,
+        "domain": 10
+      },
+      "occurrence_count": 0,
+      "contract_count": 0,
+      "contract_ids": []
+    },
+    {
+      "signature_id": "SIG-004",
+      "signature_name": "javascript_runtime_error",
+      "category": "javascript_runtime_error",
+      "domain": "product_logic",
+      "novelty_classification": "known_signature",
+      "score": 46,
+      "priority_bucket": "P2",
+      "components": {
+        "severity": 24,
+        "novelty": 5,
+        "frequency": 0,
+        "contract_impact": 0,
+        "trend": 0,
+        "confidence": 2,
+        "diagnostics_quality": 5,
+        "domain": 10
+      },
+      "occurrence_count": 0,
+      "contract_count": 0,
+      "contract_ids": []
+    },
+    {
+      "signature_id": "SIG-005",
+      "signature_name": "network_failure_ui_timeout",
+      "category": "network_failure_ui_timeout",
+      "domain": "product_logic",
+      "novelty_classification": "known_signature",
+      "score": 44,
+      "priority_bucket": "P2",
+      "components": {
+        "severity": 22,
+        "novelty": 5,
+        "frequency": 0,
+        "contract_impact": 0,
+        "trend": 0,
+        "confidence": 2,
+        "diagnostics_quality": 5,
+        "domain": 10
+      },
+      "occurrence_count": 0,
+      "contract_count": 0,
+      "contract_ids": []
+    },
+    {
+      "signature_id": "SIG-001",
+      "signature_name": "diagnostics_bundle_missing_on_failure",
+      "category": "diagnostics_bundle_missing_on_failure",
+      "domain": "diagnostics_pipeline",
+      "novelty_classification": "known_signature",
+      "score": 29,
+      "priority_bucket": "P3",
+      "components": {
+        "severity": 12,
+        "novelty": 5,
+        "frequency": 6,
+        "contract_impact": 6,
+        "trend": 0,
+        "confidence": 2,
+        "diagnostics_quality": -5,
+        "domain": 3
+      },
+      "occurrence_count": 3,
+      "contract_count": 3,
+      "contract_ids": [
+        "TOOL::answer_call",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_registration"
+      ]
+    }
+  ]
+}

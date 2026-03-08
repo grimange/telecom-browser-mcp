@@ -7,6 +7,7 @@ ROOT_CAUSE_ORDER = [
     "page_closed_or_detached",
     "context_invalidated",
     "browser_unavailable",
+    "diagnostic_observation",
     "javascript_runtime_error",
     "network_failure",
     "cleanup_failure",
@@ -21,6 +22,10 @@ def classify_root_cause(bundle: BundleIngestion) -> str:
     scenario = bundle.scenario_id
     if bundle.bundle_health in {"missing", "malformed"}:
         return "diagnostics_collection_gap"
+    if bundle.status == "ok" and bundle.failure_classification in {"none", "diagnostic"}:
+        return "diagnostic_observation"
+    if bundle.failure_classification == "diagnostic" and bundle.status == "ok":
+        return "diagnostic_observation"
     if "stale_selector" in scenario:
         return "selector_stale_or_dom_drift"
     if "page_detach" in scenario or "page_closed" in scenario:

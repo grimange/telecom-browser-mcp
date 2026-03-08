@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-03-07T22:48:11.159612+00:00",
+  "total_signatures": 5,
+  "total_occurrences": 28,
+  "top_categories": [
+    "diagnostics_bundle_missing_on_failure",
+    "javascript_runtime_error",
+    "selector_stale_after_dom_refresh"
+  ],
+  "high_confidence_signatures": 2,
+  "product_signatures": 4,
+  "environment_signatures": 0,
+  "diagnostics_gap_signatures": 1
+}

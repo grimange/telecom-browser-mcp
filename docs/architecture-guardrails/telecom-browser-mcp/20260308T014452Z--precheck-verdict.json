@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-03-08T01:44:52.347862+00:00",
+  "mode": "precheck",
+  "verdict": "guardrails_warn",
+  "violation_count": 2,
+  "boundary_violation_flags": [],
+  "dependency_violation_flags": [],
+  "contract_layer_violation_flags": [],
+  "violations": [
+    {
+      "rule_id": "ADAPTER-ISOLATION-001",
+      "severity": "moderate",
+      "src_module": "telecom_browser_mcp.adapters.apntalk",
+      "dst_module": "telecom_browser_mcp.adapters.generic_sipjs",
+      "message": "concrete adapter depends on another concrete adapter"
+    },
+    {
+      "rule_id": "ADAPTER-ISOLATION-001",
+      "severity": "moderate",
+      "src_module": "telecom_browser_mcp.adapters.generic_jssip",
+      "dst_module": "telecom_browser_mcp.adapters.generic_sipjs",
+      "message": "concrete adapter depends on another concrete adapter"
+    }
+  ]
+}

@@ -109,6 +109,24 @@ class ToolOrchestrator:
         }
         return artifacts, result["collection_gaps"], data
 
+    async def _collect_failure_browser_diagnostics_bundle(
+        self,
+        *,
+        session,
+        scenario_id: str,
+        injection_point: str,
+        failure_classification: str,
+        fault_type: str = "tool_failure",
+    ) -> tuple[list[dict], list[str], dict]:
+        return await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id=scenario_id,
+            fault_type=fault_type,
+            injection_point=injection_point,
+            status="failed",
+            failure_classification=failure_classification,
+        )
+
     async def open_app(self, url: str, adapter_name: str | None = None) -> dict:
         start = self._timer()
         name = adapter_name or self.settings.default_adapter
@@ -134,6 +152,13 @@ class ToolOrchestrator:
         result = await adapter.open_app(session, url)
 
         if not result.get("ok"):
+            diag_artifacts, diag_warnings, diag_data = await self._collect_failure_browser_diagnostics_bundle(
+                session=session,
+                scenario_id="open-app-failure",
+                injection_point="open_app",
+                failure_classification="environment_or_launch_failure",
+                fault_type="environment_failure",
+            )
             return failure_response(
                 message=str(result.get("message", "failed to open app")),
                 error_code=ErrorCode.ENVIRONMENT_LIMITATION,
@@ -147,6 +172,9 @@ class ToolOrchestrator:
                 next_recommended_tools=["open_app"],
                 duration_ms=self._duration_ms(start),
                 session_id=session.session_id,
+                artifacts=diag_artifacts,
+                warnings=diag_warnings,
+                data={"browser_diagnostics": diag_data},
             )
 
         return success_response(
@@ -230,6 +258,12 @@ class ToolOrchestrator:
         adapter = self._adapter_for_session[session_id]
         result = await adapter.wait_for_ready(session, timeout_ms=timeout_ms)
         if not result.get("ok"):
+            diag_artifacts, diag_warnings, diag_data = await self._collect_failure_browser_diagnostics_bundle(
+                session=session,
+                scenario_id="wait-for-ready-failure",
+                injection_point="wait_for_ready",
+                failure_classification="application_not_ready",
+            )
             return failure_response(
                 message=result.get("message", "app not ready"),
                 error_code=ErrorCode.APP_NOT_READY,
@@ -239,6 +273,9 @@ class ToolOrchestrator:
                 next_recommended_tools=["reset_session", "open_app"],
                 duration_ms=self._duration_ms(start),
                 session_id=session_id,
+                artifacts=diag_artifacts,
+                warnings=diag_warnings,
+                data={"browser_diagnostics": diag_data},
             )
         return success_response(
             message=result.get("message", "app ready"),
@@ -278,6 +315,12 @@ class ToolOrchestrator:
                 registration=snapshot.model_dump(mode="json"),
                 environment={"generated_by": "wait_for_registration"},
             )
+            diag_artifacts, diag_warnings, diag_data = await self._collect_failure_browser_diagnostics_bundle(
+                session=session,
+                scenario_id="wait-for-registration-failure",
+                injection_point="wait_for_registration",
+                failure_classification="registration_timeout",
+            )
             return failure_response(
                 message="registration did not reach expected state",
                 error_code=ErrorCode.REGISTRATION_TIMEOUT,
@@ -287,9 +330,12 @@ class ToolOrchestrator:
                 next_recommended_tools=diagnosis.next_recommended_tools,
                 duration_ms=self._duration_ms(start),
                 session_id=session_id,
-                artifacts=artifacts,
-                warnings=[snapshot.reason] if snapshot.reason else [],
-                data={"observed": snapshot.model_dump(mode="json")},
+                artifacts=artifacts + diag_artifacts,
+                warnings=([snapshot.reason] if snapshot.reason else []) + diag_warnings,
+                data={
+                    "observed": snapshot.model_dump(mode="json"),
+                    "browser_diagnostics": diag_data,
+                },
             )
         return success_response(
             message="registration reached expected state",
@@ -315,6 +361,12 @@ class ToolOrchestrator:
                 active_session=snapshot.model_dump(mode="json"),
                 environment={"generated_by": "wait_for_incoming_call"},
             )
+            diag_artifacts, diag_warnings, diag_data = await self._collect_failure_browser_diagnostics_bundle(
+                session=session,
+                scenario_id="wait-for-incoming-call-failure",
+                injection_point="wait_for_incoming_call",
+                failure_classification="incoming_call_timeout",
+            )
             return failure_response(
                 message="incoming call not detected",
                 error_code=ErrorCode.INCOMING_CALL_TIMEOUT,
@@ -324,9 +376,12 @@ class ToolOrchestrator:
                 next_recommended_tools=diagnosis.next_recommended_tools,
                 duration_ms=self._duration_ms(start),
                 session_id=session_id,
-                artifacts=artifacts,
-                warnings=[snapshot.reason] if snapshot.reason else [],
-                data={"observed": snapshot.model_dump(mode="json")},
+                artifacts=artifacts + diag_artifacts,
+                warnings=([snapshot.reason] if snapshot.reason else []) + diag_warnings,
+                data={
+                    "observed": snapshot.model_dump(mode="json"),
+                    "browser_diagnostics": diag_data,
+                },
             )
         return success_response(
             message="incoming call detected",
@@ -352,6 +407,12 @@ class ToolOrchestrator:
                 webrtc=webrtc_snapshot.model_dump(mode="json"),
                 environment={"generated_by": "answer_call", "timestamp": self._now()},
             )
+            diag_artifacts, diag_warnings, diag_data = await self._collect_failure_browser_diagnostics_bundle(
+                session=session,
+                scenario_id="answer-call-failure",
+                injection_point="answer_call",
+                failure_classification="answer_flow_failed",
+            )
             write_markdown_report(
                 session,
                 {
@@ -369,11 +430,12 @@ class ToolOrchestrator:
                 next_recommended_tools=diagnosis.next_recommended_tools,
                 duration_ms=self._duration_ms(start),
                 session_id=session_id,
-                artifacts=artifacts,
-                warnings=[call_snapshot.reason] if call_snapshot.reason else [],
+                artifacts=artifacts + diag_artifacts,
+                warnings=([call_snapshot.reason] if call_snapshot.reason else []) + diag_warnings,
                 data={
                     "call": call_snapshot.model_dump(mode="json"),
                     "webrtc": webrtc_snapshot.model_dump(mode="json"),
+                    "browser_diagnostics": diag_data,
                 },
             )
 
@@ -633,11 +695,21 @@ class ToolOrchestrator:
         adapter = self._adapter_for_session[session_id]
         snapshot = await adapter.get_registration_snapshot(session)
         diagnosis = diagnose_registration(snapshot)
+        diag_artifacts, diag_warnings, diag_data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="diagnose-registration-failure",
+            fault_type="diagnostic_observation",
+            injection_point="diagnose_registration_failure",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         return success_response(
             message="registration diagnosis",
             duration_ms=self._duration_ms(start),
             session_id=session_id,
-            data=diagnosis.model_dump(mode="json"),
+            data={**diagnosis.model_dump(mode="json"), "browser_diagnostics": diag_data},
+            artifacts=diag_artifacts,
+            warnings=diag_warnings,
         )
 
     async def diagnose_incoming_call_failure(self, session_id: str) -> dict:
@@ -648,11 +720,21 @@ class ToolOrchestrator:
         adapter = self._adapter_for_session[session_id]
         snapshot = await adapter.wait_for_incoming_call(session, timeout_ms=1)
         diagnosis = diagnose_incoming_call(snapshot)
+        diag_artifacts, diag_warnings, diag_data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="diagnose-incoming-call-failure",
+            fault_type="diagnostic_observation",
+            injection_point="diagnose_incoming_call_failure",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         return success_response(
             message="incoming call diagnosis",
             duration_ms=self._duration_ms(start),
             session_id=session_id,
-            data=diagnosis.model_dump(mode="json"),
+            data={**diagnosis.model_dump(mode="json"), "browser_diagnostics": diag_data},
+            artifacts=diag_artifacts,
+            warnings=diag_warnings,
         )
 
     async def diagnose_answer_failure(self, session_id: str) -> dict:
@@ -664,11 +746,21 @@ class ToolOrchestrator:
         call_snapshot = await adapter.get_active_session_snapshot(session)
         webrtc_snapshot = await adapter.get_peer_connection_summary(session)
         diagnosis = diagnose_answer_flow(call_snapshot, webrtc_snapshot)
+        diag_artifacts, diag_warnings, diag_data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="diagnose-answer-failure",
+            fault_type="diagnostic_observation",
+            injection_point="diagnose_answer_failure",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         return success_response(
             message="answer flow diagnosis",
             duration_ms=self._duration_ms(start),
             session_id=session_id,
-            data=diagnosis.model_dump(mode="json"),
+            data={**diagnosis.model_dump(mode="json"), "browser_diagnostics": diag_data},
+            artifacts=diag_artifacts,
+            warnings=diag_warnings,
         )
 
     async def diagnose_one_way_audio(self, session_id: str) -> dict:
@@ -691,6 +783,14 @@ class ToolOrchestrator:
         else:
             likely_causes.append("no one-way-audio signal detected from available browser metrics")
 
+        diag_artifacts, diag_warnings, diag_data = await self._collect_browser_diagnostics_bundle(
+            session=session,
+            scenario_id="diagnose-one-way-audio",
+            fault_type="diagnostic_observation",
+            injection_point="diagnose_one_way_audio",
+            status="ok",
+            failure_classification="diagnostic",
+        )
         return success_response(
             message="one-way-audio diagnosis",
             duration_ms=self._duration_ms(start),
@@ -707,6 +807,8 @@ class ToolOrchestrator:
                     "get_webrtc_stats",
                     "collect_debug_bundle",
                 ],
+                "browser_diagnostics": diag_data,
             },
-            warnings=[snapshot.reason] if snapshot.reason else [],
+            artifacts=diag_artifacts,
+            warnings=([snapshot.reason] if snapshot.reason else []) + diag_warnings,
         )

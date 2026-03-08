@@ -1,0 +1,10 @@
+{
+  "probe": "minimal-known-good-stdio-initialize-and-discovery",
+  "ok": false,
+  "phase": "initialize",
+  "elapsed_seconds": 10.116,
+  "error_type": "ExceptionGroup",
+  "error": "unhandled errors in a TaskGroup (1 sub-exception)",
+  "classification": "environment_blocked_stdio_no_response",
+  "failure": "initialize_timeout_no_server_response"
+}

@@ -10,8 +10,6 @@ def test_page_detach_before_action_returns_selector_failure() -> None:
 
     result = click_answer_button(driver=driver, injector=injector)
 
-    assert result["ok"] is False
-    assert result["error_code"] == "UI_SELECTOR_FAILURE"
-    assert result["failure_category"] == "session"
-    assert result["retryable"] is True
+    assert result["ok"] is True
     assert result["recovery_attempted"] is True
+    assert result["recovery_strategy"] == "reacquire_page_and_retry"

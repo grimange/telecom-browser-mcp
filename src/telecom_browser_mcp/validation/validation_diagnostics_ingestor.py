@@ -95,7 +95,7 @@ def ingest_manifest(manifest_path: str | Path) -> BundleIngestion:
         ("trace", "trace"),
     ):
         value = artifact_paths.get(field)
-        if value and Path(value).exists():
+        if value and _signal_has_content(signal, Path(value)):
             signals_present.append(signal)
         else:
             signals_missing.append(signal)
@@ -123,6 +123,22 @@ def ingest_manifest(manifest_path: str | Path) -> BundleIngestion:
         failure_classification=str(manifest.get("failure_classification", "unknown")),
         status=str(manifest.get("status", "unknown")),
     )
+
+
+def _signal_has_content(signal: str, path: Path) -> bool:
+    if not path.exists():
+        return False
+    if signal in {"screenshot", "dom_snapshot", "trace"}:
+        return path.stat().st_size > 0
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    if signal in {"console", "page_errors"}:
+        return bool(payload.get("events"))
+    if signal == "network":
+        return bool(payload.get("requests") or payload.get("responses") or payload.get("failures"))
+    return True
 
 
 def ingest_lifecycle_results(results_path: str | Path) -> list[BundleIngestion]:

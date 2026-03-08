@@ -1,0 +1,809 @@
+{
+  "generated_at": "2026-03-07T22:56:10.938135+00:00",
+  "artifact_root": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime",
+  "results": {
+    "tool_observations": [
+      {
+        "scenario_id": "tool-open-app-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-open-app-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-open-app-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-login-agent-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-login-agent-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-login-agent-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-wait-for-ready-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-wait-for-ready-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-wait-for-ready-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-list-sessions-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-list-sessions-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-list-sessions-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-close-session-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-close-session-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-close-session-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-reset-session-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-reset-session-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-reset-session-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-registration-status-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-registration-status-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-registration-status-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-assert-registered-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-assert-registered-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-assert-registered-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-hangup-call-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-hangup-call-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-hangup-call-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-ui-call-state-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-ui-call-state-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-ui-call-state-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-active-session-snapshot-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-active-session-snapshot-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-active-session-snapshot-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-store-snapshot-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-store-snapshot-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-store-snapshot-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-peer-connection-summary-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-peer-connection-summary-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-peer-connection-summary-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-webrtc-stats-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-webrtc-stats-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-webrtc-stats-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-get-environment-snapshot-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-environment-snapshot-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-get-environment-snapshot-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "tool-screenshot-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-screenshot-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/tool-screenshot-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      },
+      {
+        "scenario_id": "protocol-initialize-discovery-observation",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/protocol-initialize-discovery-observation/manifest.json",
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/protocol-initialize-discovery-observation",
+        "warnings_count": "3",
+        "artifacts_count": "2"
+      }
+    ],
+    "wait_for_registration_failure": {
+      "ok": false,
+      "timestamp": "2026-03-07T22:56:10.925809Z",
+      "duration_ms": 2,
+      "session_id": "sess_408c0d1332",
+      "artifacts": [
+        {
+          "type": "runtime",
+          "label": "registration",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/registration.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.924490Z"
+        },
+        {
+          "type": "runtime",
+          "label": "environment",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/environment.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.924602Z"
+        },
+        {
+          "type": "manifest",
+          "label": "summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.924742Z"
+        },
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.925781Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.925783Z"
+        }
+      ],
+      "warnings": [
+        "registration delayed scenario enabled",
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "observed": {
+          "state": "connecting",
+          "ui_badge_state": null,
+          "sip_stack_state": null,
+          "ws_connected": null,
+          "registered": false,
+          "last_error": null,
+          "source_confidence": 0.95,
+          "available": true,
+          "reason": "registration delayed scenario enabled",
+          "source": "harness",
+          "timestamp": "2026-03-07T22:56:10.923236Z"
+        },
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-registration-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "registration did not reach expected state",
+      "error_code": "REGISTRATION_TIMEOUT",
+      "failure_category": "registration",
+      "retryable": true,
+      "likely_causes": [
+        "registration pending or runtime hook unavailable"
+      ],
+      "next_recommended_tools": [
+        "get_registration_status",
+        "collect_debug_bundle"
+      ]
+    },
+    "wait_for_incoming_call_failure": {
+      "ok": false,
+      "timestamp": "2026-03-07T22:56:10.927790Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "runtime",
+          "label": "active-session",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/active-session.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.926262Z"
+        },
+        {
+          "type": "runtime",
+          "label": "environment",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/environment.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.926433Z"
+        },
+        {
+          "type": "manifest",
+          "label": "summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.926597Z"
+        },
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.927759Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.927760Z"
+        }
+      ],
+      "warnings": [
+        "incoming absent scenario enabled",
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "observed": {
+          "call_id": null,
+          "direction": null,
+          "state": "idle",
+          "ui_state": null,
+          "store_state": null,
+          "sip_session_state": null,
+          "remote_number": null,
+          "local_number": null,
+          "started_at": null,
+          "connected_at": null,
+          "ended_at": null,
+          "is_muted": null,
+          "is_on_hold": null,
+          "correlation_keys": {},
+          "available": false,
+          "reason": "incoming absent scenario enabled"
+        },
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/wait-for-incoming-call-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "incoming call not detected",
+      "error_code": "INCOMING_CALL_TIMEOUT",
+      "failure_category": "call_control",
+      "retryable": true,
+      "likely_causes": [
+        "incoming absent scenario enabled",
+        "no inbound call signal reached the frontend"
+      ],
+      "next_recommended_tools": [
+        "collect_debug_bundle",
+        "get_active_session_snapshot"
+      ]
+    },
+    "answer_call_failure": {
+      "ok": false,
+      "timestamp": "2026-03-07T22:56:10.929807Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "runtime",
+          "label": "active-session",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/active-session.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.928099Z"
+        },
+        {
+          "type": "runtime",
+          "label": "webrtc-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/webrtc-summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.928222Z"
+        },
+        {
+          "type": "runtime",
+          "label": "environment",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/environment.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.928376Z"
+        },
+        {
+          "type": "manifest",
+          "label": "summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.928558Z"
+        },
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.929670Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.929673Z"
+        }
+      ],
+      "warnings": [
+        "answer timeout scenario enabled",
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "call": {
+          "call_id": "harness-call-001",
+          "direction": "incoming",
+          "state": "failed",
+          "ui_state": null,
+          "store_state": null,
+          "sip_session_state": null,
+          "remote_number": null,
+          "local_number": null,
+          "started_at": null,
+          "connected_at": null,
+          "ended_at": null,
+          "is_muted": null,
+          "is_on_hold": null,
+          "correlation_keys": {},
+          "available": false,
+          "reason": "answer timeout scenario enabled"
+        },
+        "webrtc": {
+          "peer_connection_present": false,
+          "connection_state": "missing",
+          "ice_connection_state": null,
+          "signaling_state": null,
+          "local_audio_tracks": 0,
+          "remote_audio_tracks": 0,
+          "candidate_pair_state": null,
+          "inbound_rtp_audio_packets": null,
+          "outbound_rtp_audio_packets": null,
+          "available": true,
+          "reason": null,
+          "source": "harness",
+          "timestamp": "2026-03-07T22:56:10.927857Z"
+        },
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/answer-call-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "answer did not become connected",
+      "error_code": "ANSWER_FLOW_FAILED",
+      "failure_category": "call_control",
+      "retryable": true,
+      "likely_causes": [
+        "frontend answer transition did not complete",
+        "peer connection was not created after answer"
+      ],
+      "next_recommended_tools": [
+        "get_active_session_snapshot",
+        "get_peer_connection_summary",
+        "collect_debug_bundle"
+      ]
+    },
+    "diagnose_registration_failure": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.930990Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.930968Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.930970Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "summary": "Registration did not satisfy expected state",
+        "findings": [
+          "registration_state=registered"
+        ],
+        "likely_causes": [],
+        "severity": "medium",
+        "failure_category": "registration",
+        "retryable": false,
+        "artifacts": [],
+        "next_recommended_tools": [
+          "get_registration_status",
+          "collect_debug_bundle"
+        ],
+        "timestamp": "2026-03-07T22:56:10.929867Z",
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-registration-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "registration diagnosis"
+    },
+    "diagnose_incoming_call_failure": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.932035Z",
+      "duration_ms": 0,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.932015Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.932017Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "summary": "Incoming call detection did not reach ringing state",
+        "findings": [
+          "call_state=idle"
+        ],
+        "likely_causes": [
+          "incoming absent scenario enabled",
+          "no inbound call signal reached the frontend"
+        ],
+        "severity": "high",
+        "failure_category": "call_control",
+        "retryable": true,
+        "artifacts": [],
+        "next_recommended_tools": [
+          "collect_debug_bundle",
+          "get_active_session_snapshot"
+        ],
+        "timestamp": "2026-03-07T22:56:10.931036Z",
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-incoming-call-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "incoming call diagnosis"
+    },
+    "diagnose_answer_failure": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.933756Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.933737Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.933739Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "summary": "Answer flow did not converge to connected media state",
+        "findings": [
+          "call_state=idle",
+          "peer_connection_present=False"
+        ],
+        "likely_causes": [
+          "frontend answer transition did not complete",
+          "peer connection was not created after answer"
+        ],
+        "severity": "high",
+        "failure_category": "call_control",
+        "retryable": true,
+        "artifacts": [],
+        "next_recommended_tools": [
+          "get_active_session_snapshot",
+          "get_peer_connection_summary",
+          "collect_debug_bundle"
+        ],
+        "timestamp": "2026-03-07T22:56:10.932081Z",
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-answer-failure/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "answer flow diagnosis"
+    },
+    "diagnose_one_way_audio": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.934878Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.934868Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.934869Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "summary": "One-way audio diagnosis from browser-side media signals",
+        "severity": "high",
+        "likely_causes": [
+          "peer connection is missing; media path was not established"
+        ],
+        "peer_connection_present": false,
+        "remote_audio_tracks": 0,
+        "inbound_rtp_audio_packets": null,
+        "next_recommended_tools": [
+          "get_peer_connection_summary",
+          "get_webrtc_stats",
+          "collect_debug_bundle"
+        ],
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/diagnose-one-way-audio/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "one-way-audio diagnosis"
+    },
+    "collect_browser_logs": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.935909Z",
+      "duration_ms": 1,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.935901Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.935903Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs",
+        "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/manifest.json",
+        "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/summary.md",
+        "artifact_paths": {
+          "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/manifest.json",
+          "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/summary.md",
+          "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/console.json",
+          "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/network.json",
+          "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/page-errors.json",
+          "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-browser-logs/metadata.json",
+          "screenshot": null,
+          "dom_snapshot": null,
+          "trace": null
+        }
+      },
+      "message": "browser logs collected"
+    },
+    "collect_debug_bundle": {
+      "ok": true,
+      "timestamp": "2026-03-07T22:56:10.938087Z",
+      "duration_ms": 2,
+      "session_id": "sess_aa6b10db6d",
+      "artifacts": [
+        {
+          "type": "runtime",
+          "label": "registration",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/registration.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.936199Z"
+        },
+        {
+          "type": "runtime",
+          "label": "active-session",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/active-session.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.936383Z"
+        },
+        {
+          "type": "runtime",
+          "label": "webrtc-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/webrtc-summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.936543Z"
+        },
+        {
+          "type": "runtime",
+          "label": "environment",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/runtime/environment.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.936704Z"
+        },
+        {
+          "type": "manifest",
+          "label": "summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/summary.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.936876Z"
+        },
+        {
+          "type": "manifest",
+          "label": "browser-diagnostics-manifest",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/manifest.json",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.937937Z"
+        },
+        {
+          "type": "report",
+          "label": "browser-diagnostics-summary",
+          "path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/summary.md",
+          "redacted": true,
+          "created_at": "2026-03-07T22:56:10.937938Z"
+        }
+      ],
+      "warnings": [
+        "no active Playwright runtime bound to session; captured bundle with explicit gaps",
+        "dom snapshot skipped: page unavailable",
+        "screenshot skipped: page unavailable"
+      ],
+      "data": {
+        "artifacts_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z",
+        "report_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/report.md",
+        "browser_diagnostics": {
+          "bundle_dir": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle",
+          "manifest_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/manifest.json",
+          "summary_path": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/summary.md",
+          "artifact_paths": {
+            "manifest": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/manifest.json",
+            "summary": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/summary.md",
+            "console": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/console.json",
+            "network": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/network.json",
+            "page_errors": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/page-errors.json",
+            "metadata": "docs/harness/browser-diagnostics-wiring/20260307T225610Z-runtime/2026-03-07/run-20260307T225610Z/browser-diagnostics/20260307T225610Z/collect-debug-bundle/metadata.json",
+            "screenshot": null,
+            "dom_snapshot": null,
+            "trace": null
+          }
+        }
+      },
+      "message": "debug bundle collected"
+    }
+  }
+}

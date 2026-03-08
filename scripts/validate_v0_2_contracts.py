@@ -30,6 +30,11 @@ def _parse_args() -> argparse.Namespace:
         "--output-dir",
         default="docs/validation/telecom-browser-mcp-v0.2-diagnostics",
     )
+    parser.add_argument(
+        "--runtime-manifests-glob",
+        default="docs/harness/browser-diagnostics-wiring/*-runtime/**/browser-diagnostics/**/manifest.json",
+        help="Additional diagnostics manifests to ingest for tool-level mapping.",
+    )
     return parser.parse_args()
 
 
@@ -46,6 +51,11 @@ def _find_latest_lifecycle_results() -> Path:
     if not candidates:
         raise FileNotFoundError("no lifecycle diagnostics run outputs found")
     return candidates[-1]
+
+
+def _find_runtime_manifests(pattern: str) -> list[Path]:
+    # Use root-relative glob to allow deterministic inclusion of prior runtime diagnostics bundles.
+    return sorted(Path(".").glob(pattern))
 
 
 def _write_markdown(
@@ -146,6 +156,7 @@ def _write_markdown(
 
 def main() -> int:
     from telecom_browser_mcp.validation.validation_diagnostics_ingestor import (
+        ingest_manifest,
         ingest_lifecycle_results,
     )
     from telecom_browser_mcp.validation.validation_report_enricher import enrich_validation
@@ -161,6 +172,13 @@ def main() -> int:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     ingested = ingest_lifecycle_results(lifecycle_results_path)
+    runtime_manifests = _find_runtime_manifests(args.runtime_manifests_glob)
+    existing_manifest_paths = {item.manifest_path for item in ingested}
+    for manifest_path in runtime_manifests:
+        manifest_str = str(manifest_path)
+        if manifest_str in existing_manifest_paths:
+            continue
+        ingested.append(ingest_manifest(manifest_path))
     contract_to_bundle_map, root_cause_summary, enriched = enrich_validation(
         contract_matrix_path=contract_matrix_path,
         validation_summary_path=validation_summary_path,

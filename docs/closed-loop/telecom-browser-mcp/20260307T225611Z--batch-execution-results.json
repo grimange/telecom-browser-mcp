@@ -1,0 +1,57 @@
+{
+  "selected_batches": [
+    {
+      "batch_id": "RB-001",
+      "priority_bucket": "P1",
+      "domain": "diagnostics_pipeline",
+      "target_signature_ids": [
+        "SIG-001"
+      ],
+      "impacted_contracts": [
+        "LIFECYCLE::crash_recovery",
+        "LIFECYCLE::stale_selector_recovery",
+        "PROTOCOL::initialize_and_discovery",
+        "TOOL::answer_call",
+        "TOOL::assert_registered",
+        "TOOL::close_session",
+        "TOOL::collect_browser_logs",
+        "TOOL::collect_debug_bundle",
+        "TOOL::diagnose_answer_failure",
+        "TOOL::diagnose_incoming_call_failure",
+        "TOOL::diagnose_one_way_audio",
+        "TOOL::diagnose_registration_failure",
+        "TOOL::get_active_session_snapshot",
+        "TOOL::get_environment_snapshot",
+        "TOOL::get_peer_connection_summary",
+        "TOOL::get_registration_status",
+        "TOOL::get_store_snapshot",
+        "TOOL::get_ui_call_state",
+        "TOOL::get_webrtc_stats",
+        "TOOL::hangup_call",
+        "TOOL::list_sessions",
+        "TOOL::login_agent",
+        "TOOL::open_app",
+        "TOOL::reset_session",
+        "TOOL::screenshot",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_ready",
+        "TOOL::wait_for_registration"
+      ],
+      "problem_statement": "Diagnostics gaps prevent strong root-cause evidence.",
+      "recommended_investigation_areas": [
+        "browser diagnostics collector",
+        "bundle manifest coverage",
+        "signal linkage"
+      ],
+      "signature_count": 1,
+      "max_signature_score": 57,
+      "selection_reason": "high priority non-environment failure with strong evidence"
+    }
+  ],
+  "deferred_batches": [],
+  "selection_rules": [
+    "prefer P0/P1",
+    "exclude environment_or_ci from first cycle selection",
+    "cap selected batches to small cycle limit"
+  ]
+}

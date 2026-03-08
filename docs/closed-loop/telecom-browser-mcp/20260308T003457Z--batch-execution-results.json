@@ -1,0 +1,21 @@
+{
+  "executed": false,
+  "selected_batches": [],
+  "excluded_batches": [
+    {
+      "batch_id": "RB-001",
+      "priority_bucket": "P3",
+      "domain": "diagnostics_pipeline",
+      "target_signature_ids": [
+        "SIG-001"
+      ],
+      "impacted_contracts": [
+        "TOOL::answer_call",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_registration"
+      ],
+      "excluded_reason": "transport triage classification environment_blocked_runtime_transport"
+    }
+  ],
+  "note": "No remediation executed in this cycle due to transport triage gate."
+}

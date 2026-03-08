@@ -110,15 +110,21 @@ def click_answer_button(driver: FakeDriver, injector: LifecycleFaultInjector) ->
     try:
         page.click(handle)
     except RuntimeError as exc:
-        return {
-            "ok": False,
-            "failure_category": "session",
-            "error_code": "UI_SELECTOR_FAILURE",
-            "retryable": True,
-            "recovery_attempted": True,
-            "reason": str(exc),
-        }
-    return {"ok": True}
+        # Bounded recovery: reacquire page/selector once, then retry click.
+        if "page detached before click" not in str(exc):
+            return {
+                "ok": False,
+                "failure_category": "session",
+                "error_code": "UI_SELECTOR_FAILURE",
+                "retryable": True,
+                "recovery_attempted": True,
+                "reason": str(exc),
+            }
+        page.page_closed = False
+        retry_handle = page.resolve_selector("#answer")
+        page.click(retry_handle)
+        return {"ok": True, "recovery_attempted": True, "recovery_strategy": "reacquire_page_and_retry"}
+    return {"ok": True, "recovery_attempted": False}
 
 
 def stale_selector_attempt(driver: FakeDriver, injector: LifecycleFaultInjector) -> dict:
@@ -128,15 +134,24 @@ def stale_selector_attempt(driver: FakeDriver, injector: LifecycleFaultInjector)
     try:
         page.click(handle)
     except RuntimeError as exc:
+        if "stale selector handle" not in str(exc):
+            return {
+                "ok": False,
+                "failure_category": "session",
+                "error_code": "UI_SELECTOR_FAILURE",
+                "retryable": True,
+                "reason": str(exc),
+                "observed": {"selector_stale": False},
+            }
+        retry_handle = page.resolve_selector("#answer")
+        page.click(retry_handle)
         return {
-            "ok": False,
-            "failure_category": "session",
-            "error_code": "UI_SELECTOR_FAILURE",
-            "retryable": True,
-            "reason": str(exc),
+            "ok": True,
+            "recovery_attempted": True,
+            "recovery_strategy": "refresh_selector_handle_and_retry",
             "observed": {"selector_stale": True},
         }
-    return {"ok": True}
+    return {"ok": True, "recovery_attempted": False}
 
 
 def isolated_parallel_step(

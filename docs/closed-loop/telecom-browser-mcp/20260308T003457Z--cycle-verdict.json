@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-03-08T00:34:57.668111+00:00",
+  "cycle_state": "halted",
+  "verdict": "halted",
+  "classification": "environment_blocked_runtime_transport",
+  "remediation_gate": "blocked",
+  "next_action": "route_to_runtime_environment_investigation_and_repeat_outside_sandbox",
+  "rationale": [
+    "Project stdio interop probe timed out during initialize with no server stderr output.",
+    "Minimal known-good control server reproduced the same initialize timeout in this runner.",
+    "Pipeline key rule requires halting remediation batch execution for runtime transport blockers."
+  ]
+}

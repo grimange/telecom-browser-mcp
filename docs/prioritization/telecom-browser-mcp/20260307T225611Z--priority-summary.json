@@ -1,0 +1,17 @@
+{
+  "generated_at": "2026-03-07T22:56:11.105138+00:00",
+  "total_failures_analyzed": 28,
+  "total_signatures": 5,
+  "new_vs_known": {
+    "known_signature": 5
+  },
+  "priority_bucket_counts": {
+    "P1": 1,
+    "P2": 4
+  },
+  "domain_distribution": {
+    "diagnostics_pipeline": 1,
+    "product_logic": 4
+  },
+  "recommended_batch_count": 1
+}

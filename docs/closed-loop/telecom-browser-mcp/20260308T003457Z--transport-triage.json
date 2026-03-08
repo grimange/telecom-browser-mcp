@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-03-08T00:34:57.668114+00:00",
+  "transport_triage_run_id": "20260308T002819Z",
+  "project_probe": {
+    "artifact": "docs/validation/telecom-browser-mcp-v0.2/artifacts/20260308T002819Z/logs/mcp-interop-probe.json",
+    "ok": false,
+    "classification": "environment_blocked_stdio_no_response",
+    "failure": "initialize_timeout_no_server_response",
+    "phase": "initialize",
+    "reason": "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+  },
+  "minimal_control_probe": {
+    "artifact": "docs/closed-loop/telecom-browser-mcp/20260308T002953Z--minimal-control-probe.json",
+    "ok": false,
+    "classification": "environment_blocked_stdio_no_response",
+    "failure": "initialize_timeout_no_server_response",
+    "phase": "initialize",
+    "reason": "unhandled errors in a TaskGroup (1 sub-exception)"
+  },
+  "differential_result": "same_failure_on_project_and_control",
+  "classification": "environment_blocked_runtime_transport",
+  "decision": {
+    "open_remediation_batches": false,
+    "exclude_from_defect_prioritization": true,
+    "require_outside_sandbox_validation": true
+  }
+}

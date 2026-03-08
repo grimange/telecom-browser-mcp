@@ -1,0 +1,37 @@
+{
+  "probe": "minimal-known-good-stdio-initialize-and-discovery",
+  "ok": false,
+  "phase": "initialize",
+  "elapsed_seconds": 12.121,
+  "error_type": "ExceptionGroup",
+  "error": "unhandled errors in a TaskGroup (1 sub-exception)",
+  "classification": "environment_blocked_stdio_no_response",
+  "failure": "initialize_timeout_no_server_response",
+  "reason": "ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+  "evidence": {
+    "stderr_log": "docs/closed-loop/telecom-browser-mcp/20260308T005208Z--minimal-control-probe-stderr.log",
+    "stderr_tail": "",
+    "traceback": [
+      "      |              ^^^^^^^^^^^^^^^^^^^^^^^^",
+      "      |   File \"/home/ramjf/python-projects/telecom-browser-mcp/.venv/lib/python3.12/site-packages/mcp/shared/session.py\", line 292, in send_request",
+      "      |     response_or_error = await response_stream_reader.receive()",
+      "      |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "      |   File \"/home/ramjf/python-projects/telecom-browser-mcp/.venv/lib/python3.12/site-packages/anyio/streams/memory.py\", line 125, in receive",
+      "      |     await receive_event.wait()",
+      "      |   File \"/home/ramjf/python-projects/telecom-browser-mcp/.venv/lib/python3.12/site-packages/anyio/_backends/_asyncio.py\", line 1789, in wait",
+      "      |     await self._event.wait()",
+      "      |   File \"/usr/lib/python3.12/asyncio/locks.py\", line 212, in wait",
+      "      |     await fut",
+      "      | asyncio.exceptions.CancelledError",
+      "      | ",
+      "      | The above exception was the direct cause of the following exception:",
+      "      | ",
+      "      | Traceback (most recent call last):",
+      "      |   File \"<stdin>\", line 23, in run",
+      "      |   File \"/usr/lib/python3.12/asyncio/timeouts.py\", line 115, in __aexit__",
+      "      |     raise TimeoutError from exc_val",
+      "      | TimeoutError",
+      "      +------------------------------------"
+    ]
+  }
+}

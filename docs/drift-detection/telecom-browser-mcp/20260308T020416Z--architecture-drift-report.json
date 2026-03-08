@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-03-08T02:04:16.928531+00:00",
+  "architecture_drift_score": 9.0,
+  "drift_severity": "low",
+  "blocked_subsystems": [],
+  "refactoring_recommendations": [
+    "maintain adapter isolation and avoid cross-layer imports",
+    "review reciprocal dependencies and remove unnecessary cycles"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "session_id": "sess_0b383c80b6",
+  "run_id": "run-20260307T225657Z",
+  "generated_at": "2026-03-07T22:56:57.174202+00:00",
+  "artifacts": [
+    {
+      "type": "runtime",
+      "label": "registration",
+      "path": "docs/harness/browser-diagnostics-wiring/20260307T225657Z-runtime/2026-03-07/run-20260307T225657Z/runtime/registration.json",
+      "redacted": true,
+      "created_at": "2026-03-07T22:56:57.173668Z"
+    },
+    {
+      "type": "runtime",
+      "label": "active-session",
+      "path": "docs/harness/browser-diagnostics-wiring/20260307T225657Z-runtime/2026-03-07/run-20260307T225657Z/runtime/active-session.json",
+      "redacted": true,
+      "created_at": "2026-03-07T22:56:57.173870Z"
+    },
+    {
+      "type": "runtime",
+      "label": "webrtc-summary",
+      "path": "docs/harness/browser-diagnostics-wiring/20260307T225657Z-runtime/2026-03-07/run-20260307T225657Z/runtime/webrtc-summary.json",
+      "redacted": true,
+      "created_at": "2026-03-07T22:56:57.174046Z"
+    },
+    {
+      "type": "runtime",
+      "label": "environment",
+      "path": "docs/harness/browser-diagnostics-wiring/20260307T225657Z-runtime/2026-03-07/run-20260307T225657Z/runtime/environment.json",
+      "redacted": true,
+      "created_at": "2026-03-07T22:56:57.174191Z"
+    }
+  ]
+}

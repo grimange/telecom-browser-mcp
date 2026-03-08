@@ -1,0 +1,115 @@
+{
+  "selected_batches": [
+    {
+      "batch_id": "RB-001",
+      "priority_bucket": "P0",
+      "domain": "product_logic",
+      "target_signature_ids": [
+        "SIG-004"
+      ],
+      "impacted_contracts": [],
+      "problem_statement": "Recurring product logic failures need focused remediation.",
+      "recommended_investigation_areas": [
+        "tools/orchestrator",
+        "adapter runtime state transitions",
+        "ui/action sequencing"
+      ],
+      "signature_count": 1,
+      "max_signature_score": 75,
+      "selection_reason": "high priority and product-likely with strong evidence"
+    },
+    {
+      "batch_id": "RB-003",
+      "priority_bucket": "P1",
+      "domain": "product_logic",
+      "target_signature_ids": [
+        "SIG-005",
+        "SIG-003"
+      ],
+      "impacted_contracts": [
+        "LIFECYCLE::stale_selector_recovery"
+      ],
+      "problem_statement": "Recurring product logic failures need focused remediation.",
+      "recommended_investigation_areas": [
+        "tools/orchestrator",
+        "adapter runtime state transitions",
+        "ui/action sequencing"
+      ],
+      "signature_count": 2,
+      "max_signature_score": 69,
+      "selection_reason": "high priority and product-likely with strong evidence"
+    }
+  ],
+  "deferred_batches": [
+    {
+      "batch_id": "RB-002",
+      "priority_bucket": "P1",
+      "domain": "diagnostics_pipeline",
+      "target_signature_ids": [
+        "SIG-001"
+      ],
+      "impacted_contracts": [
+        "PROTOCOL::initialize_and_discovery",
+        "TOOL::answer_call",
+        "TOOL::assert_registered",
+        "TOOL::close_session",
+        "TOOL::collect_browser_logs",
+        "TOOL::collect_debug_bundle",
+        "TOOL::diagnose_answer_failure",
+        "TOOL::diagnose_incoming_call_failure",
+        "TOOL::diagnose_one_way_audio",
+        "TOOL::diagnose_registration_failure",
+        "TOOL::get_active_session_snapshot",
+        "TOOL::get_environment_snapshot",
+        "TOOL::get_peer_connection_summary",
+        "TOOL::get_registration_status",
+        "TOOL::get_store_snapshot",
+        "TOOL::get_ui_call_state",
+        "TOOL::get_webrtc_stats",
+        "TOOL::hangup_call",
+        "TOOL::list_sessions",
+        "TOOL::login_agent",
+        "TOOL::open_app",
+        "TOOL::reset_session",
+        "TOOL::screenshot",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_ready",
+        "TOOL::wait_for_registration"
+      ],
+      "problem_statement": "Diagnostics gaps prevent strong root-cause evidence.",
+      "recommended_investigation_areas": [
+        "browser diagnostics collector",
+        "bundle manifest coverage",
+        "signal linkage"
+      ],
+      "signature_count": 1,
+      "max_signature_score": 65,
+      "defer_reason": "lower priority or out-of-scope for this small cycle"
+    },
+    {
+      "batch_id": "RB-004",
+      "priority_bucket": "P2",
+      "domain": "product_logic",
+      "target_signature_ids": [
+        "SIG-002"
+      ],
+      "impacted_contracts": [
+        "LIFECYCLE::crash_recovery"
+      ],
+      "problem_statement": "Recurring product logic failures need focused remediation.",
+      "recommended_investigation_areas": [
+        "tools/orchestrator",
+        "adapter runtime state transitions",
+        "ui/action sequencing"
+      ],
+      "signature_count": 1,
+      "max_signature_score": 53,
+      "defer_reason": "lower priority or out-of-scope for this small cycle"
+    }
+  ],
+  "selection_rules": [
+    "prefer P0/P1",
+    "exclude environment_or_ci from first cycle selection",
+    "cap selected batches to small cycle limit"
+  ]
+}

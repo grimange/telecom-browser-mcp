@@ -1,0 +1,32 @@
+{
+  "selected_batches": [],
+  "deferred_batches": [
+    {
+      "batch_id": "RB-001",
+      "priority_bucket": "P3",
+      "domain": "diagnostics_pipeline",
+      "target_signature_ids": [
+        "SIG-001"
+      ],
+      "impacted_contracts": [
+        "TOOL::answer_call",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_registration"
+      ],
+      "problem_statement": "Diagnostics gaps prevent strong root-cause evidence.",
+      "recommended_investigation_areas": [
+        "browser diagnostics collector",
+        "bundle manifest coverage",
+        "signal linkage"
+      ],
+      "signature_count": 1,
+      "max_signature_score": 29,
+      "defer_reason": "lower priority or out-of-scope for this small cycle"
+    }
+  ],
+  "selection_rules": [
+    "prefer P0/P1",
+    "exclude environment_or_ci from first cycle selection",
+    "cap selected batches to small cycle limit"
+  ]
+}

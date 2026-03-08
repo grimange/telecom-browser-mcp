@@ -27,3 +27,20 @@ def test_signal_normalization_malformed_gap() -> None:
     }
     normalized = normalize_failure_signal(row, bundle_manifest=None)
     assert normalized["diagnostics_gap_present"] is True
+
+
+def test_signal_normalization_ignores_diagnostic_observation_error_signals() -> None:
+    row = {
+        "contract_id": "TOOL::collect_browser_logs",
+        "validation_status": "PASS",
+        "primary_root_cause": "diagnostic_observation",
+        "collection_gaps": [],
+        "supporting_signals": ["page_errors", "network"],
+        "bundle_health": "partial",
+        "bundle_status": "ok",
+        "bundle_failure_classification": "diagnostic",
+    }
+    normalized = normalize_failure_signal(row, bundle_manifest={"artifact_paths": {}})
+    assert normalized["js_error_present"] is False
+    assert normalized["request_failed_present"] is False
+    assert normalized["diagnostics_gap_present"] is False

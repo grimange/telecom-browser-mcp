@@ -79,6 +79,8 @@ async def test_delayed_registration_then_success(tmp_path) -> None:
 
     assert first["ok"] is False
     assert first["error_code"] == "REGISTRATION_TIMEOUT"
+    assert first["artifacts"]
+    assert "browser_diagnostics" in first["data"]
     assert second["ok"] is True
     assert second["data"]["state"] == "registered"
 
@@ -101,7 +103,11 @@ async def test_incoming_absent_and_answer_timeout_scenarios(tmp_path) -> None:
     incoming = await tools.wait_for_incoming_call(session_id=session_id, timeout_ms=1)
     assert incoming["ok"] is False
     assert incoming["error_code"] == "INCOMING_CALL_TIMEOUT"
+    assert incoming["artifacts"]
+    assert "browser_diagnostics" in incoming["data"]
 
     answered = await tools.answer_call(session_id=session_id, timeout_ms=1)
     assert answered["ok"] is False
     assert answered["error_code"] == "ANSWER_FLOW_FAILED"
+    assert answered["artifacts"]
+    assert "browser_diagnostics" in answered["data"]

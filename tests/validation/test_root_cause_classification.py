@@ -26,3 +26,18 @@ def test_root_cause_from_scenario_names() -> None:
 
 def test_root_cause_missing_bundle() -> None:
     assert classify_root_cause(_bundle("unknown", health="missing")) == "diagnostics_collection_gap"
+
+
+def test_root_cause_diagnostic_observation() -> None:
+    bundle = _bundle("collect-browser-logs")
+    bundle.failure_classification = "diagnostic"
+    bundle.status = "ok"
+    bundle.signals_present = ["page_errors", "network"]
+    assert classify_root_cause(bundle) == "diagnostic_observation"
+
+
+def test_root_cause_successful_lifecycle_is_not_forced_to_failure() -> None:
+    bundle = _bundle("stale_selector_recovery")
+    bundle.failure_classification = "none"
+    bundle.status = "ok"
+    assert classify_root_cause(bundle) == "diagnostic_observation"

@@ -1,0 +1,24 @@
+[
+  {
+    "risk_id": "RISK-ENV-001",
+    "severity": "high",
+    "dimension": "browser_lifecycle",
+    "description": "Environment instability is blocking reliable validation signal.",
+    "evidence": {
+      "classification": "runtime transport sandbox blocked (quarantined)",
+      "environment_blocker_delta": 1,
+      "blocked_batches": 1
+    },
+    "recommended_action": "quarantine environment noise before expanding remediation scope"
+  },
+  {
+    "risk_id": "RISK-SCOPE-001",
+    "severity": "low",
+    "dimension": "architectural_integrity",
+    "description": "No remediation batches selected in cycle, reducing change confidence gain.",
+    "evidence": {
+      "selected_batches": 0
+    },
+    "recommended_action": "recalibrate batch prioritization inputs for next cycle"
+  }
+]

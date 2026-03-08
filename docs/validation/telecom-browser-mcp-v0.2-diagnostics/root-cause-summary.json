@@ -1,23 +1,75 @@
 {
   "categories": [
     {
-      "category": "browser_unavailable",
-      "count": 1,
+      "category": "diagnostic_observation",
+      "count": 25,
       "scenarios": [
-        "browser_crash_recovery"
+        "browser_crash_recovery",
+        "collect-browser-logs",
+        "collect-debug-bundle",
+        "diagnose-answer-failure",
+        "diagnose-incoming-call-failure",
+        "diagnose-one-way-audio",
+        "diagnose-registration-failure",
+        "protocol-initialize-discovery-observation",
+        "stale_selector_recovery",
+        "tool-assert-registered-observation",
+        "tool-close-session-observation",
+        "tool-get-active-session-snapshot-observation",
+        "tool-get-environment-snapshot-observation",
+        "tool-get-peer-connection-summary-observation",
+        "tool-get-registration-status-observation",
+        "tool-get-store-snapshot-observation",
+        "tool-get-ui-call-state-observation",
+        "tool-get-webrtc-stats-observation",
+        "tool-hangup-call-observation",
+        "tool-list-sessions-observation",
+        "tool-login-agent-observation",
+        "tool-open-app-observation",
+        "tool-reset-session-observation",
+        "tool-screenshot-observation",
+        "tool-wait-for-ready-observation"
       ],
       "contracts": [
-        "LIFECYCLE::crash_recovery"
+        "LIFECYCLE::crash_recovery",
+        "LIFECYCLE::stale_selector_recovery",
+        "PROTOCOL::initialize_and_discovery",
+        "TOOL::assert_registered",
+        "TOOL::close_session",
+        "TOOL::collect_browser_logs",
+        "TOOL::collect_debug_bundle",
+        "TOOL::diagnose_answer_failure",
+        "TOOL::diagnose_incoming_call_failure",
+        "TOOL::diagnose_one_way_audio",
+        "TOOL::diagnose_registration_failure",
+        "TOOL::get_active_session_snapshot",
+        "TOOL::get_environment_snapshot",
+        "TOOL::get_peer_connection_summary",
+        "TOOL::get_registration_status",
+        "TOOL::get_store_snapshot",
+        "TOOL::get_ui_call_state",
+        "TOOL::get_webrtc_stats",
+        "TOOL::hangup_call",
+        "TOOL::list_sessions",
+        "TOOL::login_agent",
+        "TOOL::open_app",
+        "TOOL::reset_session",
+        "TOOL::screenshot",
+        "TOOL::wait_for_ready"
       ]
     },
     {
-      "category": "selector_stale_or_dom_drift",
-      "count": 1,
+      "category": "diagnostics_collection_gap",
+      "count": 3,
       "scenarios": [
-        "stale_selector_recovery"
+        "answer-call-failure",
+        "wait-for-incoming-call-failure",
+        "wait-for-registration-failure"
       ],
       "contracts": [
-        "LIFECYCLE::stale_selector_recovery"
+        "TOOL::answer_call",
+        "TOOL::wait_for_incoming_call",
+        "TOOL::wait_for_registration"
       ]
     }
   ]

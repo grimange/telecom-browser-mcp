@@ -40,15 +40,18 @@ def _match_page_closed(row: dict[str, Any]) -> bool:
 
 
 def _match_javascript_runtime_error(row: dict[str, Any]) -> bool:
-    return bool(row.get("js_error_present"))
+    return bool(row.get("js_error_present") and row.get("root_cause") == "javascript_runtime_error")
 
 
 def _match_network_failure(row: dict[str, Any]) -> bool:
-    return bool(row.get("request_failed_present"))
+    return bool(row.get("request_failed_present") and row.get("root_cause") == "network_failure")
 
 
 def _match_diagnostics_gap(row: dict[str, Any]) -> bool:
-    return bool(row.get("diagnostics_gap_present"))
+    return bool(
+        row.get("diagnostics_gap_present")
+        and row.get("root_cause") == "diagnostics_collection_gap"
+    )
 
 
 def _confidence(name: str, row: dict[str, Any]) -> str:

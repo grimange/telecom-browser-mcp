@@ -14,6 +14,34 @@ SCENARIO_TO_CONTRACT = {
     "context_closure_recovery": "LIFECYCLE::context_closure_recovery",
     "page_detach_recovery": "LIFECYCLE::page_closed_or_detached",
     "parallel_session_isolation": "LIFECYCLE::parallel_session_isolation",
+    "collect-browser-logs": "TOOL::collect_browser_logs",
+    "collect-debug-bundle": "TOOL::collect_debug_bundle",
+    "open-app-failure": "TOOL::open_app",
+    "wait-for-ready-failure": "TOOL::wait_for_ready",
+    "wait-for-registration-failure": "TOOL::wait_for_registration",
+    "wait-for-incoming-call-failure": "TOOL::wait_for_incoming_call",
+    "answer-call-failure": "TOOL::answer_call",
+    "diagnose-registration-failure": "TOOL::diagnose_registration_failure",
+    "diagnose-incoming-call-failure": "TOOL::diagnose_incoming_call_failure",
+    "diagnose-answer-failure": "TOOL::diagnose_answer_failure",
+    "diagnose-one-way-audio": "TOOL::diagnose_one_way_audio",
+    "tool-open-app-observation": "TOOL::open_app",
+    "tool-login-agent-observation": "TOOL::login_agent",
+    "tool-wait-for-ready-observation": "TOOL::wait_for_ready",
+    "tool-list-sessions-observation": "TOOL::list_sessions",
+    "tool-close-session-observation": "TOOL::close_session",
+    "tool-reset-session-observation": "TOOL::reset_session",
+    "tool-get-registration-status-observation": "TOOL::get_registration_status",
+    "tool-assert-registered-observation": "TOOL::assert_registered",
+    "tool-hangup-call-observation": "TOOL::hangup_call",
+    "tool-get-ui-call-state-observation": "TOOL::get_ui_call_state",
+    "tool-get-active-session-snapshot-observation": "TOOL::get_active_session_snapshot",
+    "tool-get-store-snapshot-observation": "TOOL::get_store_snapshot",
+    "tool-get-peer-connection-summary-observation": "TOOL::get_peer_connection_summary",
+    "tool-get-webrtc-stats-observation": "TOOL::get_webrtc_stats",
+    "tool-get-environment-snapshot-observation": "TOOL::get_environment_snapshot",
+    "tool-screenshot-observation": "TOOL::screenshot",
+    "protocol-initialize-discovery-observation": "PROTOCOL::initialize_and_discovery",
 }
 
 
@@ -86,6 +114,8 @@ def enrich_validation(
                 "supporting_signals": bundle.signals_present,
                 "collection_gaps": bundle.collection_gaps,
                 "bundle_health": bundle.bundle_health,
+                "bundle_status": bundle.status,
+                "bundle_failure_classification": bundle.failure_classification,
             }
         )
 
