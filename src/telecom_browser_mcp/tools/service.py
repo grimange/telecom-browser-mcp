@@ -5,6 +5,7 @@ from typing import Any
 from telecom_browser_mcp.adapters.apntalk import APNTalkAdapter
 from telecom_browser_mcp.adapters.fake_dialer import FakeDialerAdapter
 from telecom_browser_mcp.adapters.registry import AdapterRegistry
+from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
 from telecom_browser_mcp.contracts.envelope import as_dict
 from telecom_browser_mcp.diagnostics.engine import DiagnosticsEngine
 from telecom_browser_mcp.errors import codes
@@ -105,6 +106,7 @@ class ToolService:
 
     def _require_browser_page(self, tool: str, runtime: SessionRuntime) -> dict | None:
         if runtime.browser.page is None:
+            runtime.model.lifecycle_state = "broken"
             message = runtime.model.browser_launch_error or "browser page is unavailable"
             classification = runtime.model.browser_launch_error_classification or "session_not_ready"
             return self._err(
@@ -116,6 +118,28 @@ class ToolService:
                 session_id=runtime.model.session_id,
             )
         return None
+
+    async def health(self, payload: dict[str, Any]) -> dict:
+        tool = "health"
+        try:
+            EmptyInput.model_validate(payload)
+        except Exception as exc:
+            return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
+        return self._ok(tool, {"service": "telecom-browser-mcp", "status": "ok"})
+
+    async def capabilities(self, payload: dict[str, Any]) -> dict:
+        tool = "capabilities"
+        try:
+            EmptyInput.model_validate(payload)
+        except Exception as exc:
+            return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
+        return self._ok(
+            tool,
+            {
+                "tools": list(CANONICAL_TOOL_INPUT_MODELS.keys()),
+                "contract_version": "v1",
+            },
+        )
 
     async def open_app(self, payload: dict[str, Any]) -> dict:
         tool = "open_app"

@@ -46,12 +46,21 @@ async def test_stdio_first_contact_tools() -> None:
 
                     health = await _call_tool_over_stdio(session, "health", {})
                     assert health.get("ok") is True
+                    assert health.get("tool") == "health"
 
                     capabilities = await _call_tool_over_stdio(session, "capabilities", {})
                     assert capabilities.get("ok") is True
+                    assert capabilities.get("tool") == "capabilities"
 
                     list_sessions = await _call_tool_over_stdio(session, "list_sessions", {})
                     assert list_sessions.get("ok") is True
                     assert "data" in list_sessions
-    except Exception as exc:
+    except TimeoutError as exc:
+        pytest.skip(f"stdio smoke skipped due to environment limitation: timeout: {exc}")
+    except (FileNotFoundError, PermissionError) as exc:
         pytest.skip(f"stdio smoke skipped due to environment limitation: {exc}")
+    except OSError as exc:
+        message = str(exc).lower()
+        if "resource temporarily unavailable" in message or "operation not permitted" in message:
+            pytest.skip(f"stdio smoke skipped due to environment limitation: {exc}")
+        raise

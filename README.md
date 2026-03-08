@@ -17,6 +17,11 @@
 - `collect_debug_bundle`
 - `diagnose_answer_failure`
 
+## Support tools
+
+- `health`
+- `capabilities`
+
 ## Run
 
 ```bash

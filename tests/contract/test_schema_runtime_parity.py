@@ -5,7 +5,10 @@ from pathlib import Path
 
 import pytest
 
-from telecom_browser_mcp.contracts.m1_contracts import M1_TOOL_INPUT_MODELS, generate_m1_schemas
+from telecom_browser_mcp.contracts.m1_contracts import (
+    CANONICAL_TOOL_INPUT_MODELS,
+    generate_all_tool_schemas,
+)
 from telecom_browser_mcp.tools.service import ToolService
 
 
@@ -14,7 +17,7 @@ def _contracts_dir() -> Path:
 
 
 def test_generated_schemas_match_published_contract_artifacts() -> None:
-    generated = generate_m1_schemas()
+    generated = generate_all_tool_schemas()
     for tool_name, payload in generated.items():
         schema_path = _contracts_dir() / f"{tool_name}.schema.json"
         assert schema_path.exists(), f"missing published schema for {tool_name}"
@@ -32,6 +35,8 @@ async def test_runtime_validation_rejects_undeclared_fields_for_each_tool() -> N
     session_id = open_result["data"]["session_id"]
 
     valid_payloads: dict[str, dict] = {
+        "health": {},
+        "capabilities": {},
         "open_app": {"target_url": "https://example.com"},
         "list_sessions": {},
         "close_session": {"session_id": session_id},
@@ -46,7 +51,7 @@ async def test_runtime_validation_rejects_undeclared_fields_for_each_tool() -> N
         "diagnose_answer_failure": {"session_id": session_id},
     }
 
-    for tool_name, model in M1_TOOL_INPUT_MODELS.items():
+    for tool_name, model in CANONICAL_TOOL_INPUT_MODELS.items():
         payload = {**valid_payloads[tool_name], "undeclared_field": "x"}
         # EmptyInput forbids any fields, so list_sessions still fails correctly with undeclared field.
         result = await getattr(service, tool_name)(payload)
@@ -56,4 +61,3 @@ async def test_runtime_validation_rejects_undeclared_fields_for_each_tool() -> N
         # Canonical model must also reject same payload to prove parity.
         with pytest.raises(Exception):
             model.model_validate(payload)
-

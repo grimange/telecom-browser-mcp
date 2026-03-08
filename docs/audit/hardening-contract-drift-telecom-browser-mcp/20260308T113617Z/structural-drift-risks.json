@@ -1,0 +1,23 @@
+[
+  {
+    "id":"SDR-001",
+    "risk":"Registered tool list split between canonical map and ad hoc health/capabilities",
+    "likelihood":"medium",
+    "impact":"high",
+    "evidence":["src/telecom_browser_mcp/contracts/m1_contracts.py","src/telecom_browser_mcp/server/app.py"]
+  },
+  {
+    "id":"SDR-002",
+    "risk":"Broad skip in stdio smoke test can hide tool registration regressions",
+    "likelihood":"high",
+    "impact":"medium",
+    "evidence":["tests/integration/test_stdio_smoke.py catches Exception and skips"]
+  },
+  {
+    "id":"SDR-003",
+    "risk":"Lifecycle model lacks explicit broken transition despite broken-session error path",
+    "likelihood":"medium",
+    "impact":"medium",
+    "evidence":["tools/service.py emits session_broken","sessions/manager.py does not set lifecycle_state='broken'"]
+  }
+]

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from telecom_browser_mcp.contracts.m1_contracts import generate_m1_schemas
+from telecom_browser_mcp.contracts.m1_contracts import generate_all_tool_schemas
 
 
 def main() -> None:
@@ -11,7 +11,7 @@ def main() -> None:
     out_dir = root / "docs" / "contracts" / "m1"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    schemas = generate_m1_schemas()
+    schemas = generate_all_tool_schemas()
     for tool_name, payload in schemas.items():
         path = out_dir / f"{tool_name}.schema.json"
         path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")

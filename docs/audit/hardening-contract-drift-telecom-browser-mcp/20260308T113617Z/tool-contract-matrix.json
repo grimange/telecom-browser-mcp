@@ -1,0 +1,19 @@
+{
+  "canonical_contract_source":"src/telecom_browser_mcp/contracts/m1_contracts.py",
+  "response_envelope_model":"src/telecom_browser_mcp/models/common.py:ToolResponse",
+  "m1_tools":{
+    "open_app":{"input_model":"OpenAppInput","schema_file":"docs/contracts/m1/open_app.schema.json","runtime_validation":"yes"},
+    "list_sessions":{"input_model":"EmptyInput","schema_file":"docs/contracts/m1/list_sessions.schema.json","runtime_validation":"yes"},
+    "close_session":{"input_model":"SessionInput","schema_file":"docs/contracts/m1/close_session.schema.json","runtime_validation":"yes"},
+    "login_agent":{"input_model":"LoginInput","schema_file":"docs/contracts/m1/login_agent.schema.json","runtime_validation":"yes"},
+    "wait_for_ready":{"input_model":"TimeoutInput","schema_file":"docs/contracts/m1/wait_for_ready.schema.json","runtime_validation":"yes"},
+    "wait_for_registration":{"input_model":"TimeoutInput","schema_file":"docs/contracts/m1/wait_for_registration.schema.json","runtime_validation":"yes"},
+    "wait_for_incoming_call":{"input_model":"TimeoutInput","schema_file":"docs/contracts/m1/wait_for_incoming_call.schema.json","runtime_validation":"yes"},
+    "answer_call":{"input_model":"TimeoutInput","schema_file":"docs/contracts/m1/answer_call.schema.json","runtime_validation":"yes"},
+    "get_active_session_snapshot":{"input_model":"SessionInput","schema_file":"docs/contracts/m1/get_active_session_snapshot.schema.json","runtime_validation":"yes"},
+    "get_peer_connection_summary":{"input_model":"SessionInput","schema_file":"docs/contracts/m1/get_peer_connection_summary.schema.json","runtime_validation":"yes"},
+    "collect_debug_bundle":{"input_model":"CollectDebugBundleInput","schema_file":"docs/contracts/m1/collect_debug_bundle.schema.json","runtime_validation":"yes"},
+    "diagnose_answer_failure":{"input_model":"SessionInput","schema_file":"docs/contracts/m1/diagnose_answer_failure.schema.json","runtime_validation":"yes"}
+  },
+  "non_m1_registered_tools":["health","capabilities"]
+}

@@ -24,6 +24,12 @@ def _assert_base_envelope(payload: dict, tool: str) -> None:
 async def test_all_m1_tools_return_canonical_envelope() -> None:
     service = ToolService()
 
+    health_result = await service.health({})
+    _assert_base_envelope(health_result, "health")
+
+    capabilities_result = await service.capabilities({})
+    _assert_base_envelope(capabilities_result, "capabilities")
+
     open_result = await service.open_app({"target_url": "https://example.com"})
     _assert_base_envelope(open_result, "open_app")
     session_id = open_result["data"]["session_id"]

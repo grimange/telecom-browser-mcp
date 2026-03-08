@@ -1,0 +1,10 @@
+{
+  "checks": [
+    {"id": "AC-01", "description": "canonical support-tool contracts", "result": "pass"},
+    {"id": "AC-02", "description": "schema generation includes health/capabilities", "result": "pass"},
+    {"id": "AC-03", "description": "explicit broken lifecycle transition", "result": "pass"},
+    {"id": "AC-04", "description": "redaction guards validated by unit tests", "result": "pass"},
+    {"id": "AC-05", "description": "narrowed stdio skip behavior", "result": "pass"},
+    {"id": "AC-06", "description": "static verification suite", "result": "pass", "evidence": "11 passed"}
+  ]
+}

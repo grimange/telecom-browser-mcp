@@ -1,0 +1,6 @@
+{
+  "CD-001": {"batch_id": "B01", "acceptance_result": "pass"},
+  "BR-001": {"batch_id": "B02", "acceptance_result": "pass"},
+  "DE-001": {"batch_id": "B03", "acceptance_result": "pass"},
+  "TC-001": {"batch_id": "B03", "acceptance_result": "pass"}
+}

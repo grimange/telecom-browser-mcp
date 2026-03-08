@@ -1,0 +1,10 @@
+{
+  "new_tests": [
+    "tests/unit/test_evidence_redaction.py"
+  ],
+  "updated_tests": [
+    "tests/contract/test_m1_tool_envelopes.py",
+    "tests/contract/test_schema_runtime_parity.py",
+    "tests/integration/test_stdio_smoke.py"
+  ]
+}

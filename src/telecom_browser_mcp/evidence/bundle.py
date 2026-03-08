@@ -1,14 +1,40 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from telecom_browser_mcp.models.common import ArtifactRef
 from telecom_browser_mcp.sessions.manager import SessionRuntime
 
 
 class EvidenceCollector:
+    @staticmethod
+    def _redact_text(value: str) -> str:
+        redacted = value
+        patterns = [
+            (r"(?i)(password\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(token\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(authorization\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(cookie\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(sip:[^@\s\"'<>]+@)", "sip:[REDACTED]@"),
+        ]
+        for pattern, replacement in patterns:
+            redacted = re.sub(pattern, replacement, redacted)
+        return redacted
+
+    @classmethod
+    def _redact_obj(cls, value: Any) -> Any:
+        if isinstance(value, str):
+            return cls._redact_text(value)
+        if isinstance(value, list):
+            return [cls._redact_obj(item) for item in value]
+        if isinstance(value, dict):
+            return {key: cls._redact_obj(item) for key, item in value.items()}
+        return value
+
     async def collect(
         self,
         runtime: SessionRuntime,
@@ -56,7 +82,7 @@ class EvidenceCollector:
         else:
             try:
                 html = await runtime.browser.page.content()
-                html_snapshot_path.write_text(html, encoding="utf-8")
+                html_snapshot_path.write_text(self._redact_text(html), encoding="utf-8")
                 artifacts.append(ArtifactRef(type="html_snapshot", path=str(html_snapshot_path)))
             except Exception as exc:
                 artifacts.append(
@@ -81,7 +107,7 @@ class EvidenceCollector:
                 )
 
         diagnosis_path = diagnostics_dir / "diagnosis.json"
-        diagnosis_payload = diagnostics if diagnostics is not None else []
+        diagnosis_payload = self._redact_obj(diagnostics if diagnostics is not None else [])
         diagnosis_path.write_text(json.dumps(diagnosis_payload, indent=2), encoding="utf-8")
         artifacts.append(ArtifactRef(type="diagnosis_json", path=str(diagnosis_path)))
 

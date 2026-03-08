@@ -1,0 +1,15 @@
+[
+  "README.md",
+  "scripts/generate_contract_schemas.py",
+  "src/telecom_browser_mcp/contracts/__init__.py",
+  "src/telecom_browser_mcp/contracts/m1_contracts.py",
+  "src/telecom_browser_mcp/evidence/bundle.py",
+  "src/telecom_browser_mcp/server/app.py",
+  "src/telecom_browser_mcp/tools/service.py",
+  "tests/contract/test_m1_tool_envelopes.py",
+  "tests/contract/test_schema_runtime_parity.py",
+  "tests/integration/test_stdio_smoke.py",
+  "tests/unit/test_evidence_redaction.py",
+  "docs/contracts/m1/health.schema.json",
+  "docs/contracts/m1/capabilities.schema.json"
+]

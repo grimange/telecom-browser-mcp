@@ -1,0 +1,23 @@
+# B03 Evidence And Guard Hardening
+
+- objective: add redaction safeguards and reduce false-confidence test skips
+- source findings: DE-001, TC-001
+- severity: medium
+- target files:
+  - src/telecom_browser_mcp/evidence/bundle.py
+  - tests/unit/test_evidence_redaction.py
+  - tests/integration/test_stdio_smoke.py
+- root cause:
+  - artifacts were persisted without redaction pass
+  - stdio smoke used broad catch-all skip behavior
+- remediation steps:
+  - implement text/object redaction helpers and apply before writing HTML/diagnosis
+  - add unit tests for secret masking
+  - narrow stdio skip exceptions to known environment classes
+- acceptance checks:
+  - redaction unit tests pass
+  - stdio test no longer catches generic Exception for skip
+- regression guards:
+  - keep redaction unit test suite required in CI
+- rollback concerns:
+  - redaction patterns may need tuning to avoid over/under-masking

@@ -4,7 +4,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from telecom_browser_mcp.contracts import M1_TOOL_INPUT_MODELS
+from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
 from telecom_browser_mcp.tools.service import ToolService
 
 
@@ -18,15 +18,11 @@ def create_mcp_server() -> FastMCP:
 
     @mcp.tool()
     async def health() -> dict:
-        return {"ok": True, "service": "telecom-browser-mcp"}
+        return await dispatch("health", {})
 
     @mcp.tool()
     async def capabilities() -> dict:
-        return {
-            "ok": True,
-            "tools": list(M1_TOOL_INPUT_MODELS.keys()),
-            "contract_version": "v1",
-        }
+        return await dispatch("capabilities", {})
 
     @mcp.tool()
     async def open_app(target_url: str, adapter_id: str | None = None, headless: bool = True, session_label: str | None = None) -> dict:
@@ -75,5 +71,22 @@ def create_mcp_server() -> FastMCP:
     @mcp.tool()
     async def diagnose_answer_failure(session_id: str) -> dict:
         return await dispatch("diagnose_answer_failure", {"session_id": session_id})
+
+    assert set(CANONICAL_TOOL_INPUT_MODELS.keys()) == {
+        "health",
+        "capabilities",
+        "open_app",
+        "list_sessions",
+        "close_session",
+        "login_agent",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "get_active_session_snapshot",
+        "get_peer_connection_summary",
+        "collect_debug_bundle",
+        "diagnose_answer_failure",
+    }
 
     return mcp
