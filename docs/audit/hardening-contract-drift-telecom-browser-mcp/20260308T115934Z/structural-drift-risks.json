@@ -1,0 +1,14 @@
+[
+  {
+    "id": "SDR-010",
+    "risk": "Lifecycle transition policy is distributed across service and session layers",
+    "severity": "low",
+    "mapped_finding": "BL-001"
+  },
+  {
+    "id": "SDR-011",
+    "risk": "Redaction regex list may under-cover future secret/token formats",
+    "severity": "low",
+    "mapped_finding": "DE-002"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "source_audit_timestamp": "20260308T115934Z",
+  "source_audit_dir": "docs/audit/hardening-contract-drift-telecom-browser-mcp/20260308T115934Z",
+  "findings": ["BL-001", "DE-002", "TC-002"],
+  "verification_mode": "static-first"
+}

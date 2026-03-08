@@ -1,0 +1,20 @@
+{
+  "canonical_map": "CANONICAL_TOOL_INPUT_MODELS",
+  "tools": {
+    "health": "EmptyInput",
+    "capabilities": "EmptyInput",
+    "open_app": "OpenAppInput",
+    "list_sessions": "EmptyInput",
+    "close_session": "SessionInput",
+    "login_agent": "LoginInput",
+    "wait_for_ready": "TimeoutInput",
+    "wait_for_registration": "TimeoutInput",
+    "wait_for_incoming_call": "TimeoutInput",
+    "answer_call": "TimeoutInput",
+    "get_active_session_snapshot": "SessionInput",
+    "get_peer_connection_summary": "SessionInput",
+    "collect_debug_bundle": "CollectDebugBundleInput",
+    "diagnose_answer_failure": "SessionInput"
+  },
+  "response_model": "ToolResponse"
+}

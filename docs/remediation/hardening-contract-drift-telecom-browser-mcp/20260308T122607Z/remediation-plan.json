@@ -1,0 +1,8 @@
+{
+  "source_audit": "20260308T122334Z",
+  "batches": [
+    {"id": "B01", "finding_ids": ["BL-003"], "mode": "closure-verification"},
+    {"id": "B02", "finding_ids": ["DE-003"], "mode": "closure-verification"},
+    {"id": "B03", "finding_ids": ["TC-003"], "mode": "closure-verification"}
+  ]
+}

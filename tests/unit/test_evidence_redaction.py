@@ -2,12 +2,17 @@ from telecom_browser_mcp.evidence.bundle import EvidenceCollector
 
 
 def test_redact_text_masks_common_secrets() -> None:
-    raw = "password=abc token:xyz Authorization=Bearer123 cookie=foo sip:alice@example.com"
+    raw = (
+        "password=abc token:xyz Authorization: Bearer abc123 cookie=foo "
+        "api_key=k1 secret=s1 sip:alice@example.com"
+    )
     redacted = EvidenceCollector._redact_text(raw)
     assert "abc" not in redacted
     assert "xyz" not in redacted
-    assert "Bearer123" not in redacted
+    assert "abc123" not in redacted
     assert "cookie=foo" not in redacted
+    assert "k1" not in redacted
+    assert "s1" not in redacted
     assert "sip:alice@" not in redacted
     assert "[REDACTED]" in redacted
 

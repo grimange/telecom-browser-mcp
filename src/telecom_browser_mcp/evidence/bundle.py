@@ -15,10 +15,16 @@ class EvidenceCollector:
     def _redact_text(value: str) -> str:
         redacted = value
         patterns = [
+            (
+                r"(?i)(authorization\s*[=:]\s*bearer\s+)([^\s\"'<>;,]+)",
+                r"\1[REDACTED]",
+            ),
             (r"(?i)(password\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
             (r"(?i)(token\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
             (r"(?i)(authorization\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
             (r"(?i)(cookie\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(api[_-]?key\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
+            (r"(?i)(secret\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
             (r"(?i)(sip:[^@\s\"'<>]+@)", "sip:[REDACTED]@"),
         ]
         for pattern, replacement in patterns:

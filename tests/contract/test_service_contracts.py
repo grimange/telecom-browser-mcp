@@ -11,6 +11,8 @@ async def test_open_app_contract_shape() -> None:
     assert result["ok"] is True
     assert result["tool"] == "open_app"
     assert "session_id" in result["data"]
+    assert "ready_for_actions" in result["data"]
+    assert isinstance(result["data"]["ready_for_actions"], bool)
     assert result["meta"]["contract_version"] == "v1"
 
 

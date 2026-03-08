@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -9,7 +10,13 @@ from telecom_browser_mcp.tools.service import ToolService
 
 
 def create_mcp_server() -> FastMCP:
-    mcp = FastMCP("telecom-browser-mcp")
+    host = os.environ.get("FASTMCP_HOST", "127.0.0.1")
+    try:
+        port = int(os.environ.get("FASTMCP_PORT", "8000"))
+    except ValueError:
+        port = 8000
+
+    mcp = FastMCP("telecom-browser-mcp", host=host, port=port)
     service = ToolService()
 
     async def dispatch(tool_name: str, payload: dict[str, Any]) -> dict:

@@ -11,6 +11,11 @@ from mcp.client.session import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
 
+def _require_live_transport_runtime() -> bool:
+    value = os.environ.get("MCP_REQUIRE_LIVE_TRANSPORT_RUNTIME", "")
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
 
@@ -56,11 +61,17 @@ async def test_stdio_first_contact_tools() -> None:
                     assert list_sessions.get("ok") is True
                     assert "data" in list_sessions
     except TimeoutError as exc:
+        if _require_live_transport_runtime():
+            raise
         pytest.skip(f"stdio smoke skipped due to environment limitation: timeout: {exc}")
     except (FileNotFoundError, PermissionError) as exc:
+        if _require_live_transport_runtime():
+            raise
         pytest.skip(f"stdio smoke skipped due to environment limitation: {exc}")
     except OSError as exc:
         message = str(exc).lower()
         if "resource temporarily unavailable" in message or "operation not permitted" in message:
+            if _require_live_transport_runtime():
+                raise
             pytest.skip(f"stdio smoke skipped due to environment limitation: {exc}")
         raise

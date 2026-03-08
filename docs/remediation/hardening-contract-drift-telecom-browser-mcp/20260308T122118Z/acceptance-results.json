@@ -1,0 +1,8 @@
+{
+  "results": [
+    {"id": "AC-B01", "result": "pass"},
+    {"id": "AC-B02", "result": "pass"},
+    {"id": "AC-B03", "result": "pass"},
+    {"id": "AC-STATIC", "result": "pass", "evidence": "13 passed"}
+  ]
+}

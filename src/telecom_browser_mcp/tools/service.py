@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from typing import Any
 
 from telecom_browser_mcp.adapters.apntalk import APNTalkAdapter
@@ -25,7 +26,7 @@ from telecom_browser_mcp.sessions.manager import SessionManager, SessionRuntime
 
 
 class ToolService:
-    def __init__(self) -> None:
+    def __init__(self, operation_lock_timeout_ms: int = 5000) -> None:
         self.sessions = SessionManager()
         self.adapters = AdapterRegistry()
         self.adapters.register(APNTalkAdapter, domains=["app.apntalk.com", "apntalk.com"])
@@ -34,6 +35,7 @@ class ToolService:
         self.webrtc_inspector = WebRTCInspector()
         self.evidence = EvidenceCollector()
         self.diagnostics = DiagnosticsEngine()
+        self._operation_lock_timeout_ms = operation_lock_timeout_ms
 
     def _ok(
         self,
@@ -101,12 +103,46 @@ class ToolService:
                 f"session is not active: {session_id}",
                 classification="session_not_ready",
                 session_id=session_id,
+                diagnostics=[
+                    DiagnosticItem(
+                        code="session_not_ready",
+                        classification="session_not_ready",
+                        message=f"session lifecycle_state={runtime.model.lifecycle_state}",
+                        confidence="high",
+                    )
+                ],
             )
         return runtime, None
 
+    def _session_state_diagnostics(self, runtime: SessionRuntime) -> list[DiagnosticItem]:
+        diagnostics = [
+            DiagnosticItem(
+                code="session_state",
+                classification="session_state",
+                message=f"lifecycle_state={runtime.model.lifecycle_state}",
+                confidence="high",
+            ),
+            DiagnosticItem(
+                code="browser_state",
+                classification="session_not_ready",
+                message=f"browser_open={runtime.model.telecom.browser_open}",
+                confidence="high",
+            ),
+        ]
+        if runtime.model.browser_launch_error:
+            diagnostics.append(
+                DiagnosticItem(
+                    code="browser_launch_error",
+                    classification=runtime.model.browser_launch_error_classification or "unknown",
+                    message=runtime.model.browser_launch_error,
+                    confidence="high",
+                )
+            )
+        return diagnostics
+
     def _require_browser_page(self, tool: str, runtime: SessionRuntime) -> dict | None:
         if runtime.browser.page is None:
-            runtime.model.lifecycle_state = "broken"
+            self.sessions.mark_broken(runtime.model.session_id)
             message = runtime.model.browser_launch_error or "browser page is unavailable"
             classification = runtime.model.browser_launch_error_classification or "session_not_ready"
             return self._err(
@@ -116,8 +152,37 @@ class ToolService:
                 classification=classification,
                 retryable=True,
                 session_id=runtime.model.session_id,
+                diagnostics=self._session_state_diagnostics(runtime),
             )
         return None
+
+    async def _acquire_operation_lock(self, tool: str, runtime: SessionRuntime) -> dict | None:
+        try:
+            await asyncio.wait_for(
+                runtime.operation_lock.acquire(),
+                timeout=max(self._operation_lock_timeout_ms, 1) / 1000,
+            )
+            return None
+        except TimeoutError:
+            return self._err(
+                tool,
+                codes.ERROR_NOT_READY,
+                "session is busy with another operation",
+                classification="session_busy",
+                retryable=True,
+                session_id=runtime.model.session_id,
+                diagnostics=[
+                    DiagnosticItem(
+                        code="session_busy",
+                        classification="session_busy",
+                        message=(
+                            "operation lock acquisition timed out "
+                            f"after {self._operation_lock_timeout_ms}ms"
+                        ),
+                        confidence="high",
+                    )
+                ],
+            )
 
     async def health(self, payload: dict[str, Any]) -> dict:
         tool = "health"
@@ -174,7 +239,9 @@ class ToolService:
                     confidence="high",
                 )
             )
+            diagnostics.extend(self._session_state_diagnostics(runtime))
 
+        ready_for_actions = runtime.browser.browser_open and runtime.browser.page is not None
         return self._ok(
             tool,
             {
@@ -184,6 +251,7 @@ class ToolService:
                 "adapter_resolution_confidence": confidence,
                 "capabilities": runtime.model.capabilities.model_dump(mode="json"),
                 "lifecycle_state": runtime.model.lifecycle_state,
+                "ready_for_actions": ready_for_actions,
             },
             session_id=runtime.model.session_id,
             adapter_id=adapter.adapter_id,
@@ -205,7 +273,17 @@ class ToolService:
             req = SessionInput.model_validate(payload)
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
-        closed = await self.sessions.close(req.session_id)
+        runtime, error_response = self._require_runtime(tool, req.session_id)
+        if error_response is not None:
+            return error_response
+
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            closed = await self.sessions.close(req.session_id)
+        finally:
+            runtime.operation_lock.release()
         if not closed:
             return self._err(
                 tool,
@@ -225,31 +303,38 @@ class ToolService:
         runtime, error_response = self._require_runtime(tool, req.session_id)
         if error_response is not None:
             return error_response
-        browser_error = self._require_browser_page(tool, runtime)
-        if browser_error is not None:
-            return browser_error
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            browser_error = self._require_browser_page(tool, runtime)
+            if browser_error is not None:
+                return browser_error
 
-        ok, message = await runtime.adapter.login(
-            runtime.model.telecom,
-            runtime.browser.page,
-            req.credentials,
-            req.timeout_ms,
-        )
-        if not ok:
-            return self._err(
-                tool,
-                codes.ERROR_ADAPTER_UNSUPPORTED,
-                message,
-                classification="adapter_not_supported",
-                session_id=req.session_id,
+            ok, message = await runtime.adapter.login(
+                runtime.model.telecom,
+                runtime.browser.page,
+                req.credentials,
+                req.timeout_ms,
             )
-        runtime.model.telecom.login_complete = True
-        return self._ok(
-            tool,
-            {"login_complete": True, "message": message},
-            session_id=req.session_id,
-            adapter_id=runtime.adapter.adapter_id,
-        )
+            if not ok:
+                return self._err(
+                    tool,
+                    codes.ERROR_ADAPTER_UNSUPPORTED,
+                    message,
+                    classification="adapter_not_supported",
+                    session_id=req.session_id,
+                    diagnostics=self._session_state_diagnostics(runtime),
+                )
+            runtime.model.telecom.login_complete = True
+            return self._ok(
+                tool,
+                {"login_complete": True, "message": message},
+                session_id=req.session_id,
+                adapter_id=runtime.adapter.adapter_id,
+            )
+        finally:
+            runtime.operation_lock.release()
 
     async def wait_for_ready(self, payload: dict[str, Any]) -> dict:
         return await self._wait_state("wait_for_ready", payload)
@@ -269,79 +354,88 @@ class ToolService:
         runtime, error_response = self._require_runtime(tool, req.session_id)
         if error_response is not None:
             return error_response
-        browser_error = self._require_browser_page(tool, runtime)
-        if browser_error is not None:
-            return browser_error
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            browser_error = self._require_browser_page(tool, runtime)
+            if browser_error is not None:
+                return browser_error
 
-        if tool == "wait_for_ready":
-            ok, message = await runtime.adapter.wait_for_ready(
+            if tool == "wait_for_ready":
+                ok, message = await runtime.adapter.wait_for_ready(
+                    runtime.model.telecom,
+                    runtime.browser.page,
+                    req.timeout_ms,
+                )
+                if ok:
+                    runtime.model.telecom.ui_ready = True
+                    return self._ok(
+                        tool,
+                        {"ui_ready": True, "message": message},
+                        session_id=req.session_id,
+                        adapter_id=runtime.adapter.adapter_id,
+                    )
+                return self._err(
+                    tool,
+                    codes.ERROR_TIMEOUT,
+                    message,
+                    classification="session_not_ready",
+                    retryable=True,
+                    session_id=req.session_id,
+                    diagnostics=self._session_state_diagnostics(runtime),
+                )
+
+            if tool == "wait_for_registration":
+                ok, message = await runtime.adapter.wait_for_registration(
+                    runtime.model.telecom,
+                    runtime.browser.page,
+                    req.timeout_ms,
+                )
+                if ok:
+                    runtime.model.telecom.registration_state = "registered"
+                    return self._ok(
+                        tool,
+                        {"registration_state": "registered", "message": message},
+                        session_id=req.session_id,
+                        adapter_id=runtime.adapter.adapter_id,
+                    )
+                runtime.model.telecom.registration_state = "not_detected"
+                return self._err(
+                    tool,
+                    codes.ERROR_REGISTRATION_NOT_DETECTED,
+                    message,
+                    classification="registration_missing",
+                    retryable=True,
+                    session_id=req.session_id,
+                    diagnostics=self._session_state_diagnostics(runtime),
+                )
+
+            ok, message = await runtime.adapter.wait_for_incoming_call(
                 runtime.model.telecom,
                 runtime.browser.page,
                 req.timeout_ms,
             )
             if ok:
-                runtime.model.telecom.ui_ready = True
+                runtime.model.telecom.incoming_call_state = "ringing"
                 return self._ok(
                     tool,
-                    {"ui_ready": True, "message": message},
+                    {"incoming_call_state": "ringing", "message": message},
                     session_id=req.session_id,
                     adapter_id=runtime.adapter.adapter_id,
                 )
+            runtime.model.telecom.incoming_call_state = "not_detected"
             return self._err(
                 tool,
-                codes.ERROR_TIMEOUT,
+                codes.ERROR_INCOMING_CALL_NOT_DETECTED,
                 message,
-                classification="session_not_ready",
+                classification="incoming_call_not_present",
                 retryable=True,
                 session_id=req.session_id,
+                diagnostics=self._session_state_diagnostics(runtime),
             )
-
-        if tool == "wait_for_registration":
-            ok, message = await runtime.adapter.wait_for_registration(
-                runtime.model.telecom,
-                runtime.browser.page,
-                req.timeout_ms,
-            )
-            if ok:
-                runtime.model.telecom.registration_state = "registered"
-                return self._ok(
-                    tool,
-                    {"registration_state": "registered", "message": message},
-                    session_id=req.session_id,
-                    adapter_id=runtime.adapter.adapter_id,
-                )
-            runtime.model.telecom.registration_state = "not_detected"
-            return self._err(
-                tool,
-                codes.ERROR_REGISTRATION_NOT_DETECTED,
-                message,
-                classification="registration_missing",
-                retryable=True,
-                session_id=req.session_id,
-            )
-
-        ok, message = await runtime.adapter.wait_for_incoming_call(
-            runtime.model.telecom,
-            runtime.browser.page,
-            req.timeout_ms,
-        )
-        if ok:
-            runtime.model.telecom.incoming_call_state = "ringing"
-            return self._ok(
-                tool,
-                {"incoming_call_state": "ringing", "message": message},
-                session_id=req.session_id,
-                adapter_id=runtime.adapter.adapter_id,
-            )
-        runtime.model.telecom.incoming_call_state = "not_detected"
-        return self._err(
-            tool,
-            codes.ERROR_INCOMING_CALL_NOT_DETECTED,
-            message,
-            classification="incoming_call_not_present",
-            retryable=True,
-            session_id=req.session_id,
-        )
+        finally:
+            runtime.operation_lock.release()
 
     async def answer_call(self, payload: dict[str, Any]) -> dict:
         tool = "answer_call"
@@ -353,44 +447,50 @@ class ToolService:
         runtime, error_response = self._require_runtime(tool, req.session_id)
         if error_response is not None:
             return error_response
-        browser_error = self._require_browser_page(tool, runtime)
-        if browser_error is not None:
-            return browser_error
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            browser_error = self._require_browser_page(tool, runtime)
+            if browser_error is not None:
+                return browser_error
 
-        ok, message = await runtime.adapter.answer_call(
-            runtime.model.telecom,
-            runtime.browser.page,
-            req.timeout_ms,
-        )
-        if ok:
-            runtime.model.telecom.active_call_state = "connected"
-            return self._ok(
-                tool,
-                {"active_call_state": "connected", "message": message},
-                session_id=req.session_id,
-                adapter_id=runtime.adapter.adapter_id,
+            ok, message = await runtime.adapter.answer_call(
+                runtime.model.telecom,
+                runtime.browser.page,
+                req.timeout_ms,
             )
+            if ok:
+                runtime.model.telecom.active_call_state = "connected"
+                return self._ok(
+                    tool,
+                    {"active_call_state": "connected", "message": message},
+                    session_id=req.session_id,
+                    adapter_id=runtime.adapter.adapter_id,
+                )
 
-        runtime.model.telecom.active_call_state = "failed"
-        diagnostics = self.diagnostics.diagnose_answer_failure(runtime)
-        bundle_path, artifacts = await self.evidence.collect(
-            runtime,
-            trigger_tool=tool,
-            reason=message,
-            diagnostics=[d.model_dump(mode="json") for d in diagnostics],
-        )
-        err = self._err(
-            tool,
-            codes.ERROR_ACTION_FAILED,
-            message,
-            classification="answer_action_failed",
-            retryable=False,
-            session_id=req.session_id,
-            diagnostics=diagnostics,
-            artifacts=artifacts,
-        )
-        err["data"] = {"bundle_path": bundle_path}
-        return err
+            runtime.model.telecom.active_call_state = "failed"
+            diagnostics = self.diagnostics.diagnose_answer_failure(runtime)
+            bundle_path, artifacts = await self.evidence.collect(
+                runtime,
+                trigger_tool=tool,
+                reason=message,
+                diagnostics=[d.model_dump(mode="json") for d in diagnostics],
+            )
+            err = self._err(
+                tool,
+                codes.ERROR_ACTION_FAILED,
+                message,
+                classification="answer_action_failed",
+                retryable=False,
+                session_id=req.session_id,
+                diagnostics=diagnostics,
+                artifacts=artifacts,
+            )
+            err["data"] = {"bundle_path": bundle_path}
+            return err
+        finally:
+            runtime.operation_lock.release()
 
     async def get_active_session_snapshot(self, payload: dict[str, Any]) -> dict:
         tool = "get_active_session_snapshot"
@@ -419,17 +519,23 @@ class ToolService:
         runtime, error_response = self._require_runtime(tool, req.session_id)
         if error_response is not None:
             return error_response
-        browser_error = self._require_browser_page(tool, runtime)
-        if browser_error is not None:
-            return browser_error
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            browser_error = self._require_browser_page(tool, runtime)
+            if browser_error is not None:
+                return browser_error
 
-        summary = await self.webrtc_inspector.summary(runtime)
-        return self._ok(
-            tool,
-            summary,
-            session_id=req.session_id,
-            adapter_id=runtime.adapter.adapter_id,
-        )
+            summary = await self.webrtc_inspector.summary(runtime)
+            return self._ok(
+                tool,
+                summary,
+                session_id=req.session_id,
+                adapter_id=runtime.adapter.adapter_id,
+            )
+        finally:
+            runtime.operation_lock.release()
 
     async def collect_debug_bundle(self, payload: dict[str, Any]) -> dict:
         tool = "collect_debug_bundle"
@@ -442,20 +548,26 @@ class ToolService:
         if error_response is not None:
             return error_response
 
-        bundle_path, artifacts = await self.evidence.collect(
-            runtime,
-            trigger_tool=tool,
-            reason=req.reason,
-            diagnostics=[],
-        )
-        result = self._ok(
-            tool,
-            {"bundle_path": bundle_path},
-            session_id=req.session_id,
-            adapter_id=runtime.adapter.adapter_id,
-        )
-        result["artifacts"] = [a.model_dump(mode="json") for a in artifacts]
-        return result
+        lock_error = await self._acquire_operation_lock(tool, runtime)
+        if lock_error is not None:
+            return lock_error
+        try:
+            bundle_path, artifacts = await self.evidence.collect(
+                runtime,
+                trigger_tool=tool,
+                reason=req.reason,
+                diagnostics=[],
+            )
+            result = self._ok(
+                tool,
+                {"bundle_path": bundle_path},
+                session_id=req.session_id,
+                adapter_id=runtime.adapter.adapter_id,
+            )
+            result["artifacts"] = [a.model_dump(mode="json") for a in artifacts]
+            return result
+        finally:
+            runtime.operation_lock.release()
 
     async def diagnose_answer_failure(self, payload: dict[str, Any]) -> dict:
         tool = "diagnose_answer_failure"

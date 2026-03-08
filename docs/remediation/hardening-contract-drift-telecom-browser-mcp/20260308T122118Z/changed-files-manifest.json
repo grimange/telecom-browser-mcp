@@ -1,0 +1,8 @@
+[
+  ".github/workflows/ci.yml",
+  "src/telecom_browser_mcp/sessions/manager.py",
+  "src/telecom_browser_mcp/tools/service.py",
+  "src/telecom_browser_mcp/evidence/bundle.py",
+  "tests/unit/test_lifecycle_transitions.py",
+  "tests/unit/test_evidence_redaction.py"
+]

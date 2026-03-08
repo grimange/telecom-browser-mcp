@@ -1,0 +1,5 @@
+[
+  {"id": "RG-01", "name": "lifecycle-mark-broken-tests", "status": "implemented"},
+  {"id": "RG-02", "name": "expanded-redaction-pattern-tests", "status": "implemented"},
+  {"id": "RG-03", "name": "host-e2e-ci-lane", "status": "implemented"}
+]

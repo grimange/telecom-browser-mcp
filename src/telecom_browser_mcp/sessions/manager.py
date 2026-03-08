@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -16,6 +17,7 @@ class SessionRuntime:
     adapter: AdapterBase
     browser: BrowserHandle
     created_at: datetime
+    operation_lock: asyncio.Lock
 
 
 class SessionManager:
@@ -48,6 +50,7 @@ class SessionManager:
             adapter=adapter,
             browser=browser_handle,
             created_at=datetime.now(UTC),
+            operation_lock=asyncio.Lock(),
         )
         self._sessions[session_id] = runtime
         return runtime
@@ -71,6 +74,14 @@ class SessionManager:
 
     def get(self, session_id: str) -> SessionRuntime | None:
         return self._sessions.get(session_id)
+
+    def mark_broken(self, session_id: str) -> None:
+        runtime = self._sessions.get(session_id)
+        if runtime is None:
+            return
+        if runtime.model.lifecycle_state in {"closed", "closing"}:
+            return
+        runtime.model.lifecycle_state = "broken"
 
     async def close(self, session_id: str) -> bool:
         runtime = self._sessions.get(session_id)
