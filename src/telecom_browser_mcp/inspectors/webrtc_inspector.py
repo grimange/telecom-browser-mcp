@@ -1,13 +1,17 @@
-class WebRtcInspector:
-    async def get_summary(self, adapter, session):
-        return await adapter.get_peer_connection_summary(session)
+from __future__ import annotations
 
-    async def get_stats(self, adapter, session) -> dict:
-        summary = await adapter.get_peer_connection_summary(session)
+from datetime import UTC, datetime
+
+from telecom_browser_mcp.sessions.manager import SessionRuntime
+
+
+class WebRTCInspector:
+    async def summary(self, runtime: SessionRuntime) -> dict:
+        adapter_summary = await runtime.adapter.peer_connection_summary(
+            runtime.model.telecom,
+            runtime.browser.page,
+        )
         return {
-            "available": summary.available,
-            "peer_connection_present": summary.peer_connection_present,
-            "inbound_rtp_audio_packets": summary.inbound_rtp_audio_packets,
-            "outbound_rtp_audio_packets": summary.outbound_rtp_audio_packets,
-            "timestamp": summary.timestamp,
+            "observed_at": datetime.now(UTC).isoformat(),
+            "summary": adapter_summary,
         }

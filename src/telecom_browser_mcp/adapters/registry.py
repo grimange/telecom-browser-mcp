@@ -1,23 +1,32 @@
-from telecom_browser_mcp.adapters.apntalk import ApnTalkAdapter
-from telecom_browser_mcp.adapters.generic_jssip import GenericJsSipAdapter
-from telecom_browser_mcp.adapters.generic_sipjs import GenericSipJsAdapter
-from telecom_browser_mcp.adapters.harness import HarnessAdapter
+from __future__ import annotations
+
+from urllib.parse import urlparse
+
+from telecom_browser_mcp.adapters.base import AdapterBase
+from telecom_browser_mcp.adapters.generic import GenericAdapter
 
 
 class AdapterRegistry:
     def __init__(self) -> None:
-        self._adapters = {
-            "generic_sipjs": GenericSipJsAdapter,
-            "generic_jssip": GenericJsSipAdapter,
-            "apntalk": ApnTalkAdapter,
-            "harness": HarnessAdapter,
+        self._adapters: dict[str, type[AdapterBase]] = {
+            GenericAdapter.adapter_id: GenericAdapter,
         }
+        self._domain_map: dict[str, str] = {}
 
-    def create(self, adapter_name: str):
-        adapter_cls = self._adapters.get(adapter_name)
-        if adapter_cls is None:
-            raise ValueError(f"unknown adapter: {adapter_name}")
-        return adapter_cls()
+    def register(self, adapter_cls: type[AdapterBase], domains: list[str] | None = None) -> None:
+        self._adapters[adapter_cls.adapter_id] = adapter_cls
+        for domain in domains or []:
+            self._domain_map[domain] = adapter_cls.adapter_id
 
-    def names(self) -> list[str]:
-        return sorted(self._adapters.keys())
+    def resolve(self, target_url: str, adapter_id: str | None = None) -> tuple[AdapterBase, str, float]:
+        if adapter_id:
+            if adapter_id in self._adapters:
+                return self._adapters[adapter_id](), "explicit", 1.0
+            raise KeyError(adapter_id)
+
+        host = (urlparse(target_url).hostname or "").lower()
+        if host in self._domain_map:
+            resolved = self._domain_map[host]
+            return self._adapters[resolved](), "domain_map", 0.95
+
+        return GenericAdapter(), "fallback", 0.5

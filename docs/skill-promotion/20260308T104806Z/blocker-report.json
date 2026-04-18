@@ -1,0 +1,23 @@
+{
+  "blockers": [
+    {
+      "type": "missing_critical_input",
+      "detail": "eval_report"
+    },
+    {
+      "type": "missing_critical_input",
+      "detail": "scorecard"
+    },
+    {
+      "type": "scorecard_threshold_failed",
+      "detail": "overall not PASS/PASS WITH WARNINGS"
+    }
+  ],
+  "warnings": [
+    {
+      "type": "missing_noncritical_input",
+      "detail": "live_vs_candidate"
+    }
+  ],
+  "has_blockers": true
+}

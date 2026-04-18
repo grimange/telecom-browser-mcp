@@ -1,0 +1,48 @@
+{
+  "batches":[
+    {
+      "batch_id":"HB-01",
+      "priority":"P1",
+      "goal":"Unify contract surface for all registered tools",
+      "tasks":[
+        "Add canonical input/output models for health/capabilities",
+        "Generate and publish schemas for health/capabilities",
+        "Add tests enforcing canonical model coverage for every registered tool"
+      ],
+      "addresses_findings":["CD-001","SDR-001"]
+    },
+    {
+      "batch_id":"HB-02",
+      "priority":"P1",
+      "goal":"Strengthen lifecycle state machine determinism",
+      "tasks":[
+        "Add explicit lifecycle transitions for broken/cleanup_pending",
+        "Add tests for broken transition and idempotent close on repeated calls",
+        "Map browser launch failures to explicit model state transitions"
+      ],
+      "addresses_findings":["BR-001","SDR-003"]
+    },
+    {
+      "batch_id":"HB-03",
+      "priority":"P2",
+      "goal":"Harden evidence privacy and artifact stability",
+      "tasks":[
+        "Implement deterministic redaction for HTML/diagnosis artifacts",
+        "Add evidence content guards for credential/token patterns",
+        "Add tests that validate artifact capture + redaction expectations"
+      ],
+      "addresses_findings":["DE-001"]
+    },
+    {
+      "batch_id":"HB-04",
+      "priority":"P2",
+      "goal":"Reduce false confidence in integration tests",
+      "tasks":[
+        "Narrow stdio test skip behavior to known environment error classes",
+        "Fail on unexpected protocol/runtime regressions",
+        "Add explicit assertions for tool signatures returned by list_tools"
+      ],
+      "addresses_findings":["TC-001","SDR-002"]
+    }
+  ]
+}

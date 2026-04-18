@@ -1,0 +1,4 @@
+[
+  {"id":"SDR-020","risk":"distributed lifecycle transition logic","severity":"low","maps_to":"BL-003"},
+  {"id":"SDR-021","risk":"regex redaction maintenance burden","severity":"low","maps_to":"DE-003"}
+]

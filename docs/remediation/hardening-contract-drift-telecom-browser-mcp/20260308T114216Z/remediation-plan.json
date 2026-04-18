@@ -1,0 +1,9 @@
+{
+  "pipeline": "002--remediate-hardening-contract-drift",
+  "source_audit": "20260308T113617Z",
+  "batches": [
+    {"id": "B01", "finding_ids": ["CD-001"], "title": "registry-contract-normalization"},
+    {"id": "B02", "finding_ids": ["BR-001"], "title": "lifecycle-determinism"},
+    {"id": "B03", "finding_ids": ["DE-001", "TC-001"], "title": "evidence-and-guard-hardening"}
+  ]
+}

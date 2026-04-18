@@ -1,0 +1,23 @@
+{
+  "source_audit_timestamp": "20260308T113617Z",
+  "source_audit_dir": "docs/audit/hardening-contract-drift-telecom-browser-mcp/20260308T113617Z",
+  "findings": ["CD-001", "BR-001", "DE-001", "TC-001"],
+  "registered_tools": [
+    "health",
+    "capabilities",
+    "open_app",
+    "list_sessions",
+    "close_session",
+    "login_agent",
+    "wait_for_ready",
+    "wait_for_registration",
+    "wait_for_incoming_call",
+    "answer_call",
+    "get_active_session_snapshot",
+    "get_peer_connection_summary",
+    "collect_debug_bundle",
+    "diagnose_answer_failure"
+  ],
+  "canonical_contract_scope_before": "M1 tools only; health/capabilities out-of-map",
+  "verification_constraints": "static-first; no MCP server launch or sandbox browser runtime as acceptance basis"
+}

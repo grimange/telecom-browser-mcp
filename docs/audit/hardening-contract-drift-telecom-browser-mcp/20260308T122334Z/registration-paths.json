@@ -1,0 +1,4 @@
+{
+  "authoritative_registration": "src/telecom_browser_mcp/server/app.py:create_mcp_server",
+  "duplicate_paths": []
+}

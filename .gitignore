@@ -208,4 +208,7 @@ __marimo__/
 .idea
 .codex
 docs/pipelines
+docs/skill-evolution
+docs/evals
 AGENTS.md
+artifacts/

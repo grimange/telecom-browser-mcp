@@ -1,0 +1,14 @@
+[
+  {
+    "id":"CD-001",
+    "title":"Non-canonical envelope for registered tools health/capabilities",
+    "severity":"high",
+    "confidence":"high",
+    "impacted_modules":["src/telecom_browser_mcp/server/app.py","src/telecom_browser_mcp/contracts/m1_contracts.py"],
+    "evidence_type":"static",
+    "evidence":["health/capabilities return ad hoc dict and are not represented by ToolResponse","M1 canonical map does not include these tools"],
+    "why_it_matters":"MCP clients cannot rely on a single response envelope across all exposed tools, increasing client-side branch complexity and drift risk.",
+    "recommended_fix":"Define canonical contracts for health/capabilities (or mark as internal and remove exposure).",
+    "recommended_regression_guard":"Add contract tests asserting every registered tool has a canonical model and emits ToolResponse-compatible shape."
+  }
+]

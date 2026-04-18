@@ -1,0 +1,57 @@
+{
+  "cli_flags": [],
+  "config_files": [
+    "pyproject.toml"
+  ],
+  "default_transport": "stdio",
+  "dependency_prerequisites": [
+    "Python 3.11+",
+    "project dependencies from pyproject.toml",
+    "Playwright browser binaries installed in host runtime for browser-driving tools"
+  ],
+  "entrypoint_type": "project.scripts",
+  "explicit_entrypoints": {
+    "sse": "telecom-browser-mcp-sse",
+    "stdio": "telecom-browser-mcp-stdio",
+    "streamable-http": "telecom-browser-mcp-http"
+  },
+  "known_bootstrap_failures": [
+    {
+      "classification": "environment_limit_missing_browser_binary",
+      "message": "Browser-driving tools can degrade when Playwright browser binaries are unavailable."
+    },
+    {
+      "classification": "environment_limit_unreachable_target",
+      "message": "open_app can fail/degrade when target URL is unreachable."
+    },
+    {
+      "classification": "permission_blocked",
+      "message": "Sandbox/runtime restrictions can block browser launch or transport sockets."
+    }
+  ],
+  "launch_command": "telecom-browser-mcp",
+  "optional_environment_variables": [
+    "FASTMCP_HOST",
+    "FASTMCP_PORT",
+    "TELECOM_BROWSER_MCP_DOCGEN"
+  ],
+  "provenance": {
+    "scripts": [
+      "pyproject.toml",
+      "src/telecom_browser_mcp/__main__.py",
+      "src/telecom_browser_mcp/server/stdio_server.py",
+      "src/telecom_browser_mcp/server/streamable_http_server.py",
+      "src/telecom_browser_mcp/server/sse_server.py"
+    ]
+  },
+  "required_environment_variables": [],
+  "safe_doc_generation_mode": {
+    "available": true,
+    "environment_variable": "TELECOM_BROWSER_MCP_DOCGEN=1"
+  },
+  "supported_transports": [
+    "stdio",
+    "streamable-http",
+    "sse"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "authoritative_registration":"src/telecom_browser_mcp/server/app.py:create_mcp_server",
+  "entrypoints":[
+    "src/telecom_browser_mcp/server/stdio_server.py",
+    "src/telecom_browser_mcp/server/sse_server.py",
+    "src/telecom_browser_mcp/server/streamable_http_server.py",
+    "src/telecom_browser_mcp/__main__.py"
+  ],
+  "duplicate_runtime_registration_paths":[],
+  "import_side_effect_registration":false,
+  "notes":"Entrypoints all call create_mcp_server().run(...), preserving single runtime registration path."
+}

@@ -1,23 +1,53 @@
-from datetime import datetime, timezone
+from __future__ import annotations
 
-from pydantic import BaseModel, Field
-
-from telecom_browser_mcp.models.enums import BrowserSessionState
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class BrowserSessionModel(BaseModel):
+class AdapterCapabilities(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    supports_login: bool = False
+    supports_registration_detection: bool = False
+    supports_incoming_call_detection: bool = False
+    supports_answer_action: bool = False
+    supports_hangup_action: bool = False
+    supports_webrtc_summary: bool = False
+
+
+class TelecomStatus(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    browser_open: bool = False
+    adapter_attached: bool = False
+    login_complete: bool = False
+    ui_ready: bool = False
+    registration_state: str = "unknown"
+    incoming_call_state: str = "unknown"
+    active_call_state: str = "unknown"
+
+
+class SessionModel(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     session_id: str
-    run_id: str
-    status: BrowserSessionState = BrowserSessionState.ACTIVE
-    adapter_name: str
-    adapter_version: str
-    base_url: str | None = None
-    origin: str | None = None
-    headless: bool = True
-    browser_type: str = "chromium"
-    environment_classification: str = "unknown"
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    last_activity_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    current_page_url: str | None = None
-    page_title: str | None = None
-    artifacts_dir: str
+    adapter_id: str
+    adapter_version: str = "0.1"
+    capabilities: AdapterCapabilities = Field(default_factory=AdapterCapabilities)
+    target_url: str
+    lifecycle_state: str = "starting"
+    artifact_root: str
+    browser_launch_error: str | None = None
+    browser_launch_error_classification: str | None = None
+    telecom: TelecomStatus = Field(default_factory=TelecomStatus)
+
+
+class SessionSummary(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    session_id: str
+    adapter_id: str
+    lifecycle_state: str
+    target_url: str
+    registration_state: str
+    incoming_call_state: str
+    active_call_state: str

@@ -1,0 +1,26 @@
+# B01 Registry Contract Normalization
+
+- objective: normalize contract surface for all registered tools
+- source findings: CD-001
+- severity: high
+- target files:
+  - src/telecom_browser_mcp/contracts/m1_contracts.py
+  - src/telecom_browser_mcp/contracts/__init__.py
+  - scripts/generate_contract_schemas.py
+  - src/telecom_browser_mcp/server/app.py
+  - src/telecom_browser_mcp/tools/service.py
+  - tests/contract/test_schema_runtime_parity.py
+  - tests/contract/test_m1_tool_envelopes.py
+- root cause: registered support tools existed outside canonical contract source and envelope path
+- remediation steps:
+  - add `SUPPORT_TOOL_INPUT_MODELS` and unified `CANONICAL_TOOL_INPUT_MODELS`
+  - route `health` and `capabilities` through service methods returning canonical envelope
+  - generate schema artifacts for support tools
+  - extend parity tests to cover all canonical tools
+- acceptance checks:
+  - support tool schemas generated in `docs/contracts/m1`
+  - parity tests include `health` and `capabilities`
+- regression guards:
+  - registry/contract map as single canonical source
+- rollback concerns:
+  - support-tool clients expecting old payload shape must adapt to canonical envelope

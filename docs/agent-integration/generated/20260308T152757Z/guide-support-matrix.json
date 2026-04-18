@@ -1,0 +1,59 @@
+{
+  "guides": [
+    {
+      "agent_name": "codex-cli",
+      "confidence": {
+        "invocation_success": "low",
+        "startup_contract": "high",
+        "tool_discovery": "high",
+        "workflow_validity": "medium"
+      },
+      "runtime_verification_status": "unverified_integration_pattern",
+      "status": "unverified integration pattern"
+    },
+    {
+      "agent_name": "claude-desktop",
+      "confidence": {
+        "invocation_success": "low",
+        "startup_contract": "high",
+        "tool_discovery": "high",
+        "workflow_validity": "medium"
+      },
+      "runtime_verification_status": "unverified_integration_pattern",
+      "status": "unverified integration pattern"
+    },
+    {
+      "agent_name": "openai-agents",
+      "confidence": {
+        "invocation_success": "low",
+        "startup_contract": "high",
+        "tool_discovery": "high",
+        "workflow_validity": "medium"
+      },
+      "runtime_verification_status": "unverified_integration_pattern",
+      "status": "unverified integration pattern"
+    },
+    {
+      "agent_name": "langchain",
+      "confidence": {
+        "invocation_success": "low",
+        "startup_contract": "high",
+        "tool_discovery": "high",
+        "workflow_validity": "medium"
+      },
+      "runtime_verification_status": "unverified_integration_pattern",
+      "status": "unverified integration pattern"
+    },
+    {
+      "agent_name": "crewai",
+      "confidence": {
+        "invocation_success": "low",
+        "startup_contract": "high",
+        "tool_discovery": "high",
+        "workflow_validity": "medium"
+      },
+      "runtime_verification_status": "unverified_integration_pattern",
+      "status": "unverified integration pattern"
+    }
+  ]
+}

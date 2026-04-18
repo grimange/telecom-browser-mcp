@@ -1,0 +1,34 @@
+{
+  "arguments": [],
+  "config_resolution_order": [
+    "process env",
+    "tool defaults"
+  ],
+  "configuration_files": [
+    "pyproject.toml"
+  ],
+  "default_transport": "stdio",
+  "entrypoint_type": "project.scripts",
+  "external_runtime_dependencies": [
+    "playwright browser binary",
+    "target web application reachability"
+  ],
+  "known_bootstrap_failures": [
+    "environment_limit_missing_browser_binary",
+    "permission_blocked",
+    "environment_limit_unreachable_target"
+  ],
+  "launch_command": "telecom-browser-mcp",
+  "optional_env_vars": [
+    "FASTMCP_HOST",
+    "FASTMCP_PORT",
+    "TELECOM_BROWSER_MCP_DOCGEN"
+  ],
+  "required_env_vars": [],
+  "safe_docgen_mode_available": true,
+  "transport_modes_supported": [
+    "sse",
+    "stdio",
+    "streamable-http"
+  ]
+}

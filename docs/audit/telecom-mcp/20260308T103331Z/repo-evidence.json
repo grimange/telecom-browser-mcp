@@ -1,0 +1,23 @@
+{
+  "entrypoints": [
+    ".codex/skills/self-evolving-skill-governor/scripts/build_candidate.py",
+    ".codex/skills/self-evolving-skill-governor/scripts/build_eval_plan.py",
+    ".codex/skills/self-evolving-skill-governor/scripts/cluster_failures.py",
+    ".codex/skills/self-evolving-skill-governor/scripts/collect_inputs.py",
+    ".codex/skills/self-evolving-skill-governor/scripts/diff_candidate.py",
+    ".codex/skills/telecom-mcp-audit/scripts/build_audit_report.py",
+    ".codex/skills/telecom-mcp-audit/scripts/build_remediation_batches.py",
+    ".codex/skills/telecom-mcp-audit/scripts/build_root_cause_report.py",
+    ".codex/skills/telecom-mcp-audit/scripts/collect_repo_evidence.py",
+    ".codex/skills/telecom-mcp-audit/scripts/detect_contract_drift.py",
+    ".codex/skills/telecom-mcp-audit/scripts/detect_mcp_risks.py",
+    ".codex/skills/telecom-mcp-audit/scripts/discover_audit_inputs.py"
+  ],
+  "startup_signals": [
+    "pyproject present"
+  ],
+  "tooling_signals": [
+    "mcp references present"
+  ],
+  "doc_alignment_signals": []
+}

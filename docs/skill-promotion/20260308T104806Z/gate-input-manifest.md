@@ -1,0 +1,8 @@
+# Gate Input Manifest
+
+- timestamp: 20260308T104806Z
+- skill: telecom-mcp-audit
+- live_skill: /home/ramjf/python-projects/telecom-browser-mcp/.codex/skills/telecom-mcp-audit/SKILL.md
+- candidate_skill: /home/ramjf/python-projects/telecom-browser-mcp/docs/skill-evolution/20260308T104215Z/candidate-skill-bundle/telecom-mcp-audit/SKILL.md
+- live_exists: True
+- candidate_exists: True

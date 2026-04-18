@@ -1,0 +1,571 @@
+{
+  "tools": [
+    {
+      "description": "Attempt to answer an incoming call.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 15000,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "TimeoutInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "timeout_ms"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "answer_call"
+    },
+    {
+      "description": "Read-only capability discovery.",
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "EmptyInput",
+        "type": "object"
+      },
+      "operational_confidence": "verified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [],
+      "tool_name": "capabilities"
+    },
+    {
+      "description": "Close a managed session.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "SessionInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "close_session"
+    },
+    {
+      "description": "Capture structured troubleshooting artifacts.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "reason": null,
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reason"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "CollectDebugBundleInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "reason"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "collect_debug_bundle"
+    },
+    {
+      "description": "Run answer-failure diagnostic classification.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "SessionInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "diagnose_answer_failure"
+    },
+    {
+      "description": "Read session-level runtime snapshot.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "SessionInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "get_active_session_snapshot"
+    },
+    {
+      "description": "Read WebRTC peer connection summary.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "SessionInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "get_peer_connection_summary"
+    },
+    {
+      "description": "Read-only service health check.",
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "EmptyInput",
+        "type": "object"
+      },
+      "operational_confidence": "verified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [],
+      "tool_name": "health"
+    },
+    {
+      "description": "List currently tracked sessions.",
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "title": "EmptyInput",
+        "type": "object"
+      },
+      "operational_confidence": "verified",
+      "optional_arguments": [],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [],
+      "tool_name": "list_sessions"
+    },
+    {
+      "description": "Run adapter login flow.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "credentials": {},
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "credentials": {
+            "additionalProperties": true,
+            "default": {},
+            "title": "Credentials",
+            "type": "object"
+          },
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 15000,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "LoginInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "credentials",
+        "timeout_ms"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "login_agent"
+    },
+    {
+      "description": "Create a telecom browser session.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "adapter_id": null,
+        "headless": true,
+        "session_label": null,
+        "target_url": "https://example.invalid"
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Adapter Id"
+          },
+          "headless": {
+            "default": true,
+            "title": "Headless",
+            "type": "boolean"
+          },
+          "session_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Session Label"
+          },
+          "target_url": {
+            "title": "Target Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "target_url"
+        ],
+        "title": "OpenAppInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "adapter_id",
+        "headless",
+        "session_label"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "target_url"
+      ],
+      "tool_name": "open_app"
+    },
+    {
+      "description": "Wait until an incoming call is observed.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 15000,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "TimeoutInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "timeout_ms"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "wait_for_incoming_call"
+    },
+    {
+      "description": "Wait until UI/app is ready.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 15000,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "TimeoutInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "timeout_ms"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "wait_for_ready"
+    },
+    {
+      "description": "Wait until telecom registration is observed.",
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "input_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "timeout_ms": {
+            "default": 15000,
+            "title": "Timeout Ms",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_id"
+        ],
+        "title": "TimeoutInput",
+        "type": "object"
+      },
+      "operational_confidence": "unverified",
+      "optional_arguments": [
+        "timeout_ms"
+      ],
+      "provenance": {
+        "description": "extracted",
+        "input_schema": "extracted",
+        "metadata_annotations": "inferred",
+        "optional_fields": "extracted",
+        "required_fields": "extracted",
+        "tool_name": "extracted"
+      },
+      "required_arguments": [
+        "session_id"
+      ],
+      "tool_name": "wait_for_registration"
+    }
+  ]
+}

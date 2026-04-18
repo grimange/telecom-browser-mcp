@@ -1,26 +1,9 @@
-from __future__ import annotations
-
-from telecom_browser_mcp.config.settings import Settings
-from telecom_browser_mcp.server.app import TelecomBrowserApp
-from telecom_browser_mcp.server.stdio_server import _register_tools_with_fastmcp
+from telecom_browser_mcp.server.app import create_mcp_server
 
 
 def main() -> None:
-    settings = Settings.from_env()
-    app = TelecomBrowserApp(settings)
-    try:
-        from mcp.server.fastmcp import FastMCP
-    except Exception as exc:
-        raise SystemExit(
-            "mcp SDK is unavailable; install dependencies with `pip install -e .[dev]` "
-            f"(import error: {exc})"
-        )
+    create_mcp_server().run(transport="sse")
 
-    server = FastMCP("telecom-browser-mcp")
-    _register_tools_with_fastmcp(server, app)
 
-    # SSE remains an explicit compatibility path for hosts that still prefer it.
-    try:
-        server.run(transport="sse", host=settings.host, port=settings.port)
-    except TypeError:
-        server.run(transport="sse")
+if __name__ == "__main__":
+    main()

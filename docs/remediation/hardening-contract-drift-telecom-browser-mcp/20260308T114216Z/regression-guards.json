@@ -1,0 +1,7 @@
+[
+  {"id": "RG-01", "name": "canonical-tool-map-single-source", "status": "implemented"},
+  {"id": "RG-02", "name": "all-canonical-tools-undeclared-input-rejection", "status": "implemented"},
+  {"id": "RG-03", "name": "schema-generation-drift-check", "status": "implemented"},
+  {"id": "RG-04", "name": "evidence-redaction-unit-tests", "status": "implemented"},
+  {"id": "RG-05", "name": "narrowed-integration-skip-policy", "status": "implemented"}
+]

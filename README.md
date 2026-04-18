@@ -1,197 +1,116 @@
 # telecom-browser-mcp
 
-Telecom-aware browser MCP server for debugging WebRTC softphones and browser dialers with domain-specific tools.
+`telecom-browser-mcp` is a Python MCP server for telecom-aware browser automation and diagnostics.
 
-## What it does
+## M1 tools
 
-`telecom-browser-mcp` exposes telecom intent through MCP tools, including:
+- `open_app`
+- `list_sessions`
+- `close_session`
+- `login_agent`
+- `wait_for_ready`
+- `wait_for_registration`
+- `wait_for_incoming_call`
+- `answer_call`
+- `get_active_session_snapshot`
+- `get_peer_connection_summary`
+- `collect_debug_bundle`
+- `diagnose_answer_failure`
 
-- safe first contact: `health`, `capabilities`
-- session lifecycle: `open_app`, `list_sessions`, `close_session`, `reset_session`
-- registration: `get_registration_status`, `wait_for_registration`, `assert_registered`
-- inbound/answer flow: `wait_for_incoming_call`, `answer_call`, `hangup_call`
-- runtime inspection: `get_active_session_snapshot`, `get_store_snapshot`, `get_peer_connection_summary`, `get_webrtc_stats`
-- diagnostics and evidence: `diagnose_registration_failure`, `diagnose_incoming_call_failure`, `diagnose_answer_failure`, `collect_debug_bundle`
+## Support tools
 
-All tool outputs follow a structured response envelope with explicit failure metadata.
-
-## Architecture
-
-Package root: `src/telecom_browser_mcp/`
-
-- `server/`: MCP entrypoints (`stdio`, `streamable-http`, `sse` compatibility)
-- `sessions/`, `browser/`: browser lifecycle and session tracking
-- `adapters/`: app-specific selectors/runtime hooks (APNTalk + generic scaffolds + harness)
-- `inspectors/`: read-only inspection helpers
-- `diagnostics/`: explainable failure analysis
-- `evidence/`: artifact and debug-bundle generation
-- `models/`: stable schemas and enums
-- `tools/`: orchestration layer for MCP-exposed operations
-
-## Install
-
-```bash
-python -m pip install -e .[dev]
-python -m playwright install chromium
-```
-
-Or use the bootstrap script:
-
-```bash
-./scripts/bootstrap.sh
-```
+- `health`
+- `capabilities`
 
 ## Run
 
-Default (stdio):
-
-```bash
-python -m telecom_browser_mcp
-```
-
-Explicit entrypoints:
-
 ```bash
 telecom-browser-mcp-stdio
-telecom-browser-mcp-http
+```
+
+Other transports:
+
+```bash
 telecom-browser-mcp-sse
+telecom-browser-mcp-http
 ```
 
-## Codex MCP registration
+## Adapters
 
-Canonical registration command:
+- `generic` fallback adapter
+- `fake_dialer` deterministic test harness adapter
+- `apntalk` telecom adapter scaffold (domain mapped for `apntalk.com` and `app.apntalk.com`)
+
+## Contract
+
+All M1 tool responses use a strict envelope with `meta.contract_version = "v1"`.
+
+`open_app` also returns `data.ready_for_actions` so clients can gate telecom steps
+without probing failures. If `ready_for_actions` is `false`, inspect diagnostics
+before calling session-bound telecom actions.
+
+Session-bound operations are serialized per session. If an operation lock cannot
+be acquired in time, the tool returns `error.code = "not_ready"` with
+`error.classification = "session_busy"` and `retryable = true`.
+
+Canonical input contracts are defined in
+`src/telecom_browser_mcp/contracts/m1_contracts.py`.
+Published schemas are generated into `docs/contracts/m1/`.
+
+Generate schemas:
 
 ```bash
-codex mcp add telecom-browser -- python -m telecom_browser_mcp
+PYTHONPATH=src python scripts/generate_contract_schemas.py
 ```
 
-Alternate command (console script):
+## Fake Dialer Harness
 
-```bash
-codex mcp add telecom-browser -- telecom-browser-mcp-stdio
-```
+Deterministic scenarios are provided by `tests/e2e/fixtures/fake_dialer.html`:
 
-`codex` config snippet:
+- `success`
+- `missing_answer`
+- `answer_fails`
+- `no_registration`
+- `no_peer`
 
-```toml
-[mcp_servers.telecom-browser]
-command = "python"
-args = ["-m", "telecom_browser_mcp"]
-cwd = "/home/ramjf/python-projects/telecom-browser-mcp"
-```
-
-See also:
-
-- `docs/setup/codex-mcp.md`
-- `docs/usage/codex-agent-usage.md`
-
-Recommended first-call smoke sequence after registration:
-
-1. Call `health` with no arguments.
-2. Call `capabilities` with no arguments.
-3. Call `list_sessions` with no arguments.
-
-Tool input contract notes:
-
-- Public MCP tool inputs are explicit per-tool JSON object fields from tool signatures.
-- `kwargs` is not a public MCP input field and must not be sent as top-level tool input.
-- Internal `TelecomBrowserApp.dispatch(...)` calls should use native keyword maps (for example `dispatch("list_sessions")`, `dispatch("open_app", url=...)`).
-- The legacy `{ "kwargs": ... }` envelope is a deprecated internal compatibility path only and remains non-contractual.
-
-## Environment
-
-Copy `.env.example` and adjust:
-
-- `TELECOM_BROWSER_MCP_TRANSPORT`
-- `TELECOM_BROWSER_MCP_HOST`
-- `TELECOM_BROWSER_MCP_PORT`
-- `TELECOM_BROWSER_MCP_DEFAULT_ADAPTER`
-- `TELECOM_BROWSER_MCP_ALLOWED_ORIGINS`
-- `TELECOM_BROWSER_MCP_ARTIFACT_ROOT`
-
-## Host vs sandbox guidance
-
-- Browser automation tools (`open_app`, `wait_for_registration`, `answer_call`) should run on a host/runtime that can launch Chromium.
-- Sandbox transport/runtime failures should be treated as environment limitations unless host evidence confirms product regressions.
-- Use `scripts/run_mcp_interop_probe.py` for MCP handshake diagnostics and capture evidence before remediation.
-
-## Fake dialer harness
-
-A deterministic harness fixture is provided at:
-
-- `tests/fixtures/fake_dialer.html`
-- `adapters/harness.py` for predictable registration/inbound/answer paths
-
-Use `adapter_name="harness"` in tests and local tool-smoke runs.
-
-## Testing
+Run tests:
 
 ```bash
 pytest -q
 ```
 
-Test coverage currently focuses on:
+If Playwright browser binaries are unavailable in the environment, harness e2e tests are skipped.
+These tests are marked `host_required`.
 
-- import/bootstrap integrity
-- schema/envelope validation
-- adapter registry shape
-- harness-based integration flow
-- stdio quickstart smoke behavior
+## First-Contact and Workflow
 
-Lifecycle fault-injection harness (deterministic crash/closure/stale-selector scenarios):
+Recommended MCP first-contact sequence:
 
-```bash
-.venv/bin/python scripts/run_lifecycle_fault_harness.py
-```
+1. `health`
+2. `capabilities`
+3. `list_sessions`
 
-Browser diagnostics bundles (manifest + console/network/pageerror metadata):
+Telecom workflow sequence:
 
-```bash
-# via MCP tools: collect_browser_logs / collect_debug_bundle
-# artifacts are written under each session run directory in browser-diagnostics/
-```
+1. `open_app`
+2. `login_agent`
+3. `wait_for_ready`
+4. `wait_for_registration`
+5. `wait_for_incoming_call`
+6. `answer_call`
+7. `get_active_session_snapshot` / `get_peer_connection_summary`
+8. `collect_debug_bundle` / `diagnose_answer_failure` as needed
+9. `close_session`
 
-Diagnostics-aware validation integration:
+## CI
 
-```bash
-.venv/bin/python scripts/validate_v0_2_contracts.py
-```
+GitHub Actions runs `ruff check src tests` and `pytest -q` on push and pull requests.
 
-Telecom UI failure signature library build:
-
-```bash
-.venv/bin/python scripts/build_failure_signature_library.py
-```
-
-Closed-loop pipeline governor orchestration:
+For host-lane transport proof (require non-skipped stdio/SSE/HTTP smoke), run:
 
 ```bash
-.venv/bin/python scripts/run_pipeline_governor.py
+MCP_REQUIRE_LIVE_TRANSPORT_RUNTIME=1 \
+  pytest -q tests/integration/test_stdio_smoke.py tests/integration/test_http_transport_smoke.py
 ```
 
-Architecture guardrails pre/post governance checks:
-
-```bash
-.venv/bin/python scripts/run_architecture_guardrails.py
-```
-
-## Artifact layout
-
-Debug bundles are written under:
-
-```text
-docs/audit/telecom-browser-mcp/YYYY-MM-DD/run-YYYYMMDDTHHMMSSZ/
-```
-
-Bundle contents include:
-
-- `summary.json`
-- `report.md`
-- `runtime/*.json`
-- screenshots/logs when available in environment
-
-## Notes
-
-- Browser launch failures are classified as environment limitations with structured failure output.
-- Adapter-specific selectors and runtime hooks remain isolated in `adapters/`.
-- v1 intentionally avoids arbitrary JS/selector tools.
+When `MCP_REQUIRE_LIVE_TRANSPORT_RUNTIME=1` is set, environment limitations fail the test run instead of skipping.

@@ -1,8 +1,0 @@
-{
-  "generated_at": "2026-03-08T00:55:18.657739+00:00",
-  "classification": "sandbox_only_execution_blocker",
-  "decision_case": "D",
-  "reentry_allowed": false,
-  "blocked_from_remediation": true,
-  "recommended_next_action": "treat_as_execution_platform_issue_and_run_future_interop_validation_on_host_or_supported_runner"
-}

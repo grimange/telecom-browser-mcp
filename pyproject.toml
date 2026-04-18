@@ -40,6 +40,9 @@ where = ["src"]
 pythonpath = ["src"]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+markers = [
+  "host_required: tests that depend on host Playwright/browser runtime and may be skipped in constrained environments",
+]
 
 [tool.ruff]
 line-length = 100

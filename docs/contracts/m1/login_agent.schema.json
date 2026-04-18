@@ -1,0 +1,222 @@
+{
+  "input_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "credentials": {
+        "additionalProperties": true,
+        "default": {},
+        "title": "Credentials",
+        "type": "object"
+      },
+      "session_id": {
+        "title": "Session Id",
+        "type": "string"
+      },
+      "timeout_ms": {
+        "default": 15000,
+        "title": "Timeout Ms",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "session_id"
+    ],
+    "title": "LoginInput",
+    "type": "object"
+  },
+  "response_schema": {
+    "$defs": {
+      "ArtifactRef": {
+        "additionalProperties": false,
+        "properties": {
+          "captured": {
+            "default": true,
+            "title": "Captured",
+            "type": "boolean"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Message"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "path"
+        ],
+        "title": "ArtifactRef",
+        "type": "object"
+      },
+      "DiagnosticItem": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "title": "Classification",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "confidence": {
+            "default": "medium",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ],
+            "title": "Confidence",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "classification",
+          "message"
+        ],
+        "title": "DiagnosticItem",
+        "type": "object"
+      },
+      "ToolError": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "default": "unknown",
+            "title": "Classification",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "retryable": {
+            "default": false,
+            "title": "Retryable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ToolError",
+        "type": "object"
+      },
+      "ToolMeta": {
+        "additionalProperties": false,
+        "properties": {
+          "adapter_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Adapter Id"
+          },
+          "contract_version": {
+            "default": "v1",
+            "title": "Contract Version",
+            "type": "string"
+          }
+        },
+        "title": "ToolMeta",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "artifacts": {
+        "items": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "title": "Artifacts",
+        "type": "array"
+      },
+      "data": {
+        "additionalProperties": true,
+        "title": "Data",
+        "type": "object"
+      },
+      "diagnostics": {
+        "items": {
+          "$ref": "#/$defs/DiagnosticItem"
+        },
+        "title": "Diagnostics",
+        "type": "array"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ToolError"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "meta": {
+        "$ref": "#/$defs/ToolMeta"
+      },
+      "ok": {
+        "title": "Ok",
+        "type": "boolean"
+      },
+      "session_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Session Id"
+      },
+      "tool": {
+        "title": "Tool",
+        "type": "string"
+      }
+    },
+    "required": [
+      "ok",
+      "tool"
+    ],
+    "title": "ToolResponse",
+    "type": "object"
+  },
+  "tool": "login_agent"
+}

@@ -1,0 +1,8 @@
+{
+  "results": [
+    {"id": "AC-01", "batch": "B01", "result": "pass"},
+    {"id": "AC-02", "batch": "B02", "result": "pass"},
+    {"id": "AC-03", "batch": "B03", "result": "pass"},
+    {"id": "AC-04", "batch": "ALL", "result": "pass", "evidence": "13 passed"}
+  ]
+}

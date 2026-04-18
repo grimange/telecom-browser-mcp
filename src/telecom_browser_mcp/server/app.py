@@ -1,78 +1,99 @@
 from __future__ import annotations
 
-import inspect
-import json
+import os
 from typing import Any
 
-from telecom_browser_mcp.config.settings import Settings
-from telecom_browser_mcp.tools.orchestrator import ToolOrchestrator
+from mcp.server.fastmcp import FastMCP
+
+from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
+from telecom_browser_mcp.tools.service import ToolService
 
 
-class TelecomBrowserApp:
-    def __init__(self, settings: Settings | None = None) -> None:
-        self.settings = settings or Settings.from_env()
-        self.orchestrator = ToolOrchestrator(self.settings)
+def create_mcp_server() -> FastMCP:
+    host = os.environ.get("FASTMCP_HOST", "127.0.0.1")
+    try:
+        port = int(os.environ.get("FASTMCP_PORT", "8000"))
+    except ValueError:
+        port = 8000
 
-    @staticmethod
-    def _normalize_legacy_kwargs(kwargs: dict[str, Any]) -> dict[str, Any]:
-        # Legacy clients may wrap all tool inputs in a single "kwargs" field.
-        if set(kwargs.keys()) != {"kwargs"}:
-            return kwargs
-        payload = kwargs.get("kwargs")
-        if payload in (None, ""):
-            return {}
-        if isinstance(payload, dict):
-            return payload
-        if isinstance(payload, str):
-            try:
-                decoded = json.loads(payload)
-            except json.JSONDecodeError as exc:
-                raise ValueError("invalid legacy kwargs wrapper: payload is not valid JSON") from exc
-            if isinstance(decoded, dict):
-                return decoded
-            raise ValueError("invalid legacy kwargs wrapper: decoded payload must be a JSON object")
-        raise ValueError("invalid legacy kwargs wrapper: payload must be an object or JSON object string")
+    mcp = FastMCP("telecom-browser-mcp", host=host, port=port)
+    service = ToolService()
 
-    @staticmethod
-    def _validate_dispatch_kwargs(tool_name: str, handler: Any, kwargs: dict[str, Any]) -> None:
-        signature = inspect.signature(handler)
-        parameters = signature.parameters
-        accepts_var_kwargs = any(param.kind is inspect.Parameter.VAR_KEYWORD for param in parameters.values())
-        allowed_keys = {
-            name
-            for name, param in parameters.items()
-            if param.kind
-            in {
-                inspect.Parameter.POSITIONAL_OR_KEYWORD,
-                inspect.Parameter.KEYWORD_ONLY,
-            }
-        }
-        required_keys = {
-            name
-            for name, param in parameters.items()
-            if param.kind
-            in {
-                inspect.Parameter.POSITIONAL_OR_KEYWORD,
-                inspect.Parameter.KEYWORD_ONLY,
-            }
-            and param.default is inspect.Parameter.empty
-        }
+    async def dispatch(tool_name: str, payload: dict[str, Any]) -> dict:
+        handler = getattr(service, tool_name)
+        return await handler(payload)
 
-        if not accepts_var_kwargs:
-            unexpected = sorted(set(kwargs.keys()) - allowed_keys)
-            if unexpected:
-                names = ", ".join(unexpected)
-                raise ValueError(f"invalid arguments for tool '{tool_name}': unexpected field(s): {names}")
+    @mcp.tool()
+    async def health() -> dict:
+        return await dispatch("health", {})
 
-        missing = sorted(required_keys - set(kwargs.keys()))
-        if missing:
-            names = ", ".join(missing)
-            raise ValueError(f"invalid arguments for tool '{tool_name}': missing required field(s): {names}")
+    @mcp.tool()
+    async def capabilities() -> dict:
+        return await dispatch("capabilities", {})
 
-    async def dispatch(self, tool_name: str, **kwargs):
-        handler = getattr(self.orchestrator, tool_name, None)
-        if handler is None:
-            raise ValueError(f"unknown tool: {tool_name}")
-        normalized_kwargs = self._normalize_legacy_kwargs(kwargs)
-        self._validate_dispatch_kwargs(tool_name, handler, normalized_kwargs)
-        return await handler(**normalized_kwargs)
+    @mcp.tool()
+    async def open_app(target_url: str, adapter_id: str | None = None, headless: bool = True, session_label: str | None = None) -> dict:
+        return await dispatch("open_app", {"target_url": target_url, "adapter_id": adapter_id, "headless": headless, "session_label": session_label})
+
+    @mcp.tool()
+    async def list_sessions() -> dict:
+        return await dispatch("list_sessions", {})
+
+    @mcp.tool()
+    async def close_session(session_id: str) -> dict:
+        return await dispatch("close_session", {"session_id": session_id})
+
+    @mcp.tool()
+    async def login_agent(session_id: str, credentials: dict[str, Any] | None = None, timeout_ms: int = 15000) -> dict:
+        return await dispatch("login_agent", {"session_id": session_id, "credentials": credentials or {}, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def wait_for_ready(session_id: str, timeout_ms: int = 15000) -> dict:
+        return await dispatch("wait_for_ready", {"session_id": session_id, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def wait_for_registration(session_id: str, timeout_ms: int = 15000) -> dict:
+        return await dispatch("wait_for_registration", {"session_id": session_id, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def wait_for_incoming_call(session_id: str, timeout_ms: int = 15000) -> dict:
+        return await dispatch("wait_for_incoming_call", {"session_id": session_id, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def answer_call(session_id: str, timeout_ms: int = 15000) -> dict:
+        return await dispatch("answer_call", {"session_id": session_id, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def get_active_session_snapshot(session_id: str) -> dict:
+        return await dispatch("get_active_session_snapshot", {"session_id": session_id})
+
+    @mcp.tool()
+    async def get_peer_connection_summary(session_id: str) -> dict:
+        return await dispatch("get_peer_connection_summary", {"session_id": session_id})
+
+    @mcp.tool()
+    async def collect_debug_bundle(session_id: str, reason: str | None = None) -> dict:
+        return await dispatch("collect_debug_bundle", {"session_id": session_id, "reason": reason})
+
+    @mcp.tool()
+    async def diagnose_answer_failure(session_id: str) -> dict:
+        return await dispatch("diagnose_answer_failure", {"session_id": session_id})
+
+    assert set(CANONICAL_TOOL_INPUT_MODELS.keys()) == {
+        "health",
+        "capabilities",
+        "open_app",
+        "list_sessions",
+        "close_session",
+        "login_agent",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "get_active_session_snapshot",
+        "get_peer_connection_summary",
+        "collect_debug_bundle",
+        "diagnose_answer_failure",
+    }
+
+    return mcp

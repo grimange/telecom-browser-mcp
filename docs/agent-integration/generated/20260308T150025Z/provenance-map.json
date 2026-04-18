@@ -1,0 +1,72 @@
+{
+  "answer_call": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "capabilities": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "close_session": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "collect_debug_bundle": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "diagnose_answer_failure": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "get_active_session_snapshot": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "get_peer_connection_summary": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "health": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "list_sessions": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "login_agent": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "open_app": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "wait_for_incoming_call": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "wait_for_ready": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  },
+  "wait_for_registration": {
+    "description": "runtime_registry",
+    "input_schema": "canonical_tool_input_models",
+    "metadata_annotations": "docgen_inference"
+  }
+}

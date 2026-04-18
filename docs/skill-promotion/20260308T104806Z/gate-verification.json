@@ -1,0 +1,10 @@
+{
+  "candidate_exists": true,
+  "live_exists": true,
+  "eval_report": false,
+  "scorecard": false,
+  "live_vs_candidate": false,
+  "rollback_notes": true,
+  "promotion_checklist": true,
+  "scorecard_threshold": false
+}

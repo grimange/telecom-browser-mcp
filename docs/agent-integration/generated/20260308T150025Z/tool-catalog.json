@@ -1,0 +1,402 @@
+{
+  "tools": [
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [
+        "action_failed",
+        "session_broken"
+      ],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "get_peer_connection_summary",
+        "diagnose_answer_failure",
+        "collect_debug_bundle"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "answer_call",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "timeout_ms"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "write",
+      "summary": "Attempt to answer an incoming call."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": false,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "capabilities",
+      "operational_confidence": "verified",
+      "optional_fields": [],
+      "required_fields": [],
+      "session_required": false,
+      "side_effect_level": "read",
+      "summary": "Read-only capability discovery."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [
+        "session_not_found",
+        "session_not_ready"
+      ],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "close_session",
+      "operational_confidence": "unverified",
+      "optional_fields": [],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "write",
+      "summary": "Close a managed session."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "reason": null,
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "collect_debug_bundle",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "reason"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "write",
+      "summary": "Capture structured troubleshooting artifacts."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "collect_debug_bundle"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "diagnose_answer_failure",
+      "operational_confidence": "unverified",
+      "optional_fields": [],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "read",
+      "summary": "Run answer-failure diagnostic classification."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "get_active_session_snapshot",
+      "operational_confidence": "unverified",
+      "optional_fields": [],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "read",
+      "summary": "Read session-level runtime snapshot."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "get_peer_connection_summary",
+      "operational_confidence": "unverified",
+      "optional_fields": [],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "read",
+      "summary": "Read WebRTC peer connection summary."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": false,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "health",
+      "operational_confidence": "verified",
+      "optional_fields": [],
+      "required_fields": [],
+      "session_required": false,
+      "side_effect_level": "read",
+      "summary": "Read-only service health check."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": false,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {},
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "list_sessions",
+      "operational_confidence": "verified",
+      "optional_fields": [],
+      "required_fields": [],
+      "session_required": false,
+      "side_effect_level": "read",
+      "summary": "List currently tracked sessions."
+    },
+    {
+      "adapter_required": true,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "credentials": {},
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "login_agent",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "credentials",
+        "timeout_ms"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "write",
+      "summary": "Run adapter login flow."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [
+        "adapter_not_supported",
+        "environment_limit_missing_browser_binary",
+        "environment_limit_unreachable_target"
+      ],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "adapter_id": null,
+        "headless": true,
+        "session_label": null,
+        "target_url": "https://example.invalid"
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "wait_for_ready",
+        "wait_for_registration",
+        "close_session"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "open_app",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "adapter_id",
+        "headless",
+        "session_label"
+      ],
+      "required_fields": [
+        "target_url"
+      ],
+      "session_required": false,
+      "side_effect_level": "write",
+      "summary": "Create a telecom browser session."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [
+        "incoming_call_not_detected",
+        "session_broken"
+      ],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "answer_call"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "wait_for_incoming_call",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "timeout_ms"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "mixed",
+      "summary": "Wait until an incoming call is observed."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "wait_for_registration"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "wait_for_ready",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "timeout_ms"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "mixed",
+      "summary": "Wait until UI/app is ready."
+    },
+    {
+      "adapter_required": false,
+      "browser_required": true,
+      "common_failure_modes": [
+        "registration_not_detected",
+        "session_broken"
+      ],
+      "example_generation_method": "placeholder",
+      "example_payload": {
+        "session_id": "<example-session-id>",
+        "timeout_ms": 15000
+      },
+      "extraction_confidence": "high",
+      "likely_followups": [
+        "wait_for_incoming_call",
+        "get_active_session_snapshot"
+      ],
+      "metadata_classification": {
+        "input_schema": "extracted",
+        "summary": "extracted",
+        "tool_metadata": "inferred"
+      },
+      "name": "wait_for_registration",
+      "operational_confidence": "unverified",
+      "optional_fields": [
+        "timeout_ms"
+      ],
+      "required_fields": [
+        "session_id"
+      ],
+      "session_required": true,
+      "side_effect_level": "mixed",
+      "summary": "Wait until telecom registration is observed."
+    }
+  ]
+}

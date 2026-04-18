@@ -1,0 +1,47 @@
+{
+  "workflows": [
+    {
+      "confidence": "high",
+      "ordered_tools": [
+        "open_app",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "close_session"
+      ],
+      "prerequisites": [
+        "host_required Playwright runtime",
+        "fake_dialer adapter"
+      ],
+      "rationale": "Evidence-backed inbound call handling sequence.",
+      "source_evidence": [
+        "tests/e2e/test_fake_dialer_harness.py::test_inbound_answer_success"
+      ],
+      "workflow_name": "inbound_answer_happy_path"
+    },
+    {
+      "confidence": "medium",
+      "ordered_tools": [
+        "open_app",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "diagnose_answer_failure",
+        "collect_debug_bundle",
+        "close_session"
+      ],
+      "prerequisites": [
+        "host_required Playwright runtime",
+        "session created via open_app"
+      ],
+      "rationale": "Failure handling and evidence capture flow derived from e2e failure scenario and diagnostics tools.",
+      "source_evidence": [
+        "tests/e2e/test_fake_dialer_harness.py::test_inbound_answer_failure_generates_diagnostics_and_bundle",
+        "src/telecom_browser_mcp/tools/service.py"
+      ],
+      "workflow_name": "inbound_answer_failure_diagnostics"
+    }
+  ]
+}

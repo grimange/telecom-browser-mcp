@@ -1,0 +1,31 @@
+{
+  "batches": [
+    {
+      "id": "N1",
+      "priority": "P3",
+      "finding_ids": ["BL-001"],
+      "tasks": [
+        "centralize lifecycle transitions",
+        "add transition-table unit tests"
+      ]
+    },
+    {
+      "id": "N2",
+      "priority": "P3",
+      "finding_ids": ["DE-002"],
+      "tasks": [
+        "expand redaction patterns",
+        "add additional redaction fixtures"
+      ]
+    },
+    {
+      "id": "N3",
+      "priority": "P4",
+      "finding_ids": ["TC-002"],
+      "tasks": [
+        "run host-required tests in host-capable lane",
+        "track skip counts"
+      ]
+    }
+  ]
+}

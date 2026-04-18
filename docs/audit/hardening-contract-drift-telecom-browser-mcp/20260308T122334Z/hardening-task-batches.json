@@ -1,0 +1,7 @@
+{
+  "batches": [
+    {"id":"R1","priority":"P3","finding_ids":["BL-003"]},
+    {"id":"R2","priority":"P3","finding_ids":["DE-003"]},
+    {"id":"R3","priority":"P4","finding_ids":["TC-003"]}
+  ]
+}

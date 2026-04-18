@@ -1,0 +1,58 @@
+{
+  "workflows": [
+    {
+      "confidence": "high",
+      "derived_from": "policy",
+      "inferred": false,
+      "ordered_tools": [
+        "health",
+        "capabilities",
+        "list_sessions"
+      ],
+      "source_evidence": [
+        "AGENTS.md::Codex First-Contact Tool Guidance"
+      ],
+      "workflow_classification": "validated_policy",
+      "workflow_name": "first-contact-safe-discovery"
+    },
+    {
+      "confidence": "medium",
+      "derived_from": "tests_and_verification_docs",
+      "inferred": false,
+      "ordered_tools": [
+        "open_app",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "close_session"
+      ],
+      "source_evidence": [
+        "tests/e2e/test_fake_dialer_harness.py::test_inbound_answer_success",
+        "docs/verification/agent-readiness/telecom-browser-mcp/20260308T140345Z/03-workflow-validation.md"
+      ],
+      "workflow_classification": "host_required_e2e",
+      "workflow_name": "inbound-answer-happy-path"
+    },
+    {
+      "confidence": "medium",
+      "derived_from": "tests",
+      "inferred": false,
+      "ordered_tools": [
+        "open_app",
+        "wait_for_ready",
+        "wait_for_registration",
+        "wait_for_incoming_call",
+        "answer_call",
+        "diagnose_answer_failure",
+        "collect_debug_bundle",
+        "close_session"
+      ],
+      "source_evidence": [
+        "tests/e2e/test_fake_dialer_harness.py::test_inbound_answer_failure_generates_diagnostics_and_bundle"
+      ],
+      "workflow_classification": "host_required_e2e",
+      "workflow_name": "answer-failure-diagnostics"
+    }
+  ]
+}
