@@ -1,8 +1,16 @@
 {
   "input_schema": {
     "additionalProperties": false,
-    "properties": {},
-    "title": "EmptyInput",
+    "properties": {
+      "session_id": {
+        "title": "Session Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "session_id"
+    ],
+    "title": "SessionInput",
     "type": "object"
   },
   "response_schema": {
@@ -235,5 +243,5 @@
     "title": "ToolResponse",
     "type": "object"
   },
-  "tool": "health"
+  "tool": "get_store_snapshot"
 }

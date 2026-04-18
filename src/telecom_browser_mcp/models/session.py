@@ -31,7 +31,10 @@ class SessionModel(BaseModel):
 
     session_id: str
     adapter_id: str
+    adapter_name: str
     adapter_version: str = "0.1"
+    contract_version: str = "v1"
+    scenario_id: str = "baseline"
     capabilities: AdapterCapabilities = Field(default_factory=AdapterCapabilities)
     target_url: str
     lifecycle_state: str = "starting"

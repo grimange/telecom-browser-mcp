@@ -13,6 +13,9 @@ class ToolMeta(BaseModel):
 
     contract_version: str = CONTRACT_VERSION
     adapter_id: str | None = None
+    adapter_name: str | None = None
+    adapter_version: str | None = None
+    scenario_id: str | None = None
 
 
 class ToolError(BaseModel):

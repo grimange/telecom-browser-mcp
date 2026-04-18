@@ -7,8 +7,11 @@
 | `close_session` | Close a managed session. | session_id | none |
 | `collect_debug_bundle` | Capture structured troubleshooting artifacts. | session_id | reason |
 | `diagnose_answer_failure` | Run answer-failure diagnostic classification. | session_id | none |
+| `get_registration_status` | Read adapter registration snapshot. | session_id | none |
 | `get_active_session_snapshot` | Read session-level runtime snapshot. | session_id | none |
+| `get_store_snapshot` | Read adapter store/runtime snapshot. | session_id | none |
 | `get_peer_connection_summary` | Read WebRTC peer connection summary. | session_id | none |
+| `hangup_call` | Attempt to hang up the active call. | session_id | timeout_ms |
 | `health` | Read-only service health check. | none | none |
 | `list_sessions` | List currently tracked sessions. | none | none |
 | `login_agent` | Run adapter login flow. | session_id | credentials, timeout_ms |

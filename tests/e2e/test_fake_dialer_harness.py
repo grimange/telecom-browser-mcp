@@ -48,6 +48,10 @@ async def test_inbound_answer_success() -> None:
     assert answer["ok"] is True
     assert answer["data"]["active_call_state"] == "connected"
 
+    hangup = await service.hangup_call({"session_id": session_id, "timeout_ms": 3000})
+    assert hangup["ok"] is True
+    assert hangup["data"]["active_call_state"] == "disconnected"
+
     await service.close_session({"session_id": session_id})
 
 
@@ -114,5 +118,85 @@ async def test_missing_answer_control_scenario() -> None:
     assert answer["ok"] is False
     assert answer["error"]["code"] == "action_failed"
     assert "answer control not found" in answer["error"]["message"]
+
+    await service.close_session({"session_id": session_id})
+
+
+@pytest.mark.asyncio
+@pytest.mark.host_required
+async def test_delayed_registration_scenario() -> None:
+    service = ToolService()
+    session_id = await _open_fake_session(service, "delayed_registration")
+
+    registration = await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1500})
+
+    assert registration["ok"] is True
+    assert registration["data"]["registration_state"] == "registered"
+
+    await service.close_session({"session_id": session_id})
+
+
+@pytest.mark.asyncio
+@pytest.mark.host_required
+async def test_missing_incoming_call_scenario() -> None:
+    service = ToolService()
+    session_id = await _open_fake_session(service, "missing_incoming_call")
+
+    await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
+    incoming = await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 700})
+
+    assert incoming["ok"] is False
+    assert incoming["error"]["code"] == "call_delivery_failure"
+
+    await service.close_session({"session_id": session_id})
+
+
+@pytest.mark.asyncio
+@pytest.mark.host_required
+async def test_duplicate_incoming_call_summary() -> None:
+    service = ToolService()
+    session_id = await _open_fake_session(service, "duplicate_incoming_call")
+
+    await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
+    await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 1000})
+    summary = await service.get_peer_connection_summary({"session_id": session_id})
+
+    assert summary["ok"] is True
+    assert summary["data"]["summary"]["incoming_delivery_count"] >= 2
+
+    await service.close_session({"session_id": session_id})
+
+
+@pytest.mark.asyncio
+@pytest.mark.host_required
+async def test_connected_no_remote_audio_summary() -> None:
+    service = ToolService()
+    session_id = await _open_fake_session(service, "connected_no_remote_audio")
+
+    await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
+    await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 1000})
+    await service.answer_call({"session_id": session_id, "timeout_ms": 1000})
+    summary = await service.get_peer_connection_summary({"session_id": session_id})
+
+    assert summary["ok"] is True
+    assert summary["data"]["summary"]["media_status"]["remote_audio"] is False
+
+    await service.close_session({"session_id": session_id})
+
+
+@pytest.mark.asyncio
+@pytest.mark.host_required
+async def test_registration_and_store_snapshots() -> None:
+    service = ToolService()
+    session_id = await _open_fake_session(service, "store_ui_divergence")
+
+    await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
+    registration = await service.get_registration_status({"session_id": session_id})
+    store = await service.get_store_snapshot({"session_id": session_id})
+
+    assert registration["ok"] is True
+    assert registration["data"]["registration"]["registration_state"] == "registered"
+    assert store["ok"] is True
+    assert store["data"]["store_snapshot"]["store"]["registration"] == "pending"
 
     await service.close_session({"session_id": session_id})

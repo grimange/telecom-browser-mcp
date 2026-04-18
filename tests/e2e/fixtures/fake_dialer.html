@@ -10,7 +10,10 @@
   <div id="registration-state">pending</div>
   <div id="incoming-call-state">idle</div>
   <div id="active-call-state">none</div>
+  <div id="store-registration-state">pending</div>
+  <div id="store-call-state">idle</div>
   <button id="answer-btn" type="button">Answer</button>
+  <button id="hangup-btn" type="button">Hangup</button>
 
   <script>
     (function () {
@@ -20,39 +23,206 @@
       const registration = document.getElementById("registration-state");
       const incoming = document.getElementById("incoming-call-state");
       const active = document.getElementById("active-call-state");
+      const storeRegistration = document.getElementById("store-registration-state");
+      const storeCall = document.getElementById("store-call-state");
       const answer = document.getElementById("answer-btn");
+      const hangup = document.getElementById("hangup-btn");
+
+      const scenarioConfig = {
+        success: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        missing_answer: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "missing_control",
+          removeAnswer: true,
+          storeRegistrationState: "registered",
+          storeCallState: "ringing",
+          media: { local_audio: true, remote_audio: true }
+        },
+        answer_fails: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "failed",
+          storeRegistrationState: "registered",
+          storeCallState: "failed",
+          media: { local_audio: false, remote_audio: false }
+        },
+        no_registration: {
+          registrationSchedule: [],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "pending",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        no_peer: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          peerConnectionAvailable: false,
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        delayed_registration: {
+          registrationSchedule: [["registered", 900]],
+          incomingSchedule: [["ringing", 1100]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        registration_flapping: {
+          registrationSchedule: [["registered", 100], ["pending", 180], ["registered", 260]],
+          incomingSchedule: [["ringing", 400]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        missing_incoming_call: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "idle",
+          media: { local_audio: true, remote_audio: true }
+        },
+        duplicate_incoming_call: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200], ["ringing", 260]],
+          incomingDeliveryCount: 2,
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        answer_mismatch: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "failed",
+          media: { local_audio: true, remote_audio: true }
+        },
+        connected_no_remote_audio: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: false }
+        },
+        one_way_audio: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "registered",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: false }
+        },
+        reconnect_refresh_regression: {
+          registrationSchedule: [["registered", 100], ["pending", 450]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          readyStateSchedule: [["refreshing", 420], ["ready", 520]],
+          storeRegistrationState: "pending",
+          storeCallState: "connected",
+          media: { local_audio: true, remote_audio: true }
+        },
+        store_ui_divergence: {
+          registrationSchedule: [["registered", 100]],
+          incomingSchedule: [["ringing", 200]],
+          answerResult: "connected",
+          storeRegistrationState: "pending",
+          storeCallState: "ringing",
+          media: { local_audio: true, remote_audio: true }
+        }
+      };
+
+      const config = scenarioConfig[scenario] || scenarioConfig.success;
 
       window.__fakeDialer = {
         scenario,
-        peerConnection: scenario === "no_peer" ? null : {
+        incomingDeliveryCount: 0,
+        store: {
+          registration: "pending",
+          call: "idle"
+        },
+        media: config.media,
+        peerConnection: config.peerConnectionAvailable === false ? null : {
           connectionState: "connected",
           iceConnectionState: "completed"
         }
       };
 
-      if (scenario === "missing_answer") {
+      if (config.removeAnswer) {
         answer.remove();
       }
 
-      if (scenario !== "no_registration") {
+      config.registrationSchedule.forEach(([value, delay]) => {
         setTimeout(() => {
-          registration.textContent = "registered";
-        }, 100);
-      }
+          registration.textContent = value;
+          if (scenario !== "store_ui_divergence") {
+            storeRegistration.textContent = value;
+            window.__fakeDialer.store.registration = value;
+          }
+        }, delay);
+      });
 
-      setTimeout(() => {
-        incoming.textContent = "ringing";
-      }, 200);
+      config.incomingSchedule.forEach(([value, delay]) => {
+        setTimeout(() => {
+          incoming.textContent = value;
+          window.__fakeDialer.incomingDeliveryCount += 1;
+          if (scenario !== "store_ui_divergence") {
+            storeCall.textContent = value;
+            window.__fakeDialer.store.call = value;
+          }
+        }, delay);
+      });
+
+      (config.readyStateSchedule || []).forEach(([value, delay]) => {
+        setTimeout(() => {
+          document.getElementById("app-ready").setAttribute("data-state", value);
+          document.getElementById("app-ready").textContent = value;
+        }, delay);
+      });
 
       if (answer) {
         answer.addEventListener("click", () => {
-          if (scenario === "answer_fails") {
+          if (config.answerResult === "failed") {
             active.textContent = "failed";
+            storeCall.textContent = config.storeCallState || "failed";
+            window.__fakeDialer.store.call = config.storeCallState || "failed";
             return;
           }
           active.textContent = "connected";
+          storeCall.textContent = config.storeCallState || "connected";
+          window.__fakeDialer.store.call = config.storeCallState || "connected";
         });
       }
+
+      if (hangup) {
+        hangup.addEventListener("click", () => {
+          active.textContent = "disconnected";
+          incoming.textContent = "idle";
+          storeCall.textContent = "disconnected";
+          window.__fakeDialer.store.call = "disconnected";
+        });
+      }
+
+      storeRegistration.textContent = config.storeRegistrationState;
+      storeCall.textContent = config.storeCallState;
+      window.__fakeDialer.store.registration = config.storeRegistrationState;
+      window.__fakeDialer.store.call = config.storeCallState;
+      window.__fakeDialer.incomingDeliveryCount = config.incomingDeliveryCount || 0;
     })();
   </script>
 </body>

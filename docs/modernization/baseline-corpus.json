@@ -1,0 +1,49 @@
+{
+  "corpus_version": "2026-04-18.phase5",
+  "entries": [
+    {
+      "scenario_id": "apntalk-modernization-baseline",
+      "change_area": "registration/auth",
+      "target": "apntalk",
+      "expected_verdict": "failed",
+      "canonical_classification": "adapter_contract_failure",
+      "environment_vs_product": "adapter_or_ui",
+      "evidence_contract": [
+        "meta.adapter_name",
+        "meta.adapter_version",
+        "meta.scenario_id",
+        "manifest.json",
+        "diagnostics/verdict_summary.json"
+      ]
+    },
+    {
+      "scenario_id": "fake-dialer-happy-path",
+      "change_area": "inbound signaling",
+      "target": "fake_dialer",
+      "fixture_scenarios": [
+        "success",
+        "delayed_registration",
+        "registration_flapping",
+        "duplicate_incoming_call",
+        "missing_incoming_call",
+        "answer_fails",
+        "missing_answer",
+        "answer_mismatch",
+        "connected_no_remote_audio",
+        "one_way_audio",
+        "reconnect_refresh_regression",
+        "store_ui_divergence",
+        "no_peer"
+      ],
+      "expected_verdict": "ok_or_failed_by_scenario",
+      "evidence_contract": [
+        "meta.adapter_name",
+        "meta.adapter_version",
+        "meta.scenario_id",
+        "summary.media_status",
+        "summary.store_snapshot",
+        "diagnostics/verdict_summary.json"
+      ]
+    }
+  ]
+}

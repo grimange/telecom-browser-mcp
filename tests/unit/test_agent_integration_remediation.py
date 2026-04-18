@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -66,3 +67,19 @@ async def test_session_busy_error_when_operation_lock_times_out() -> None:
     assert result["error"]["retryable"] is True
     codes = {item["code"] for item in result["diagnostics"]}
     assert "session_busy" in codes
+
+
+@pytest.mark.asyncio
+async def test_list_sessions_prunes_expired_runtime() -> None:
+    service = ToolService(session_ttl_seconds=1)
+    opened = await service.open_app({"target_url": "https://example.com"})
+    session_id = opened["data"]["session_id"]
+    runtime = service.sessions.get(session_id)
+    assert runtime is not None
+
+    runtime.last_touched_at = datetime.now(UTC) - timedelta(seconds=5)
+    result = await service.list_sessions({})
+
+    assert result["ok"] is True
+    assert session_id in result["data"]["expired_session_ids"]
+    assert all(item["session_id"] != session_id for item in result["data"]["sessions"])

@@ -1,8 +1,21 @@
 {
   "input_schema": {
     "additionalProperties": false,
-    "properties": {},
-    "title": "EmptyInput",
+    "properties": {
+      "session_id": {
+        "title": "Session Id",
+        "type": "string"
+      },
+      "timeout_ms": {
+        "default": 15000,
+        "title": "Timeout Ms",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "session_id"
+    ],
+    "title": "TimeoutInput",
     "type": "object"
   },
   "response_schema": {
@@ -235,5 +248,5 @@
     "title": "ToolResponse",
     "type": "object"
   },
-  "tool": "health"
+  "tool": "hangup_call"
 }

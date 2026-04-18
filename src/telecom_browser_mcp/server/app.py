@@ -64,8 +64,20 @@ def create_mcp_server() -> FastMCP:
         return await dispatch("answer_call", {"session_id": session_id, "timeout_ms": timeout_ms})
 
     @mcp.tool()
+    async def hangup_call(session_id: str, timeout_ms: int = 15000) -> dict:
+        return await dispatch("hangup_call", {"session_id": session_id, "timeout_ms": timeout_ms})
+
+    @mcp.tool()
+    async def get_registration_status(session_id: str) -> dict:
+        return await dispatch("get_registration_status", {"session_id": session_id})
+
+    @mcp.tool()
     async def get_active_session_snapshot(session_id: str) -> dict:
         return await dispatch("get_active_session_snapshot", {"session_id": session_id})
+
+    @mcp.tool()
+    async def get_store_snapshot(session_id: str) -> dict:
+        return await dispatch("get_store_snapshot", {"session_id": session_id})
 
     @mcp.tool()
     async def get_peer_connection_summary(session_id: str) -> dict:
@@ -90,7 +102,10 @@ def create_mcp_server() -> FastMCP:
         "wait_for_registration",
         "wait_for_incoming_call",
         "answer_call",
+        "hangup_call",
+        "get_registration_status",
         "get_active_session_snapshot",
+        "get_store_snapshot",
         "get_peer_connection_summary",
         "collect_debug_bundle",
         "diagnose_answer_failure",

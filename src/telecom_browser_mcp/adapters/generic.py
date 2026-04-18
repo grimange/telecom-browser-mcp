@@ -6,7 +6,10 @@ from telecom_browser_mcp.models.session import AdapterCapabilities
 
 class GenericAdapter(AdapterBase):
     adapter_id = "generic"
+    adapter_name = "Generic"
     adapter_version = "0.1"
+    contract_version = "generic.v1"
+    scenario_id = "generic-baseline"
     capabilities = AdapterCapabilities(
         supports_login=False,
         supports_registration_detection=False,

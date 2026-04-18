@@ -12,4 +12,8 @@ class SessionInspector:
             "session": model.model_dump(mode="json"),
             "observed_at": datetime.now(UTC).isoformat(),
             "source": "session_manager",
+            "adapter_name": model.adapter_name,
+            "adapter_version": model.adapter_version,
+            "contract_version": model.contract_version,
+            "scenario_id": model.scenario_id,
         }

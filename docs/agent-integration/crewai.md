@@ -32,7 +32,7 @@ Syntax provenance:
 - src/telecom_browser_mcp/server/streamable_http_server.py
 
 ## Tool Discovery Expectations
-- Expected tool count: `14`
+- Expected tool count: `17`
 - First-contact checks should succeed: `health`, `capabilities`, `list_sessions`.
 - Session-bound tools require `session_id` returned by `open_app`.
 
@@ -41,7 +41,7 @@ Syntax provenance:
   health -> capabilities -> list_sessions
   Evidence: AGENTS.md::Codex First-Contact Tool Guidance
 - `inbound-answer-happy-path` (host_required_e2e, confidence=medium):
-  open_app -> wait_for_ready -> wait_for_registration -> wait_for_incoming_call -> answer_call -> close_session
+  open_app -> wait_for_ready -> wait_for_registration -> wait_for_incoming_call -> answer_call -> get_registration_status -> get_store_snapshot -> hangup_call -> close_session
   Evidence: tests/e2e/test_fake_dialer_harness.py::test_inbound_answer_success, docs/verification/agent-readiness/telecom-browser-mcp/20260308T140345Z/03-workflow-validation.md
 - `answer-failure-diagnostics` (host_required_e2e, confidence=medium):
   open_app -> wait_for_ready -> wait_for_registration -> wait_for_incoming_call -> answer_call -> diagnose_answer_failure -> collect_debug_bundle -> close_session

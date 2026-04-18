@@ -17,25 +17,31 @@ class SessionRuntime:
     adapter: AdapterBase
     browser: BrowserHandle
     created_at: datetime
+    last_touched_at: datetime
     operation_lock: asyncio.Lock
 
 
 class SessionManager:
-    def __init__(self, artifact_root: str = "artifacts") -> None:
+    def __init__(self, artifact_root: str = "artifacts", session_ttl_seconds: int = 3600) -> None:
         self._artifact_root = Path(artifact_root)
         self._artifact_root.mkdir(parents=True, exist_ok=True)
         self._browser_manager = BrowserManager()
         self._sessions: dict[str, SessionRuntime] = {}
+        self._session_ttl_seconds = session_ttl_seconds
 
     async def create(self, target_url: str, adapter: AdapterBase, headless: bool = True) -> SessionRuntime:
         session_id = str(uuid4())
         root = self._artifact_root / session_id
         root.mkdir(parents=True, exist_ok=True)
         browser_handle = await self._browser_manager.open(target_url=target_url, headless=headless)
+        now = datetime.now(UTC)
         model = SessionModel(
             session_id=session_id,
             adapter_id=adapter.adapter_id,
+            adapter_name=adapter.adapter_name,
             adapter_version=adapter.adapter_version,
+            contract_version=adapter.contract_version,
+            scenario_id=adapter.scenario_id,
             capabilities=adapter.capabilities,
             target_url=target_url,
             lifecycle_state="ready" if browser_handle.browser_open else "degraded",
@@ -49,7 +55,8 @@ class SessionManager:
             model=model,
             adapter=adapter,
             browser=browser_handle,
-            created_at=datetime.now(UTC),
+            created_at=now,
+            last_touched_at=now,
             operation_lock=asyncio.Lock(),
         )
         self._sessions[session_id] = runtime
@@ -73,7 +80,23 @@ class SessionManager:
         return out
 
     def get(self, session_id: str) -> SessionRuntime | None:
-        return self._sessions.get(session_id)
+        runtime = self._sessions.get(session_id)
+        if runtime is not None:
+            runtime.last_touched_at = datetime.now(UTC)
+        return runtime
+
+    async def prune_expired(self) -> list[str]:
+        if self._session_ttl_seconds <= 0:
+            return []
+        cutoff = datetime.now(UTC).timestamp() - self._session_ttl_seconds
+        expired = [
+            session_id
+            for session_id, runtime in self._sessions.items()
+            if runtime.last_touched_at.timestamp() < cutoff
+        ]
+        for session_id in expired:
+            await self.close(session_id)
+        return expired
 
     def mark_broken(self, session_id: str) -> None:
         runtime = self._sessions.get(session_id)

@@ -13,5 +13,9 @@ class WebRTCInspector:
         )
         return {
             "observed_at": datetime.now(UTC).isoformat(),
+            "adapter_name": runtime.model.adapter_name,
+            "adapter_version": runtime.model.adapter_version,
+            "contract_version": runtime.model.contract_version,
+            "scenario_id": runtime.model.scenario_id,
             "summary": adapter_summary,
         }
