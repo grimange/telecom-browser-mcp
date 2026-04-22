@@ -26,6 +26,47 @@ class AdapterBase(ABC):
     support_status = "supported"
     capabilities = None
 
+    def capability_truth(self, observation: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+        _ = observation
+        capability_map = {
+            "login_agent": bool(getattr(self.capabilities, "supports_login", False)),
+            "wait_for_registration": bool(
+                getattr(self.capabilities, "supports_registration_detection", False)
+            ),
+            "wait_for_incoming_call": bool(
+                getattr(self.capabilities, "supports_incoming_call_detection", False)
+            ),
+            "answer_call": bool(getattr(self.capabilities, "supports_answer_action", False)),
+            "hangup_call": bool(getattr(self.capabilities, "supports_hangup_action", False)),
+            "get_peer_connection_summary": bool(
+                getattr(self.capabilities, "supports_webrtc_summary", False)
+            ),
+        }
+        truths: list[dict[str, Any]] = []
+        for capability, enabled in capability_map.items():
+            truths.append(
+                {
+                    "capability": capability,
+                    "declared_support": "supported" if enabled else "unsupported_by_design",
+                    "binding_status": "bound" if enabled else "unbound",
+                    "live_detection_status": "not_checked",
+                    "why_unavailable": None if enabled else "adapter capability flag is false",
+                }
+            )
+        return truths
+
+    async def phase0_observation(self, status: TelecomStatus, page: Any) -> dict[str, Any]:
+        _ = (status, page)
+        return {
+            "adapter_id": self.adapter_id,
+            "adapter_name": self.adapter_name,
+            "adapter_version": self.adapter_version,
+            "contract_version": self.contract_version,
+            "scenario_id": self.scenario_id,
+            "support_status": self.support_status,
+            "capability_truth": self.capability_truth(),
+        }
+
     def _success(self, message: str, **details: Any) -> AdapterOperationResult:
         return AdapterOperationResult(ok=True, message=message, details=details)
 

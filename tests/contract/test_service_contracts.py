@@ -53,6 +53,21 @@ async def test_capabilities_exposes_adapter_descriptors() -> None:
     assert result["ok"] is True
     adapter_ids = {adapter["adapter_id"] for adapter in result["data"]["adapters"]}
     assert {"generic", "apntalk", "fake_dialer"}.issubset(adapter_ids)
+    apntalk = next(adapter for adapter in result["data"]["adapters"] if adapter["adapter_id"] == "apntalk")
+    bridge_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "apntalk_runtime_bridge_contract"
+    )
+    ready_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_ready")
+    incoming_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_incoming_call"
+    )
+    registration_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "get_registration_status"
+    )
+    assert bridge_truth["declared_support"] == "supported_with_runtime_probe"
+    assert ready_truth["declared_support"] == "supported_with_runtime_probe"
+    assert incoming_truth["declared_support"] == "supported_with_runtime_probe"
+    assert registration_truth["declared_support"] == "supported_with_runtime_probe"
 
 
 @pytest.mark.asyncio

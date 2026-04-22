@@ -26,6 +26,12 @@ evidence producer with explicit review boundaries.
 
 - envelope `meta` fields:
   `contract_version`, `adapter_id`, `adapter_name`, `adapter_version`, `scenario_id`
+- Phase 0 APNTalk truth fields in `capabilities`, `open_app`, or
+  `get_active_session_snapshot`:
+  `support_status`, `capability_truth`, `phase0_observation.runtime_bridge`,
+  `phase0_observation.contract_observations`
+- consumer-side bridge contract reference:
+  `docs/apntalk-runtime-bridge-contract.md`
 - bundle manifest:
   `manifest.json`
 - canonical verdict:
@@ -37,9 +43,19 @@ evidence producer with explicit review boundaries.
 ## Review Boundaries
 
 - APNTalk login-path validation is implemented with visible-UI selectors and
-  conservative post-login confirmation, but ready, registration, incoming-call,
-  answer, and hangup validation remain blocked on verified selectors and runtime
-  probes in this repository.
+  conservative post-login confirmation. When APNTalk exposes a valid runtime
+  bridge, this repo can now support bridge-backed `get_registration_status`,
+  `wait_for_ready`, and `wait_for_incoming_call` with bounded observation-only
+  semantics. `wait_for_registration`, answer, and hangup validation remain
+  blocked on stronger selectors or runtime probes in this repository.
+- Phase 0 diagnostics are observation-only. Runtime bridge presence, selector
+  observations, and microphone permission hints do not upgrade APNTalk support
+  claims beyond the currently implemented `login_ui_plus_bridge_observation`
+  corridor.
+- A `bridge_valid` verdict only means the page exposed the expected bounded
+  consumer contract. It does not, by itself, prove answer, hangup, store
+  snapshot, or peer-connection support in this repo, and it does not promote
+  `wait_for_registration` without a separate polling contract.
 - Local host browser execution can still be environment-limited even when browser
   binaries are installed; this run observed missing `libnspr4.so` in the local
   runtime, so browser-launch failures must be treated as environment limitations

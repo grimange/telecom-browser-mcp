@@ -239,6 +239,95 @@ class ToolService:
             )
         return diagnostics
 
+    async def _adapter_phase0_observation(self, runtime: SessionRuntime) -> dict[str, Any]:
+        return await runtime.adapter.phase0_observation(
+            runtime.model.telecom,
+            runtime.browser.page,
+        )
+
+    def _phase0_diagnostics(self, observation: dict[str, Any]) -> list[DiagnosticItem]:
+        diagnostics = [
+            DiagnosticItem(
+                code="adapter_in_use",
+                classification="session_state",
+                message=(
+                    "adapter_id="
+                    f"{observation.get('adapter_id')} support_status={observation.get('support_status')}"
+                ),
+                confidence="high",
+            )
+        ]
+
+        runtime_bridge = observation.get("runtime_bridge")
+        if isinstance(runtime_bridge, dict):
+            bridge_status = runtime_bridge.get("status")
+            validation_verdict = runtime_bridge.get("validation_verdict")
+            if bridge_status:
+                diagnostics.append(
+                    DiagnosticItem(
+                        code="apntalk_runtime_bridge",
+                        classification="session_state",
+                        message=(
+                            f"runtime_bridge={bridge_status} "
+                            f"validation_verdict={validation_verdict} "
+                            f"bridge_version={runtime_bridge.get('bridge_version')}"
+                        ),
+                        confidence="high" if bridge_status != "not_checked" else "medium",
+                    )
+                )
+
+        microphone_permission = observation.get("microphone_permission")
+        if isinstance(microphone_permission, dict):
+            diagnostics.append(
+                DiagnosticItem(
+                    code="microphone_permission",
+                    classification="session_state",
+                    message=(
+                        "microphone_permission="
+                        f"{microphone_permission.get('state', 'unknown')} "
+                        f"available={microphone_permission.get('available', False)}"
+                    ),
+                    confidence="medium",
+                )
+            )
+
+        selector_observations = observation.get("selector_observations")
+        if isinstance(selector_observations, dict):
+            for selector_name, payload in selector_observations.items():
+                if not isinstance(payload, dict):
+                    continue
+                diagnostics.append(
+                    DiagnosticItem(
+                        code=f"selector_{selector_name}",
+                        classification="session_state",
+                        message=(
+                            f"{selector_name}={payload.get('status', 'unknown')}"
+                            f" matched_selector={payload.get('matched_selector')}"
+                        ),
+                        confidence="medium",
+                    )
+                )
+
+        contract_observations = observation.get("contract_observations")
+        if isinstance(contract_observations, list):
+            for payload in contract_observations:
+                if not isinstance(payload, dict):
+                    continue
+                missing = payload.get("missing_requirements") or []
+                if missing:
+                    diagnostics.append(
+                        DiagnosticItem(
+                            code=f"contract_{payload.get('tool', 'unknown')}",
+                            classification="adapter_contract_failure",
+                            message=(
+                                f"binding_status={payload.get('binding_status')} "
+                                f"missing_requirements={','.join(missing)}"
+                            ),
+                            confidence="high",
+                        )
+                    )
+        return diagnostics
+
     def _require_browser_page(self, tool: str, runtime: SessionRuntime) -> dict | None:
         if runtime.browser.blocked_requests:
             self.sessions.mark_broken(runtime.model.session_id)
@@ -390,6 +479,11 @@ class ToolService:
             )
             diagnostics.extend(self._session_state_diagnostics(runtime))
 
+        observation = await self._adapter_phase0_observation(runtime)
+        if adapter.adapter_id == "apntalk":
+            diagnostics.extend(self._phase0_diagnostics(observation))
+        capability_truth = adapter.capability_truth(observation)
+
         ready_for_actions = runtime.browser.browser_open and runtime.browser.page is not None
         return self._ok(
             tool,
@@ -404,8 +498,10 @@ class ToolService:
                 "adapter_resolution_source": source,
                 "adapter_resolution_confidence": confidence,
                 "capabilities": runtime.model.capabilities.model_dump(mode="json"),
+                "capability_truth": capability_truth,
                 "lifecycle_state": runtime.model.lifecycle_state,
                 "ready_for_actions": ready_for_actions,
+                "phase0_observation": observation,
             },
             session_id=runtime.model.session_id,
             adapter=adapter,
@@ -744,7 +840,10 @@ class ToolService:
             return error_response
         return self._ok(
             tool,
-            self.session_inspector.snapshot(runtime),
+            {
+                **self.session_inspector.snapshot(runtime),
+                "phase0_observation": await self._adapter_phase0_observation(runtime),
+            },
             session_id=req.session_id,
             adapter=runtime.adapter,
         )
