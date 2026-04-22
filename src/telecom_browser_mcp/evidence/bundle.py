@@ -1,17 +1,19 @@
 from __future__ import annotations
 
-import json
+import os
 import platform
-import re
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
-from telecom_browser_mcp.models.common import ArtifactRef
 from telecom_browser_mcp.diagnostics.taxonomy import classify_target, summarize_verdict
+from telecom_browser_mcp.evidence.redaction import dumps_redacted_json, redact_obj, redact_text
+from telecom_browser_mcp.models.common import ArtifactRef
 from telecom_browser_mcp.sessions.manager import SessionRuntime
+
+SCREENSHOT_CAPTURE_ENV = "TELECOM_BROWSER_MCP_CAPTURE_SCREENSHOTS"
 
 
 class EvidenceCollector:
@@ -66,33 +68,18 @@ class EvidenceCollector:
 
     @staticmethod
     def _redact_text(value: str) -> str:
-        redacted = value
-        patterns = [
-            (
-                r"(?i)(authorization\s*[=:]\s*bearer\s+)([^\s\"'<>;,]+)",
-                r"\1[REDACTED]",
-            ),
-            (r"(?i)(password\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(token\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(authorization\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(cookie\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(api[_-]?key\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(secret\s*[=:]\s*)([^\s\"'<>]+)", r"\1[REDACTED]"),
-            (r"(?i)(sip:[^@\s\"'<>]+@)", "sip:[REDACTED]@"),
-        ]
-        for pattern, replacement in patterns:
-            redacted = re.sub(pattern, replacement, redacted)
-        return redacted
+        return redact_text(value)
 
     @classmethod
     def _redact_obj(cls, value: Any) -> Any:
-        if isinstance(value, str):
-            return cls._redact_text(value)
-        if isinstance(value, list):
-            return [cls._redact_obj(item) for item in value]
-        if isinstance(value, dict):
-            return {key: cls._redact_obj(item) for key, item in value.items()}
-        return value
+        return redact_obj(value)
+
+    @staticmethod
+    def _screenshots_enabled(runtime: SessionRuntime) -> bool:
+        configured = os.environ.get(SCREENSHOT_CAPTURE_ENV)
+        if configured is not None:
+            return configured.strip().lower() in {"1", "true", "yes", "on"}
+        return runtime.model.adapter_id == "fake_dialer"
 
     async def collect(
         self,
@@ -114,7 +101,7 @@ class EvidenceCollector:
 
         session_snapshot_path = runtime_state / "session_snapshot.json"
         session_snapshot_path.write_text(
-            json.dumps(runtime.model.model_dump(mode="json"), indent=2),
+            dumps_redacted_json(runtime.model.model_dump(mode="json")),
             encoding="utf-8",
         )
         artifacts.append(ArtifactRef(type="session_snapshot_json", path=str(session_snapshot_path)))
@@ -141,7 +128,7 @@ class EvidenceCollector:
         else:
             try:
                 html = await runtime.browser.page.content()
-                html_snapshot_path.write_text(self._redact_text(html), encoding="utf-8")
+                html_snapshot_path.write_text(redact_text(html), encoding="utf-8")
                 artifacts.append(ArtifactRef(type="html_snapshot", path=str(html_snapshot_path)))
             except Exception as exc:
                 artifacts.append(
@@ -152,22 +139,41 @@ class EvidenceCollector:
                         message=f"html capture failed: {exc}",
                     )
                 )
-            try:
-                await runtime.browser.page.screenshot(path=str(screenshot_path), full_page=True)
-                artifacts.append(ArtifactRef(type="screenshot", path=str(screenshot_path)))
-            except Exception as exc:
+            if not self._screenshots_enabled(runtime):
                 artifacts.append(
                     ArtifactRef(
                         type="screenshot",
                         path=str(screenshot_path),
                         captured=False,
-                        message=f"screenshot capture failed: {exc}",
+                        message=(
+                            "screenshot capture disabled by default for sensitive targets; "
+                            f"set {SCREENSHOT_CAPTURE_ENV}=1 to opt in"
+                        ),
                     )
                 )
+            else:
+                try:
+                    await runtime.browser.page.screenshot(path=str(screenshot_path), full_page=True)
+                    artifacts.append(
+                        ArtifactRef(
+                            type="screenshot",
+                            path=str(screenshot_path),
+                            message="sensitive visual artifact; textual redaction is not applied to pixels",
+                        )
+                    )
+                except Exception as exc:
+                    artifacts.append(
+                        ArtifactRef(
+                            type="screenshot",
+                            path=str(screenshot_path),
+                            captured=False,
+                            message=f"screenshot capture failed: {exc}",
+                        )
+                    )
 
         diagnosis_path = diagnostics_dir / "diagnosis.json"
         diagnosis_payload = self._redact_obj(diagnostics if diagnostics is not None else [])
-        diagnosis_path.write_text(json.dumps(diagnosis_payload, indent=2), encoding="utf-8")
+        diagnosis_path.write_text(dumps_redacted_json(diagnosis_payload), encoding="utf-8")
         artifacts.append(ArtifactRef(type="diagnosis_json", path=str(diagnosis_path)))
 
         manifest_path = root / "manifest.json"
@@ -186,7 +192,7 @@ class EvidenceCollector:
             "contract_version": runtime.model.contract_version,
             "scenario_id": runtime.model.scenario_id,
         }
-        verdict_summary_path.write_text(json.dumps(verdict_payload, indent=2), encoding="utf-8")
+        verdict_summary_path.write_text(dumps_redacted_json(verdict_payload), encoding="utf-8")
         artifacts.append(ArtifactRef(type="verdict_summary_json", path=str(verdict_summary_path)))
 
         runtime_metadata = {
@@ -211,9 +217,16 @@ class EvidenceCollector:
             "scenario_id": runtime.model.scenario_id,
             "verdict_summary": verdict_payload,
             "runtime_metadata": runtime_metadata,
+            "sensitivity": {
+                "textual_artifacts_redacted": True,
+                "screenshots_sensitive": True,
+                "screenshot_pixel_redaction": False,
+                "screenshot_capture_enabled": self._screenshots_enabled(runtime),
+                "screenshot_control_env": SCREENSHOT_CAPTURE_ENV,
+            },
             "artifacts": [a.model_dump(mode="json") for a in artifacts],
         }
-        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        manifest_path.write_text(dumps_redacted_json(manifest), encoding="utf-8")
         artifacts.append(ArtifactRef(type="manifest", path=str(manifest_path)))
         self._prune_old_bundles(Path(runtime.model.artifact_root))
         return str(root), artifacts

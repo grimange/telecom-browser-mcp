@@ -30,4 +30,5 @@ def test_registry_descriptors_expose_adapter_metadata() -> None:
 
     assert apntalk["adapter_name"] == "APNTalk"
     assert apntalk["contract_version"] == "apntalk.v1"
+    assert apntalk["support_status"] == "contract_scaffold_only"
     assert "app.apntalk.com" in apntalk["domains"]

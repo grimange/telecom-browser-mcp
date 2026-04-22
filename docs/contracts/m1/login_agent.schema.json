@@ -4,16 +4,18 @@
     "properties": {
       "credentials": {
         "additionalProperties": true,
-        "default": {},
         "title": "Credentials",
         "type": "object"
       },
       "session_id": {
+        "pattern": "^[A-Za-z0-9_.:-]{1,128}$",
         "title": "Session Id",
         "type": "string"
       },
       "timeout_ms": {
         "default": 15000,
+        "maximum": 120000,
+        "minimum": 100,
         "title": "Timeout Ms",
         "type": "integer"
       }

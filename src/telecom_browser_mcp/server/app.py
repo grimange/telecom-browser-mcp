@@ -6,6 +6,10 @@ from typing import Any
 from mcp.server.fastmcp import FastMCP
 
 from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
+from telecom_browser_mcp.server.transport_security import (
+    auth_components,
+    load_transport_security_config,
+)
 from telecom_browser_mcp.tools.service import ToolService
 
 
@@ -16,7 +20,14 @@ def create_mcp_server() -> FastMCP:
     except ValueError:
         port = 8000
 
-    mcp = FastMCP("telecom-browser-mcp", host=host, port=port)
+    auth, token_verifier = auth_components(load_transport_security_config(host))
+    mcp = FastMCP(
+        "telecom-browser-mcp",
+        host=host,
+        port=port,
+        auth=auth,
+        token_verifier=token_verifier,
+    )
     service = ToolService()
 
     async def dispatch(tool_name: str, payload: dict[str, Any]) -> dict:
@@ -91,7 +102,7 @@ def create_mcp_server() -> FastMCP:
     async def diagnose_answer_failure(session_id: str) -> dict:
         return await dispatch("diagnose_answer_failure", {"session_id": session_id})
 
-    assert set(CANONICAL_TOOL_INPUT_MODELS.keys()) == {
+    expected_tools = {
         "health",
         "capabilities",
         "open_app",
@@ -110,5 +121,7 @@ def create_mcp_server() -> FastMCP:
         "collect_debug_bundle",
         "diagnose_answer_failure",
     }
+    if set(CANONICAL_TOOL_INPUT_MODELS.keys()) != expected_tools:
+        raise RuntimeError("registered MCP tools do not match canonical tool input models")
 
     return mcp

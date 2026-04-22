@@ -3,10 +3,11 @@ from __future__ import annotations
 import asyncio
 from typing import Any
 
-from telecom_browser_mcp.adapters.base import AdapterBase, AdapterOperationResult
 from telecom_browser_mcp.adapters.apntalk import APNTalkAdapter
+from telecom_browser_mcp.adapters.base import AdapterBase, AdapterOperationResult
 from telecom_browser_mcp.adapters.fake_dialer import FakeDialerAdapter
 from telecom_browser_mcp.adapters.registry import AdapterRegistry, AdapterTargetMismatchError
+from telecom_browser_mcp.browser.url_policy import URLPolicy, URLPolicyError, validate_target_url
 from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
 from telecom_browser_mcp.contracts.envelope import as_dict
 from telecom_browser_mcp.diagnostics.engine import DiagnosticsEngine
@@ -32,8 +33,9 @@ class ToolService:
         operation_lock_timeout_ms: int = 5000,
         session_ttl_seconds: int = 3600,
         max_bundles_per_session: int = 5,
+        url_policy: URLPolicy | None = None,
     ) -> None:
-        self.sessions = SessionManager(session_ttl_seconds=session_ttl_seconds)
+        self.sessions = SessionManager(session_ttl_seconds=session_ttl_seconds, url_policy=url_policy)
         self.adapters = AdapterRegistry()
         self.adapters.register(APNTalkAdapter, domains=["app.apntalk.com", "apntalk.com"])
         self.adapters.register(FakeDialerAdapter, domains=["fake-dialer.local"])
@@ -42,6 +44,7 @@ class ToolService:
         self.evidence = EvidenceCollector(max_bundles_per_session=max_bundles_per_session)
         self.diagnostics = DiagnosticsEngine()
         self._operation_lock_timeout_ms = operation_lock_timeout_ms
+        self._url_policy = url_policy
 
     def _ok(
         self,
@@ -165,6 +168,38 @@ class ToolService:
             )
         return runtime, None
 
+    async def _require_runtime_for_action(
+        self, tool: str, session_id: str
+    ) -> tuple[SessionRuntime | None, dict | None]:
+        await self.sessions.prune_expired()
+        runtime, error_response = self._require_runtime(tool, session_id)
+        if error_response is not None:
+            return runtime, error_response
+        if runtime is None:
+            return None, self._err(
+                tool,
+                codes.ERROR_SESSION_NOT_FOUND,
+                f"session not found: {session_id}",
+                session_id=session_id,
+            )
+        if runtime.model.lifecycle_state == "broken":
+            return None, self._err(
+                tool,
+                codes.ERROR_SESSION_BROKEN,
+                f"session is broken: {session_id}",
+                classification="session_not_ready",
+                retryable=True,
+                session_id=session_id,
+                diagnostics=self._session_state_diagnostics(runtime),
+            )
+        return runtime, None
+
+    async def _require_runtime_for_diagnostics(
+        self, tool: str, session_id: str
+    ) -> tuple[SessionRuntime | None, dict | None]:
+        await self.sessions.prune_expired()
+        return self._require_runtime(tool, session_id)
+
     def _session_state_diagnostics(self, runtime: SessionRuntime) -> list[DiagnosticItem]:
         diagnostics = [
             DiagnosticItem(
@@ -189,9 +224,33 @@ class ToolService:
                     confidence="high",
                 )
             )
+        for blocked in runtime.browser.blocked_requests:
+            diagnostics.append(
+                DiagnosticItem(
+                    code=blocked.reason_code,
+                    classification="security_policy",
+                    message=(
+                        "browser request blocked by URL policy: "
+                        f"url={blocked.url} resource_type={blocked.resource_type} "
+                        f"is_navigation_request={blocked.is_navigation_request}"
+                    ),
+                    confidence="high",
+                )
+            )
         return diagnostics
 
     def _require_browser_page(self, tool: str, runtime: SessionRuntime) -> dict | None:
+        if runtime.browser.blocked_requests:
+            self.sessions.mark_broken(runtime.model.session_id)
+            return self._err(
+                tool,
+                codes.ERROR_TARGET_URL_BLOCKED,
+                "browser request blocked by URL policy",
+                classification="security_policy",
+                retryable=False,
+                session_id=runtime.model.session_id,
+                diagnostics=self._session_state_diagnostics(runtime),
+            )
         if runtime.browser.page is None:
             self.sessions.mark_broken(runtime.model.session_id)
             message = runtime.model.browser_launch_error or "browser page is unavailable"
@@ -266,7 +325,25 @@ class ToolService:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc), classification="unknown")
 
         try:
-            adapter, source, confidence = self.adapters.resolve(req.target_url, req.adapter_id)
+            target_url = validate_target_url(req.target_url, self._url_policy)
+        except URLPolicyError as exc:
+            return self._err(
+                tool,
+                codes.ERROR_TARGET_URL_BLOCKED,
+                str(exc),
+                classification="security_policy",
+                diagnostics=[
+                    DiagnosticItem(
+                        code=exc.reason_code,
+                        classification="security_policy",
+                        message=f"blocked target_url={exc.safe_target}",
+                        confidence="high",
+                    )
+                ],
+            )
+
+        try:
+            adapter, source, confidence = self.adapters.resolve(target_url, req.adapter_id)
         except AdapterTargetMismatchError as exc:
             return self._err(
                 tool,
@@ -284,12 +361,24 @@ class ToolService:
 
         await self.sessions.prune_expired()
         runtime = await self.sessions.create(
-            target_url=req.target_url,
+            target_url=target_url,
             adapter=adapter,
             headless=req.headless,
         )
 
         diagnostics: list[DiagnosticItem] = []
+        if runtime.browser.blocked_requests:
+            self.sessions.mark_broken(runtime.model.session_id)
+            return self._err(
+                tool,
+                codes.ERROR_TARGET_URL_BLOCKED,
+                "browser request blocked by URL policy",
+                classification="security_policy",
+                session_id=runtime.model.session_id,
+                adapter=adapter,
+                diagnostics=self._session_state_diagnostics(runtime),
+            )
+
         if not runtime.browser.browser_open:
             diagnostics.append(
                 DiagnosticItem(
@@ -311,6 +400,7 @@ class ToolService:
                 "adapter_version": adapter.adapter_version,
                 "contract_version": adapter.contract_version,
                 "scenario_id": adapter.scenario_id,
+                "support_status": adapter.support_status,
                 "adapter_resolution_source": source,
                 "adapter_resolution_confidence": confidence,
                 "capabilities": runtime.model.capabilities.model_dump(mode="json"),
@@ -341,7 +431,7 @@ class ToolService:
             req = SessionInput.model_validate(payload)
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_diagnostics(tool, req.session_id)
         if error_response is not None:
             return error_response
 
@@ -368,7 +458,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         lock_error = await self._acquire_operation_lock(tool, runtime)
@@ -418,7 +508,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         lock_error = await self._acquire_operation_lock(tool, runtime)
@@ -520,7 +610,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         lock_error = await self._acquire_operation_lock(tool, runtime)
@@ -578,7 +668,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         lock_error = await self._acquire_operation_lock(tool, runtime)
@@ -624,7 +714,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         browser_error = self._require_browser_page(tool, runtime)
@@ -649,7 +739,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_diagnostics(tool, req.session_id)
         if error_response is not None:
             return error_response
         return self._ok(
@@ -666,7 +756,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         browser_error = self._require_browser_page(tool, runtime)
@@ -691,7 +781,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_action(tool, req.session_id)
         if error_response is not None:
             return error_response
         lock_error = await self._acquire_operation_lock(tool, runtime)
@@ -719,7 +809,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_diagnostics(tool, req.session_id)
         if error_response is not None:
             return error_response
 
@@ -751,7 +841,7 @@ class ToolService:
         except Exception as exc:
             return self._err(tool, codes.ERROR_INVALID_INPUT, str(exc))
 
-        runtime, error_response = self._require_runtime(tool, req.session_id)
+        runtime, error_response = await self._require_runtime_for_diagnostics(tool, req.session_id)
         if error_response is not None:
             return error_response
         diagnostics = self.diagnostics.diagnose_answer_failure(runtime)

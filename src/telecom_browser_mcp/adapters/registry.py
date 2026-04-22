@@ -43,6 +43,7 @@ class AdapterRegistry:
                     "adapter_version": adapter.adapter_version,
                     "contract_version": adapter.contract_version,
                     "scenario_id": adapter.scenario_id,
+                    "support_status": adapter.support_status,
                     "capabilities": adapter.capabilities.model_dump(mode="json"),
                     "domains": sorted(domains_by_adapter.get(adapter_id, [])),
                 }

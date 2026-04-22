@@ -17,8 +17,8 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from scripts.docs.example_payload_generator import build_example_payload
-from scripts.docs.export_mcp_registry import export_registry
+from scripts.docs.example_payload_generator import build_example_payload  # noqa: E402
+from scripts.docs.export_mcp_registry import export_registry  # noqa: E402
 
 REQUIRED_GUIDES = [
     "quickstart.md",

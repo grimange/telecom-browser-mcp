@@ -8,6 +8,7 @@ from uuid import uuid4
 
 from telecom_browser_mcp.adapters.base import AdapterBase
 from telecom_browser_mcp.browser.manager import BrowserHandle, BrowserManager
+from telecom_browser_mcp.browser.url_policy import URLPolicy
 from telecom_browser_mcp.models.session import SessionModel, SessionSummary
 
 
@@ -22,10 +23,15 @@ class SessionRuntime:
 
 
 class SessionManager:
-    def __init__(self, artifact_root: str = "artifacts", session_ttl_seconds: int = 3600) -> None:
+    def __init__(
+        self,
+        artifact_root: str = "artifacts",
+        session_ttl_seconds: int = 3600,
+        url_policy: URLPolicy | None = None,
+    ) -> None:
         self._artifact_root = Path(artifact_root)
         self._artifact_root.mkdir(parents=True, exist_ok=True)
-        self._browser_manager = BrowserManager()
+        self._browser_manager = BrowserManager(url_policy=url_policy)
         self._sessions: dict[str, SessionRuntime] = {}
         self._session_ttl_seconds = session_ttl_seconds
 

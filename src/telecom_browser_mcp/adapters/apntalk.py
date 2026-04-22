@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from telecom_browser_mcp.adapters.base import AdapterBase, AdapterOperationResult
 from telecom_browser_mcp.adapters.apntalk_contract import (
     APNTALK_CONTRACT_VERSION,
     get_apntalk_surface_contract,
 )
+from telecom_browser_mcp.adapters.base import AdapterBase, AdapterOperationResult
 from telecom_browser_mcp.models.session import AdapterCapabilities, TelecomStatus
 
 
@@ -16,6 +16,7 @@ class APNTalkAdapter(AdapterBase):
     adapter_version = "0.1"
     contract_version = APNTALK_CONTRACT_VERSION
     scenario_id = "apntalk-modernization-baseline"
+    support_status = "contract_scaffold_only"
     capabilities = AdapterCapabilities(
         supports_login=False,
         supports_registration_detection=False,

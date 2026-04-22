@@ -5,6 +5,7 @@
       "adapter_id": {
         "anyOf": [
           {
+            "pattern": "^[a-z0-9_:-]{1,64}$",
             "type": "string"
           },
           {
@@ -22,6 +23,7 @@
       "session_label": {
         "anyOf": [
           {
+            "maxLength": 120,
             "type": "string"
           },
           {
@@ -32,6 +34,8 @@
         "title": "Session Label"
       },
       "target_url": {
+        "maxLength": 2048,
+        "minLength": 1,
         "title": "Target Url",
         "type": "string"
       }

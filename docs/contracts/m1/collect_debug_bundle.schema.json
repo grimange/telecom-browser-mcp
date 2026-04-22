@@ -5,6 +5,7 @@
       "reason": {
         "anyOf": [
           {
+            "maxLength": 240,
             "type": "string"
           },
           {
@@ -15,6 +16,7 @@
         "title": "Reason"
       },
       "session_id": {
+        "pattern": "^[A-Za-z0-9_.:-]{1,128}$",
         "title": "Session Id",
         "type": "string"
       }

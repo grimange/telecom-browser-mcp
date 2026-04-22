@@ -13,7 +13,7 @@ Before editing, read the minimum relevant truth:
 - `README.md`
 - `docs/setup/codex-mcp.md`
 - `docs/usage/codex-agent-usage.md`
-- `.github/workflows/tool-contracts.yml`
+- `.github/workflows/ci.yml`
 - the touched code path under `src/telecom_browser_mcp/**`
 - the closest matching tests under `tests/**`
 
@@ -21,7 +21,7 @@ Read more only when needed to complete the task truthfully.
 
 ## Contract authority order
 When sources disagree, prefer repository truth in this order:
-1. `.github/workflows/tool-contracts.yml`
+1. `.github/workflows/ci.yml`
 2. contract and integration tests that exercise the public MCP surface
 3. runtime code under `src/telecom_browser_mcp/**`
 4. setup and usage docs under `docs/**`
@@ -55,7 +55,7 @@ When docs disagree with executable truth, update docs in the same task.
 
 ## Verification minimums
 - MCP tool input/output/envelope changes:
-  run the exact contract workflow commands from `.github/workflows/tool-contracts.yml` and the closest contract tests.
+  run the exact contract workflow commands from `.github/workflows/ci.yml` and the closest contract tests.
 - Adapter behavior changes:
   run the closest unit tests and the narrowest harness or integration path that exercises the adapter.
 - Runtime, browser, media, or signaling changes:
@@ -80,7 +80,27 @@ Broaden verification only after the narrow slice passes or when the task changes
 - Browser deps: `python -m playwright install chromium`
 - MCP smoke (if available): `health`, `capabilities`, `list_sessions`
 - Interop probe: `python scripts/run_mcp_interop_probe.py`
-- Follow the exact workflow commands in `.github/workflows/tool-contracts.yml` when MCP contract surfaces change.
+- Follow the exact workflow commands in `.github/workflows/ci.yml` when MCP contract surfaces change.
+
+## Security and Release Hardening
+
+Stdio is the safest default transport. HTTP/SSE transports bind to `127.0.0.1` by default and may run locally without a token for developer use. Non-local HTTP/SSE binds fail closed unless both `TELECOM_BROWSER_MCP_UNSAFE_BIND=1` and `TELECOM_BROWSER_MCP_AUTH_TOKEN` are set. Do not expose unauthenticated HTTP/SSE transports.
+
+`open_app` accepts only `http` and `https` URLs. Host access can be restricted with `TELECOM_BROWSER_MCP_ALLOWED_HOSTS` as a comma-separated hostname/glob allowlist. Local, loopback, private, link-local, reserved, multicast, and cloud metadata destinations are blocked by default, including destinations reached after DNS resolution. Harness-only local targets require both `TELECOM_BROWSER_MCP_ALLOW_LOCAL_TARGETS=1` and an explicit local host allowlist entry.
+
+The same URL policy is also installed as a Playwright browser request guard for routed HTTP/HTTPS requests, including document navigations, redirects, iframe navigations, fetch/XHR, and subresources surfaced through Playwright routing. This is a bounded closure, not a claim that all browser-internal traffic is governed; deployment-layer egress controls remain required for production defense in depth.
+
+Evidence bundles are written under each session artifact root. Textual JSON/HTML artifacts are centrally redacted for bearer tokens, cookies, passwords, API keys, SIP usernames, phone-number-like values, session IDs, private endpoints, and sensitive query parameters. Screenshots are sensitive pixel artifacts; they are disabled by default for non-harness targets and can be explicitly enabled with `TELECOM_BROWSER_MCP_CAPTURE_SCREENSHOTS=1`. Bundle manifests record screenshot sensitivity metadata and explicitly state that pixel-level screenshot redaction is not implemented. Never commit real debug bundles.
+
+APNTalk is currently a contract scaffold only. It is registered so contracts and drift can be audited, but unsupported APNTalk operations fail closed and capabilities report no login, registration, incoming-call, answer, or hangup support.
+
+Live stdio/SSE/HTTP verification remains runtime-realistic rather than sandbox-friendly. In constrained environments, loopback socket creation or subprocess first contact may be blocked; classify those outcomes as environment limitations and run the host-capable smoke helper before claiming runtime compatibility:
+
+```bash
+bash scripts/run_live_transport_smoke.sh all
+```
+
+The current bounded release verdict is `READY_FOR_BOUNDED_RELEASE`. For the current closure state, live verification evidence, and residual boundaries, see `docs/live-transport-verification-verdict.md`, `docs/residual-closure-audit.md`, and `docs/security-residual-register.md`.
 
 ## Directory map
 - `src/telecom_browser_mcp/` — runtime code, adapters, tools, server, diagnostics, evidence

@@ -1,5 +1,6 @@
 import pytest
 
+from telecom_browser_mcp.browser.url_policy import URLPolicy
 from telecom_browser_mcp.tools.service import ToolService
 
 
@@ -52,3 +53,25 @@ async def test_capabilities_exposes_adapter_descriptors() -> None:
     assert result["ok"] is True
     adapter_ids = {adapter["adapter_id"] for adapter in result["data"]["adapters"]}
     assert {"generic", "apntalk", "fake_dialer"}.issubset(adapter_ids)
+
+
+@pytest.mark.asyncio
+async def test_open_app_rejects_unsafe_local_target_by_default() -> None:
+    service = ToolService()
+
+    result = await service.open_app({"target_url": "http://127.0.0.1:8000"})
+
+    assert result["ok"] is False
+    assert result["error"]["code"] == "target_url_blocked"
+    assert result["error"]["classification"] == "security_policy"
+    assert result["diagnostics"][0]["code"] == "unsafe_resolved_address"
+
+
+@pytest.mark.asyncio
+async def test_open_app_harness_allow_mode_permits_explicit_local_host() -> None:
+    service = ToolService(url_policy=URLPolicy(allowed_hosts=("127.0.0.1",), allow_local_targets=True))
+
+    result = await service.open_app({"target_url": "http://127.0.0.1:9", "adapter_id": "fake_dialer"})
+
+    assert result["ok"] is True
+    assert result["data"]["resolved_adapter_id"] == "fake_dialer"

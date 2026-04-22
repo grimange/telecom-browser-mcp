@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import functools
+import http.server
+import socketserver
+import threading
 from pathlib import Path
 
 import pytest
@@ -9,14 +13,40 @@ from telecom_browser_mcp.tools.service import ToolService
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "fake_dialer.html"
 
 
-def _scenario_url(name: str) -> str:
-    return f"{FIXTURE_PATH.resolve().as_uri()}?scenario={name}"
+class _ReusableTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
 
 
-async def _open_fake_session(service: ToolService, scenario: str) -> str:
+@pytest.fixture(scope="module")
+def fake_dialer_base_url() -> str:
+    handler = functools.partial(
+        http.server.SimpleHTTPRequestHandler,
+        directory=str(FIXTURE_PATH.parent),
+    )
+    with _ReusableTCPServer(("127.0.0.1", 0), handler) as server:
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            yield f"http://127.0.0.1:{server.server_address[1]}/fake_dialer.html"
+        finally:
+            server.shutdown()
+            thread.join(timeout=5)
+
+
+@pytest.fixture(autouse=True)
+def allow_fake_dialer_harness(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("TELECOM_BROWSER_MCP_ALLOWED_HOSTS", "127.0.0.1")
+    monkeypatch.setenv("TELECOM_BROWSER_MCP_ALLOW_LOCAL_TARGETS", "1")
+
+
+def _scenario_url(base_url: str, name: str) -> str:
+    return f"{base_url}?scenario={name}"
+
+
+async def _open_fake_session(service: ToolService, base_url: str, scenario: str) -> str:
     result = await service.open_app(
         {
-            "target_url": _scenario_url(scenario),
+            "target_url": _scenario_url(base_url, scenario),
             "adapter_id": "fake_dialer",
             "headless": True,
         }
@@ -33,9 +63,9 @@ async def _open_fake_session(service: ToolService, scenario: str) -> str:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_inbound_answer_success() -> None:
+async def test_inbound_answer_success(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "success")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "success")
 
     ready = await service.wait_for_ready({"session_id": session_id, "timeout_ms": 3000})
     registration = await service.wait_for_registration({"session_id": session_id, "timeout_ms": 3000})
@@ -57,9 +87,9 @@ async def test_inbound_answer_success() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_inbound_answer_failure_generates_diagnostics_and_bundle() -> None:
+async def test_inbound_answer_failure_generates_diagnostics_and_bundle(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "answer_fails")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "answer_fails")
 
     await service.wait_for_ready({"session_id": session_id, "timeout_ms": 3000})
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 3000})
@@ -77,9 +107,9 @@ async def test_inbound_answer_failure_generates_diagnostics_and_bundle() -> None
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_registration_missing_scenario() -> None:
+async def test_registration_missing_scenario(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "no_registration")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "no_registration")
 
     ready = await service.wait_for_ready({"session_id": session_id, "timeout_ms": 3000})
     registration = await service.wait_for_registration({"session_id": session_id, "timeout_ms": 700})
@@ -93,9 +123,9 @@ async def test_registration_missing_scenario() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_peer_connection_missing_scenario() -> None:
+async def test_peer_connection_missing_scenario(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "no_peer")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "no_peer")
 
     summary = await service.get_peer_connection_summary({"session_id": session_id})
     assert summary["ok"] is True
@@ -106,9 +136,9 @@ async def test_peer_connection_missing_scenario() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_missing_answer_control_scenario() -> None:
+async def test_missing_answer_control_scenario(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "missing_answer")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "missing_answer")
 
     await service.wait_for_ready({"session_id": session_id, "timeout_ms": 3000})
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 3000})
@@ -124,9 +154,9 @@ async def test_missing_answer_control_scenario() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_delayed_registration_scenario() -> None:
+async def test_delayed_registration_scenario(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "delayed_registration")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "delayed_registration")
 
     registration = await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1500})
 
@@ -138,9 +168,9 @@ async def test_delayed_registration_scenario() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_missing_incoming_call_scenario() -> None:
+async def test_missing_incoming_call_scenario(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "missing_incoming_call")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "missing_incoming_call")
 
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
     incoming = await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 700})
@@ -153,9 +183,9 @@ async def test_missing_incoming_call_scenario() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_duplicate_incoming_call_summary() -> None:
+async def test_duplicate_incoming_call_summary(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "duplicate_incoming_call")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "duplicate_incoming_call")
 
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
     await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 1000})
@@ -169,9 +199,9 @@ async def test_duplicate_incoming_call_summary() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_connected_no_remote_audio_summary() -> None:
+async def test_connected_no_remote_audio_summary(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "connected_no_remote_audio")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "connected_no_remote_audio")
 
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
     await service.wait_for_incoming_call({"session_id": session_id, "timeout_ms": 1000})
@@ -186,9 +216,9 @@ async def test_connected_no_remote_audio_summary() -> None:
 
 @pytest.mark.asyncio
 @pytest.mark.host_required
-async def test_registration_and_store_snapshots() -> None:
+async def test_registration_and_store_snapshots(fake_dialer_base_url: str) -> None:
     service = ToolService()
-    session_id = await _open_fake_session(service, "store_ui_divergence")
+    session_id = await _open_fake_session(service, fake_dialer_base_url, "store_ui_divergence")
 
     await service.wait_for_registration({"session_id": session_id, "timeout_ms": 1000})
     registration = await service.get_registration_status({"session_id": session_id})

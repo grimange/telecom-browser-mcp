@@ -23,6 +23,7 @@ class AdapterBase(ABC):
     adapter_version = "0.1"
     contract_version = "v1"
     scenario_id = "baseline"
+    support_status = "supported"
     capabilities = None
 
     def _success(self, message: str, **details: Any) -> AdapterOperationResult:

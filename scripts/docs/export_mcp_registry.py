@@ -16,9 +16,8 @@ SRC_ROOT = REPO_ROOT / "src"
 if str(SRC_ROOT) not in sys.path:
     sys.path.insert(0, str(SRC_ROOT))
 
-from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS
-from telecom_browser_mcp.server.app import create_mcp_server
-
+from telecom_browser_mcp.contracts import CANONICAL_TOOL_INPUT_MODELS  # noqa: E402
+from telecom_browser_mcp.server.app import create_mcp_server  # noqa: E402
 
 TOOL_SUMMARY_HINTS = {
     "health": "Read-only service health check.",
