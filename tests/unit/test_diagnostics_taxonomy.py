@@ -28,7 +28,7 @@ def test_canonicalize_classification_maps_known_aliases() -> None:
 
 
 def test_classify_target_marks_apntalk_hosts() -> None:
-    runtime = _runtime(adapter_id="generic", target_url="https://app.apntalk.com/agent")
+    runtime = _runtime(adapter_id="generic", target_url="https://s022-067.apntelecom.com/agent")
     assert classify_target(runtime) == "apntalk"
 
 

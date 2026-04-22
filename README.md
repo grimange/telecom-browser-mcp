@@ -92,7 +92,7 @@ The same URL policy is also installed as a Playwright browser request guard for 
 
 Evidence bundles are written under each session artifact root. Textual JSON/HTML artifacts are centrally redacted for bearer tokens, cookies, passwords, API keys, SIP usernames, phone-number-like values, session IDs, private endpoints, and sensitive query parameters. Screenshots are sensitive pixel artifacts; they are disabled by default for non-harness targets and can be explicitly enabled with `TELECOM_BROWSER_MCP_CAPTURE_SCREENSHOTS=1`. Bundle manifests record screenshot sensitivity metadata and explicitly state that pixel-level screenshot redaction is not implemented. Never commit real debug bundles.
 
-APNTalk is currently a contract scaffold only. It is registered so contracts and drift can be audited, but unsupported APNTalk operations fail closed and capabilities report no login, registration, incoming-call, answer, or hangup support.
+APNTalk now supports visible-UI login only. The adapter can fill the real login form, submit it through the page, and confirm a post-login surface using conservative DOM evidence. Registration, incoming-call detection, answer, and hangup remain fail-closed until their selectors and runtime probes are verified.
 
 Live stdio/SSE/HTTP verification remains runtime-realistic rather than sandbox-friendly. In constrained environments, loopback socket creation or subprocess first contact may be blocked; classify those outcomes as environment limitations and run the host-capable smoke helper before claiming runtime compatibility:
 

@@ -37,7 +37,7 @@ class ToolService:
     ) -> None:
         self.sessions = SessionManager(session_ttl_seconds=session_ttl_seconds, url_policy=url_policy)
         self.adapters = AdapterRegistry()
-        self.adapters.register(APNTalkAdapter, domains=["app.apntalk.com", "apntalk.com"])
+        self.adapters.register(APNTalkAdapter, domains=["s022-067.apntelecom.com", "apntalk.com"])
         self.adapters.register(FakeDialerAdapter, domains=["fake-dialer.local"])
         self.session_inspector = SessionInspector()
         self.webrtc_inspector = WebRTCInspector()
@@ -469,16 +469,16 @@ class ToolService:
             if browser_error is not None:
                 return browser_error
 
-            ok, message = await runtime.adapter.login(
+            result = await runtime.adapter.login(
                 runtime.model.telecom, runtime.browser.page, req.credentials, req.timeout_ms
             )
-            if not ok.ok:
+            if not result.ok:
                 return self._err(
                     tool,
-                    ok.error_code or codes.ERROR_ADAPTER_UNSUPPORTED,
-                    ok.message,
-                    classification=ok.classification,
-                    retryable=ok.retryable,
+                    result.error_code or codes.ERROR_ADAPTER_UNSUPPORTED,
+                    result.message,
+                    classification=result.classification,
+                    retryable=result.retryable,
                     session_id=req.session_id,
                     adapter=runtime.adapter,
                     diagnostics=self._session_state_diagnostics(runtime),
@@ -486,7 +486,7 @@ class ToolService:
             runtime.model.telecom.login_complete = True
             return self._ok(
                 tool,
-                {"login_complete": True, "message": ok.message, **ok.details},
+                {"login_complete": True, "message": result.message, **result.details},
                 session_id=req.session_id,
                 adapter=runtime.adapter,
             )

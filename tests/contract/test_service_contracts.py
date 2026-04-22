@@ -34,7 +34,7 @@ async def test_apntalk_host_rejects_explicit_generic_adapter() -> None:
 
     result = await service.open_app(
         {
-            "target_url": "https://app.apntalk.com/agent",
+            "target_url": "https://s022-067.apntelecom.com/agent",
             "adapter_id": "generic",
         }
     )

@@ -34,7 +34,9 @@ APNTALK_SURFACE_CONTRACTS: dict[str, APNTalkSurfaceContract] = {
     "login_agent": APNTalkSurfaceContract(
         tool_name="login_agent",
         selector_name="agent_login_form",
+        selector_css="input[type='password']",
         runtime_probe_name="auth_store",
+        runtime_probe_path="dom:post_login_authenticated_surface",
     ),
     "wait_for_ready": APNTalkSurfaceContract(
         tool_name="wait_for_ready",

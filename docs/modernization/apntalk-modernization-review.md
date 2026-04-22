@@ -36,7 +36,9 @@ evidence producer with explicit review boundaries.
 
 ## Review Boundaries
 
-- APNTalk happy-path validation is still blocked on verified selectors and runtime
+- APNTalk login-path validation is implemented with visible-UI selectors and
+  conservative post-login confirmation, but ready, registration, incoming-call,
+  answer, and hangup validation remain blocked on verified selectors and runtime
   probes in this repository.
 - Local host browser execution can still be environment-limited even when browser
   binaries are installed; this run observed missing `libnspr4.so` in the local

@@ -26,7 +26,7 @@ The same URL policy is installed as a browser request guard for HTTP/HTTPS reque
 
 Evidence bundles are stored below the session artifact root reported by tool responses. Textual artifacts are redacted before write. Screenshots remain sensitive because pixel redaction is not guaranteed; they are disabled by default for non-harness targets unless `TELECOM_BROWSER_MCP_CAPTURE_SCREENSHOTS=1` is set. Bundle manifests record screenshot sensitivity metadata. Do not commit real debug bundles.
 
-APNTalk support status: contract scaffold only. The adapter is registered for contract tracking, but browser actions and runtime probes are intentionally fail-closed until selectors/probes are implemented and verified by tests.
+APNTalk support status: `login_ui_only`. The adapter supports login through the visible UI with bounded selector matching and conservative post-login confirmation. Registration, incoming-call detection, answer, and hangup remain intentionally fail-closed until those selectors and runtime probes are implemented and verified by tests.
 
 Security checks can be run locally with:
 

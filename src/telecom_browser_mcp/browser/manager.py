@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
-
-from playwright.async_api import Browser, BrowserContext, Page, Playwright, Route, async_playwright
+from typing import TYPE_CHECKING, Any
 
 from telecom_browser_mcp.browser.url_policy import URLPolicy, URLPolicyError, validate_target_url
+
+if TYPE_CHECKING:
+    from playwright.async_api import Browser, BrowserContext, Page, Playwright, Route
+else:
+    Browser = BrowserContext = Page = Playwright = Route = Any
 
 
 @dataclass(frozen=True)
@@ -65,6 +68,8 @@ class BrowserManager:
         browser: Browser | None = None
         context: BrowserContext | None = None
         try:
+            from playwright.async_api import async_playwright
+
             playwright = await async_playwright().start()
             browser = await playwright.chromium.launch(headless=headless)
             context = await browser.new_context()

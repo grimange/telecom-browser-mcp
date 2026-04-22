@@ -8,7 +8,7 @@ not ad hoc browser clicking.
 
 | Scenario ID | Target | Evidence Source | Expected Outcome |
 |---|---|---|---|
-| `apntalk-modernization-baseline` | APNTalk | adapter fail-closed contract | `login_agent`, `wait_for_ready`, and `wait_for_registration` fail closed with explicit contract or probe errors until selectors/runtime truth is implemented |
+| `apntalk-modernization-baseline` | APNTalk | bounded live UI adapter path | `login_agent` can submit the visible login form and confirm an authenticated landing page; `wait_for_ready` and `wait_for_registration` still fail closed until their selectors/runtime truth is implemented |
 | `fake-dialer-happy-path` | Fake Dialer | `success`, `delayed_registration`, `registration_flapping` | `wait_for_registration` succeeds when the runtime eventually reaches `registered` |
 
 ## Inbound Signaling
