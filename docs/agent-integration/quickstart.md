@@ -4,8 +4,13 @@ Generated at: `20260308T152757Z`
 
 ## Server Startup Command
 ```bash
-TELECOM_BROWSER_MCP_DOCGEN=1 telecom-browser-mcp-stdio
+/absolute/path/to/repo/.venv/bin/telecom-browser-mcp-stdio
 ```
+
+For real Codex CLI registration and transport-specific examples, use the canonical setup guide:
+
+- `docs/setup/codex-mcp.md`
+- `docs/setup/codex-cli-config-examples.toml.md`
 
 ## Transport Type
 Default transport: `stdio`

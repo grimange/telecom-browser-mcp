@@ -2,6 +2,7 @@
 
 ## Status
 - unverified integration pattern
+- canonical user setup guide: `docs/setup/codex-mcp.md`
 
 ## Verification Summary
 - Startup contract: high confidence (static code + entrypoint evidence).
@@ -21,23 +22,16 @@
 - Default transport: `stdio`
 
 ## Configuration Example
-```json
-{
-  "mcpServers": {
-    "telecom-browser-mcp": {
-      "command": "telecom-browser-mcp-stdio",
-      "args": [],
-      "env": {
-        "TELECOM_BROWSER_MCP_DOCGEN": "1"
-      }
-    }
-  }
-}
+```toml
+[mcp_servers.telecom_browser_mcp]
+command = "/absolute/path/to/repo/.venv/bin/telecom-browser-mcp-stdio"
+default_tools_approval_mode = "prompt"
+supports_parallel_tool_calls = false
 ```
 
 Syntax provenance:
 - pyproject.toml:[project.scripts].telecom-browser-mcp-stdio
-- docs/verification/multi-client-compatibility/telecom-browser-mcp/20260308T144214Z/01-client-target-definition.md
+- docs/setup/codex-mcp.md
 
 ## Tool Discovery Expectations
 - Expected tool count: `17`
@@ -64,9 +58,13 @@ Prerequisites:
 - Playwright browser binaries installed in host runtime for browser-driving tools
 
 Environment variables:
-- `FASTMCP_HOST` (optional)
-- `FASTMCP_PORT` (optional)
-- `TELECOM_BROWSER_MCP_DOCGEN` (optional)
+- `FASTMCP_HOST` (optional for HTTP/SSE startup)
+- `FASTMCP_PORT` (optional for HTTP/SSE startup)
+- `TELECOM_BROWSER_MCP_UNSAFE_BIND` (required for non-local HTTP/SSE)
+- `TELECOM_BROWSER_MCP_AUTH_TOKEN` (required for non-local HTTP/SSE)
+- `TELECOM_BROWSER_MCP_ALLOWED_HOSTS` (recommended for real targets)
+- `TELECOM_BROWSER_MCP_ALLOW_LOCAL_TARGETS` (harness-only)
+- `TELECOM_BROWSER_MCP_CAPTURE_SCREENSHOTS` (sensitive artifact opt-in)
 
 ## Troubleshooting
 - `environment_limit_missing_browser_binary`: Browser-driving tools can degrade when Playwright browser binaries are unavailable.

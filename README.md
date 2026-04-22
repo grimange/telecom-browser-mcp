@@ -102,6 +102,8 @@ bash scripts/run_live_transport_smoke.sh all
 
 The current bounded release verdict is `READY_FOR_BOUNDED_RELEASE`. For the current closure state, live verification evidence, and residual boundaries, see `docs/live-transport-verification-verdict.md`, `docs/residual-closure-audit.md`, and `docs/security-residual-register.md`.
 
+For Codex CLI registration and copy-paste transport examples, start with `docs/setup/codex-mcp.md`.
+
 ## Directory map
 - `src/telecom_browser_mcp/` — runtime code, adapters, tools, server, diagnostics, evidence
 - `tests/` — unit, contract, integration, harness, live verification
