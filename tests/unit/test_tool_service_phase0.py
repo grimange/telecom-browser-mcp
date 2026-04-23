@@ -815,3 +815,202 @@ async def test_hangup_call_fails_closed_when_terminal_transition_is_missing(
     assert result["ok"] is False
     assert result["error"]["code"] == "hangup_terminal_transition_missing"
     assert result["error"]["classification"] == "call_delivery_failure"
+
+
+@pytest.mark.asyncio
+async def test_supported_apntalk_workflow_remains_coherent_across_bridge_backed_sequence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    service = ToolService()
+    initial_payload = _valid_bridge_payload(
+        peerConnection={
+            "availability": "unavailable",
+            "hasPeerConnection": False,
+            "ambiguity": "no_active_session",
+            "signalingState": None,
+            "iceConnectionState": None,
+            "connectionState": None,
+            "hasLocalDescription": False,
+            "hasRemoteDescription": False,
+            "senderCount": 0,
+            "receiverCount": 0,
+            "transceiverCount": 0,
+        }
+    )
+    connected_payload = _valid_bridge_payload(
+        call={
+            "availability": "available",
+            "hasActiveCall": True,
+            "callStatus": "TALKING",
+            "direction": "incoming",
+            "hasBridgeId": True,
+        },
+        incomingCall={
+            "availability": "available",
+            "isIncomingPresent": False,
+            "ringingState": "idle",
+            "direction": "unknown",
+            "ambiguity": "none",
+        },
+        peerConnection={
+            "availability": "available",
+            "hasPeerConnection": True,
+            "ambiguity": "none",
+            "signalingState": "stable",
+            "iceConnectionState": "connected",
+            "connectionState": "connected",
+            "hasLocalDescription": True,
+            "hasRemoteDescription": True,
+            "senderCount": 1,
+            "receiverCount": 1,
+            "transceiverCount": 1,
+        },
+        controls={
+            "answer": {
+                "availability": "unavailable",
+                "visible": False,
+                "enabled": False,
+                "actionAllowed": False,
+                "ambiguity": "none",
+                "controlKind": "answer",
+                "controlScope": "incoming-call",
+                "stableControlId": "softphone-main-answer",
+                "selectorContract": '[data-apntalk-bridge-control-id="softphone-main-answer"]',
+            },
+            "hangup": _valid_bridge_payload()["controls"]["hangup"],
+        },
+    )
+    terminal_payload = _valid_bridge_payload(
+        call={
+            "availability": "available",
+            "hasActiveCall": False,
+            "callStatus": "DISCONNECTED",
+            "direction": "unknown",
+            "hasBridgeId": False,
+        },
+        incomingCall={
+            "availability": "available",
+            "isIncomingPresent": False,
+            "ringingState": "idle",
+            "direction": "unknown",
+            "ambiguity": "none",
+        },
+        peerConnection={
+            "availability": "unavailable",
+            "hasPeerConnection": False,
+            "ambiguity": "no_active_session",
+            "signalingState": None,
+            "iceConnectionState": None,
+            "connectionState": None,
+            "hasLocalDescription": False,
+            "hasRemoteDescription": False,
+            "senderCount": 0,
+            "receiverCount": 0,
+            "transceiverCount": 0,
+        },
+        controls={
+            "answer": {
+                "availability": "unavailable",
+                "visible": False,
+                "enabled": False,
+                "actionAllowed": False,
+                "ambiguity": "none",
+                "controlKind": "answer",
+                "controlScope": "incoming-call",
+                "stableControlId": "softphone-main-answer",
+                "selectorContract": '[data-apntalk-bridge-control-id="softphone-main-answer"]',
+            },
+            "hangup": {
+                "availability": "unavailable",
+                "visible": False,
+                "enabled": False,
+                "actionAllowed": False,
+                "ambiguity": "none",
+                "controlKind": "hangup",
+                "controlScope": "main-call",
+                "stableControlId": "softphone-main-hangup",
+                "selectorContract": '[data-apntalk-bridge-control-id="softphone-main-hangup"]',
+            },
+        },
+    )
+    page = _BridgePage(
+        initial_payload,
+        answer_bridge_payload=connected_payload,
+        hangup_bridge_payload=terminal_payload,
+    )
+    answer_selector = '[data-apntalk-bridge-control-id="softphone-main-answer"]'
+    hangup_selector = '[data-apntalk-bridge-control-id="softphone-main-hangup"]'
+    page.selector_matches[answer_selector] = [
+        _SelectorMatch(on_click=lambda: setattr(page, "bridge_payload", page.answer_bridge_payload))
+    ]
+    page.selector_matches[hangup_selector] = [
+        _SelectorMatch(on_click=lambda: setattr(page, "bridge_payload", page.hangup_bridge_payload))
+    ]
+    runtime = _apntalk_runtime(page)
+
+    async def fake_create(target_url: str, adapter: APNTalkAdapter, headless: bool = True):
+        _ = (target_url, adapter, headless)
+        return runtime
+
+    async def fake_require_runtime_for_action(tool: str, session_id: str):
+        _ = (tool, session_id)
+        return runtime, None
+
+    async def fake_require_runtime_for_diagnostics(tool: str, session_id: str):
+        _ = (tool, session_id)
+        return runtime, None
+
+    monkeypatch.setattr(service.adapters, "resolve", lambda target_url, adapter_id=None: (APNTalkAdapter(), "explicit", 1.0))
+    monkeypatch.setattr(service.sessions, "create", fake_create)
+    monkeypatch.setattr(service, "_require_runtime_for_action", fake_require_runtime_for_action)
+    monkeypatch.setattr(service, "_require_runtime_for_diagnostics", fake_require_runtime_for_diagnostics)
+
+    open_result = await service.open_app(
+        {"target_url": "https://s022-067.apntelecom.com/agent", "adapter_id": "apntalk"}
+    )
+    assert open_result["ok"] is True
+    assert open_result["data"]["phase0_observation"]["runtime_bridge"]["bridge_version"] == APNTALK_RUNTIME_BRIDGE_VERSION
+    truths = {item["capability"]: item for item in open_result["data"]["capability_truth"]}
+    assert truths["get_registration_status"]["live_detection_status"] == "detected"
+    assert truths["wait_for_registration"]["live_detection_status"] == "detected"
+    assert truths["wait_for_ready"]["live_detection_status"] == "detected"
+    assert truths["wait_for_incoming_call"]["live_detection_status"] == "detected"
+    assert truths["get_peer_connection_summary"]["live_detection_status"] == "bridge_present"
+    assert truths["answer_call"]["live_detection_status"] == "detected"
+    assert truths["hangup_call"]["live_detection_status"] == "detected"
+
+    ready_result = await service.wait_for_ready({"session_id": "session-apntalk", "timeout_ms": 100})
+    registration_result = await service.wait_for_registration({"session_id": "session-apntalk", "timeout_ms": 100})
+    incoming_result = await service.wait_for_incoming_call({"session_id": "session-apntalk", "timeout_ms": 100})
+
+    assert ready_result["ok"] is True
+    assert registration_result["ok"] is True
+    assert incoming_result["ok"] is True
+    assert runtime.model.telecom.ui_ready is True
+    assert runtime.model.telecom.registration_state == "registered"
+    assert runtime.model.telecom.incoming_call_state == "ringing"
+
+    answer_result = await service.answer_call({"session_id": "session-apntalk", "timeout_ms": 100})
+    assert answer_result["ok"] is True
+    assert answer_result["data"]["active_call_state"] == "connected"
+    assert answer_result["data"]["incoming_call_state"] == "idle"
+    assert runtime.model.telecom.active_call_state == "connected"
+    assert runtime.model.telecom.incoming_call_state == "idle"
+
+    peer_result = await service.get_peer_connection_summary({"session_id": "session-apntalk"})
+    assert peer_result["ok"] is True
+    assert peer_result["data"]["summary"]["available"] is True
+    assert peer_result["data"]["summary"]["facts"]["connectionState"] == "connected"
+
+    hangup_result = await service.hangup_call({"session_id": "session-apntalk", "timeout_ms": 100})
+    assert hangup_result["ok"] is True
+    assert hangup_result["data"]["active_call_state"] == "disconnected"
+    assert hangup_result["data"]["incoming_call_state"] == "idle"
+    assert runtime.model.telecom.active_call_state == "disconnected"
+    assert runtime.model.telecom.incoming_call_state == "idle"
+
+    snapshot_result = await service.get_active_session_snapshot({"session_id": "session-apntalk"})
+    assert snapshot_result["ok"] is True
+    assert snapshot_result["data"]["session"]["telecom"]["active_call_state"] == "disconnected"
+    assert snapshot_result["data"]["session"]["telecom"]["incoming_call_state"] == "idle"
+    assert snapshot_result["data"]["phase0_observation"]["runtime_bridge"]["validation_verdict"] == "bridge_valid"

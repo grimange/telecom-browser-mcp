@@ -28,6 +28,42 @@ Evidence bundles are stored below the session artifact root reported by tool res
 
 APNTalk support status: `login_ui_plus_bridge_observation`. The adapter supports login through the visible UI with bounded selector matching and conservative post-login confirmation. A valid APNTalk runtime bridge can now truthfully back `get_registration_status`, `wait_for_registration`, `wait_for_ready`, `wait_for_incoming_call`, `get_peer_connection_summary`, and bounded `answer_call`/`hangup_call` via the visible main softphone controls only. Store snapshots remain intentionally fail-closed until those selectors or runtime probes are implemented and verified by tests.
 
+For the concise operator handoff, quickstart, and release summary, see [docs/modernization/apntalk-release-handoff.md](/home/grimange/personal_projects/telecom-browser-mcp/docs/modernization/apntalk-release-handoff.md:1).
+
+## APNTalk Support Matrix
+
+Current bounded bridge compatibility:
+
+- consumer expects APNTalk bridge version `1.4.0`
+- absent, malformed, partial, or version-mismatched bridges fail closed
+- bridge presence alone does not promote success for any APNTalk tool
+
+| Surface | Current Status | Minimum Truth Required | Fails Closed When |
+|---|---|---|---|
+| `login_agent` | supported | visible APNTalk login form plus conservative post-login confirmation | selectors missing, form submit fails, or authenticated landing state is not proven |
+| `get_registration_status` | supported | valid bridge plus available `registration.isRegistered` facts | bridge invalid, registration section unavailable, or `isRegistered` missing |
+| `wait_for_registration` | supported | valid bridge plus available `registration.isRegistered == true` | bridge invalid, registration facts unavailable, or registration remains unregistered |
+| `wait_for_ready` | supported | valid bridge plus exact bounded readiness facts for authenticated, initialized, registered, and ready availability | any readiness fact is absent, partial, contradictory, or not in the ready combination |
+| `wait_for_incoming_call` | supported | valid bridge plus safe unambiguous incoming ringing facts | incoming-call ambiguity, non-ringing state, or missing bridge facts |
+| `get_peer_connection_summary` | supported | valid bridge plus available non-ambiguous `peerConnection` summary facts | bridge invalid, peer-connection section unavailable, or ambiguity is reported |
+| `answer_call` | supported | valid bridge plus one visible enabled main answer control and post-click connected transition evidence | control unavailable, ambiguous, hidden, disabled, selector mismatch, or connected transition missing |
+| `hangup_call` | supported | valid bridge plus one visible enabled main hangup control and post-click terminal transition evidence | control unavailable, ambiguous, hidden, disabled, selector mismatch, or terminal transition missing |
+| `get_store_snapshot` | unsupported | not admitted in the current bounded APNTalk contract | always fail closed; no bounded redacted APNTalk store contract is implemented |
+
+### APNTalk Refusal Notes
+
+- `answer_call` and `hangup_call` are UI-first only. They do not call backend services directly and do not use hidden mutation paths.
+- `get_peer_connection_summary` is only a bounded bridge-backed summary. It does not expose SDP, ICE candidates, device labels, or media-permission success.
+- `wait_for_ready` is not treated as “page open”. It succeeds only on the exact bounded readiness combination backed by the bridge.
+- `wait_for_incoming_call` does not imply that answering will succeed. It only proves a safe incoming-ringing observation state.
+- `get_store_snapshot` remains intentionally unsupported until APNTalk exposes a separate bounded redacted snapshot contract.
+
+### APNTalk Troubleshooting
+
+- `bridge_absent`, `bridge_malformed`, `bridge_partial`, or `bridge_version_mismatch`: use `open_app` or `get_active_session_snapshot` to inspect `phase0_observation.runtime_bridge` and compare the emitted bridge against [docs/apntalk-runtime-bridge-contract.md](/home/grimange/personal_projects/telecom-browser-mcp/docs/apntalk-runtime-bridge-contract.md:1).
+- `answer_control_*` or `hangup_control_*` errors: verify that APNTalk is emitting the main softphone control contract and that the stable selector resolves to exactly one visible element.
+- `answer_connected_transition_missing` or `hangup_terminal_transition_missing`: treat as fail-closed call-state evidence gaps, not silent success. Inspect APNTalk bridge `call`, `incomingCall`, and `peerConnection` sections before broadening any claim.
+
 Phase 0 APNTalk truth surfaces are now available through `capabilities`, `open_app`, and `get_active_session_snapshot`. These outputs distinguish declared support from real binding status and include bounded early diagnostics such as adapter identity, APNTalk contract gaps, runtime-bridge present/absent status, login-selector observations when checkable, and microphone permission state when the browser safely exposes it.
 
 The consumer-side APNTalk runtime bridge contract is documented in [docs/apntalk-runtime-bridge-contract.md](/home/grimange/personal_projects/telecom-browser-mcp/docs/apntalk-runtime-bridge-contract.md:1). This repo can validate and consume `window.__apnTalkTestBridge` when APNTalk exposes it. In the current bounded pass, that truthfully upgrades bridge-backed registration observation, registration wait observation, ready observation, safe incoming-ringing observation, bounded peer-connection summary observation, and bounded visible-UI answer/hangup only. It does not by itself make store snapshot paths supported.

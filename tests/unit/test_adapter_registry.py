@@ -52,6 +52,7 @@ def test_registry_descriptors_expose_adapter_metadata() -> None:
     )
     answer_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "answer_call")
     hangup_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "hangup_call")
+    store_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "get_store_snapshot")
     assert ready_truth["declared_support"] == "supported_with_runtime_probe"
     assert ready_truth["binding_status"] == "runtime_probe_bound"
     assert registration_wait_truth["declared_support"] == "supported_with_runtime_probe"
@@ -66,4 +67,6 @@ def test_registry_descriptors_expose_adapter_metadata() -> None:
     assert answer_truth["binding_status"] == "selector_bound"
     assert hangup_truth["declared_support"] == "supported_with_selector_binding"
     assert hangup_truth["binding_status"] == "selector_bound"
+    assert store_truth["declared_support"] == "scaffold_only"
+    assert store_truth["binding_status"] == "unbound"
     assert "s022-067.apntelecom.com" in apntalk["domains"]

@@ -617,6 +617,7 @@ async def test_apntalk_hangup_call_succeeds_with_visible_main_control_and_termin
 
     assert result.ok is True
     assert result.details["active_call_state"] == "disconnected"
+    assert result.details["incoming_call_state"] == "idle"
     assert result.details["terminal_facts"]["hasActiveCall"] is False
     assert status.active_call_state == "disconnected"
     assert status.incoming_call_state == "idle"

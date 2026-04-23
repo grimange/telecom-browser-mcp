@@ -1874,6 +1874,7 @@ class APNTalkAdapter(AdapterBase):
                 return self._success(
                     "APNTalk hangup completed via visible UI control",
                     active_call_state="disconnected",
+                    incoming_call_state="idle",
                     bridge_version=terminal_observation.get("bridge_version"),
                     hangup_control_facts=observation.get("facts"),
                     selector_probe=selector_probe,

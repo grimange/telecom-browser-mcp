@@ -723,7 +723,11 @@ class ToolService:
                 req.timeout_ms,
             )
             if result.ok:
-                runtime.model.telecom.active_call_state = "connected"
+                runtime.model.telecom.active_call_state = str(
+                    result.details.get("active_call_state") or "connected"
+                )
+                if "incoming_call_state" in result.details:
+                    runtime.model.telecom.incoming_call_state = str(result.details["incoming_call_state"])
                 return self._apply_operation_result(
                     tool=tool,
                     runtime=runtime,
@@ -781,7 +785,11 @@ class ToolService:
                 req.timeout_ms,
             )
             if result.ok:
-                runtime.model.telecom.active_call_state = "disconnected"
+                runtime.model.telecom.active_call_state = str(
+                    result.details.get("active_call_state") or "disconnected"
+                )
+                if "incoming_call_state" in result.details:
+                    runtime.model.telecom.incoming_call_state = str(result.details["incoming_call_state"])
                 return self._apply_operation_result(
                     tool=tool,
                     runtime=runtime,

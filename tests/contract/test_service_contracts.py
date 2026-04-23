@@ -72,6 +72,7 @@ async def test_capabilities_exposes_adapter_descriptors() -> None:
     )
     answer_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "answer_call")
     hangup_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "hangup_call")
+    store_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "get_store_snapshot")
     assert bridge_truth["declared_support"] == "supported_with_runtime_probe"
     assert ready_truth["declared_support"] == "supported_with_runtime_probe"
     assert registration_wait_truth["declared_support"] == "supported_with_runtime_probe"
@@ -80,6 +81,8 @@ async def test_capabilities_exposes_adapter_descriptors() -> None:
     assert peer_connection_truth["declared_support"] == "supported_with_runtime_probe"
     assert answer_truth["declared_support"] == "supported_with_selector_binding"
     assert hangup_truth["declared_support"] == "supported_with_selector_binding"
+    assert store_truth["declared_support"] == "scaffold_only"
+    assert store_truth["binding_status"] == "unbound"
 
 
 @pytest.mark.asyncio
