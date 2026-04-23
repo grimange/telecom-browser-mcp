@@ -58,16 +58,28 @@ async def test_capabilities_exposes_adapter_descriptors() -> None:
         item for item in apntalk["capability_truth"] if item["capability"] == "apntalk_runtime_bridge_contract"
     )
     ready_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_ready")
+    registration_wait_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_registration"
+    )
     incoming_truth = next(
         item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_incoming_call"
     )
     registration_truth = next(
         item for item in apntalk["capability_truth"] if item["capability"] == "get_registration_status"
     )
+    peer_connection_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "get_peer_connection_summary"
+    )
+    answer_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "answer_call")
+    hangup_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "hangup_call")
     assert bridge_truth["declared_support"] == "supported_with_runtime_probe"
     assert ready_truth["declared_support"] == "supported_with_runtime_probe"
+    assert registration_wait_truth["declared_support"] == "supported_with_runtime_probe"
     assert incoming_truth["declared_support"] == "supported_with_runtime_probe"
     assert registration_truth["declared_support"] == "supported_with_runtime_probe"
+    assert peer_connection_truth["declared_support"] == "supported_with_runtime_probe"
+    assert answer_truth["declared_support"] == "supported_with_selector_binding"
+    assert hangup_truth["declared_support"] == "supported_with_selector_binding"
 
 
 @pytest.mark.asyncio

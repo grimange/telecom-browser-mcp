@@ -15,8 +15,7 @@ present in a live browser session.
   unsupported version
 
 The bridge is observation-only. A valid bridge does **not** by itself promote
-APNTalk answer, hangup, mute, hold, DTMF, store snapshot, or peer-connection
-summary support to "working".
+APNTalk answer, mute, hold, DTMF, or store snapshot support to "working".
 
 ## Current Contract
 
@@ -26,7 +25,7 @@ Bridge name:
 
 Required top-level fields:
 
-- `version`: string, currently `"1.1.0"`
+- `version`: string, currently `"1.4.0"`
 - `readOnly`: boolean, currently `true`
 - `mode`: string, currently `"observation-only"`
 - `sessionAuth`: object
@@ -36,6 +35,8 @@ Required top-level fields:
 - `readiness`: object
 - `incomingCall`: object
 - `webRTC`: object
+- `peerConnection`: object
+- `controls`: object containing `answer` and `hangup`
 
 Required field on each section:
 
@@ -77,6 +78,34 @@ Optional bounded fields:
 - `webRTC.hasRemoteAudioElement`: boolean
 - `webRTC.remoteAudioAttached`: boolean
 - `webRTC.hasRingtoneElement`: boolean
+- `peerConnection.hasPeerConnection`: boolean
+- `peerConnection.ambiguity`: `"none" | "no_active_session" | "session_without_description_handler" | "description_handler_without_peer_connection" | "peer_connection_counts_unavailable"`
+- `peerConnection.signalingState`: non-empty string
+- `peerConnection.iceConnectionState`: non-empty string
+- `peerConnection.connectionState`: non-empty string
+- `peerConnection.hasLocalDescription`: boolean
+- `peerConnection.hasRemoteDescription`: boolean
+- `peerConnection.senderCount`: integer or `null`
+- `peerConnection.receiverCount`: integer or `null`
+- `peerConnection.transceiverCount`: integer or `null`
+- `controls.answer.availability`: `"available" | "partial" | "unavailable"`
+- `controls.answer.visible`: boolean
+- `controls.answer.enabled`: boolean
+- `controls.answer.actionAllowed`: boolean
+- `controls.answer.ambiguity`: `"none" | "multiple_main_answer_controls" | "multiple_answer_contexts" | "main_answer_control_unavailable"`
+- `controls.answer.controlKind`: non-empty string
+- `controls.answer.controlScope`: non-empty string
+- `controls.answer.stableControlId`: non-empty string
+- `controls.answer.selectorContract`: non-empty string
+- `controls.hangup.availability`: `"available" | "partial" | "unavailable"`
+- `controls.hangup.visible`: boolean
+- `controls.hangup.enabled`: boolean
+- `controls.hangup.actionAllowed`: boolean
+- `controls.hangup.ambiguity`: `"none" | "multiple_main_hangup_controls" | "multiple_hangup_contexts" | "main_hangup_control_unavailable"`
+- `controls.hangup.controlKind`: non-empty string
+- `controls.hangup.controlScope`: non-empty string
+- `controls.hangup.stableControlId`: non-empty string
+- `controls.hangup.selectorContract`: non-empty string
 
 Anything outside this allowlist is ignored by the consumer and must not be
 treated as part of the contract.
@@ -104,21 +133,28 @@ Interpretation:
 The current bounded APNTalk consumer can truthfully use a valid bridge for:
 
 - `get_registration_status`
+- `wait_for_registration`, only when bridge-backed registration facts satisfy
+  the exact consumer registration contract
 - `wait_for_ready`, only when bridge-backed readiness facts satisfy the exact
   consumer ready contract
 - `wait_for_incoming_call`, only when bridge-backed incoming-call facts safely
   distinguish ringing incoming state without ambiguity
+- `get_peer_connection_summary`, only when bridge-backed peer-connection facts
+  satisfy the exact consumer summary contract without ambiguity
+- `answer_call`, only when the validated bridge exposes a unique visible
+  incoming-call answer control, the selector contract resolves to exactly one
+  visible element, a safe incoming ringing target is proven, and a connected
+  post-click transition is observed within timeout
+- `hangup_call`, only when the validated bridge exposes a unique visible
+  main-call hangup control, the selector contract resolves to exactly one
+  visible element, an active call target is proven, and a terminal post-click
+  transition is observed within timeout
 
 It does **not** use bridge presence alone as success.
 
 It still does **not** promote:
 
-- `wait_for_registration`
-- `answer_call`
-- `hangup_call`
 - `get_store_snapshot`
-- `get_peer_connection_summary`
-
 ## Safe Surfaces
 
 Validated bridge verdicts and bounded APNTalk observation state can appear in:
@@ -127,8 +163,12 @@ Validated bridge verdicts and bounded APNTalk observation state can appear in:
 - `open_app`
 - `get_active_session_snapshot`
 - `get_registration_status`
+- `wait_for_registration`
 - `wait_for_ready`
 - `wait_for_incoming_call`
+- `get_peer_connection_summary`
+- `answer_call`
+- `hangup_call`
 
 These surfaces report bounded diagnostics and observation results only. They do
 not expose arbitrary APNTalk runtime objects or raw sensitive dumps.

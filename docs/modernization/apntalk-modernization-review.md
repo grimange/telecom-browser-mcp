@@ -45,17 +45,20 @@ evidence producer with explicit review boundaries.
 - APNTalk login-path validation is implemented with visible-UI selectors and
   conservative post-login confirmation. When APNTalk exposes a valid runtime
   bridge, this repo can now support bridge-backed `get_registration_status`,
-  `wait_for_ready`, and `wait_for_incoming_call` with bounded observation-only
-  semantics. `wait_for_registration`, answer, and hangup validation remain
-  blocked on stronger selectors or runtime probes in this repository.
+  `wait_for_registration`, `wait_for_ready`, `wait_for_incoming_call`, and
+  `get_peer_connection_summary` with bounded observation-only semantics, plus
+  bounded `answer_call` and `hangup_call` only when the bridge exposes the
+  visible main softphone controls, those selectors resolve uniquely, and the
+  required post-click transitions are observed. Store snapshot validation
+  remains blocked in this repository.
 - Phase 0 diagnostics are observation-only. Runtime bridge presence, selector
   observations, and microphone permission hints do not upgrade APNTalk support
   claims beyond the currently implemented `login_ui_plus_bridge_observation`
   corridor.
 - A `bridge_valid` verdict only means the page exposed the expected bounded
-  consumer contract. It does not, by itself, prove answer, hangup, store
-  snapshot, or peer-connection support in this repo, and it does not promote
-  `wait_for_registration` without a separate polling contract.
+  consumer contract. It does not, by itself, prove answer, store
+  snapshot, media permission, audio playout success, or control affordances in
+  this repo.
 - Local host browser execution can still be environment-limited even when browser
   binaries are installed; this run observed missing `libnspr4.so` in the local
   runtime, so browser-launch failures must be treated as environment limitations

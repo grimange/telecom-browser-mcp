@@ -31,7 +31,7 @@ class APNTalkSurfaceContract:
 
 APNTALK_CONTRACT_VERSION = "apntalk.v1"
 APNTALK_RUNTIME_BRIDGE_NAME = "__apnTalkTestBridge"
-APNTALK_RUNTIME_BRIDGE_VERSION = "1.1.0"
+APNTALK_RUNTIME_BRIDGE_VERSION = "1.4.0"
 APNTALK_RUNTIME_BRIDGE_MODE = "observation-only"
 APNTALK_RUNTIME_BRIDGE_REQUIRED_SECTIONS = (
     "sessionAuth",
@@ -41,12 +41,34 @@ APNTALK_RUNTIME_BRIDGE_REQUIRED_SECTIONS = (
     "readiness",
     "incomingCall",
     "webRTC",
+    "peerConnection",
+    "controls",
 )
 
 _SECTION_AVAILABILITY_VALUES = {"available", "partial", "unavailable"}
 _CALL_DIRECTION_VALUES = {"incoming", "inbound", "outbound", "unknown"}
 _INCOMING_RINGING_STATE_VALUES = {"idle", "ringing", "unknown"}
 _INCOMING_AMBIGUITY_VALUES = {"none", "ringing_without_inbound_direction"}
+_PEER_CONNECTION_AMBIGUITY_VALUES = {
+    "none",
+    "no_active_session",
+    "session_without_description_handler",
+    "description_handler_without_peer_connection",
+    "peer_connection_counts_unavailable",
+}
+_CONTROL_AVAILABILITY_VALUES = {"available", "partial", "unavailable"}
+_ANSWER_CONTROL_AMBIGUITY_VALUES = {
+    "none",
+    "multiple_main_answer_controls",
+    "multiple_answer_contexts",
+    "main_answer_control_unavailable",
+}
+_HANGUP_CONTROL_AMBIGUITY_VALUES = {
+    "none",
+    "multiple_main_hangup_controls",
+    "multiple_hangup_contexts",
+    "main_hangup_control_unavailable",
+}
 
 
 @dataclass(frozen=True)
@@ -166,6 +188,55 @@ def validate_apntalk_runtime_bridge(payload: Any) -> APNTalkBridgeValidationResu
         if not isinstance(section, dict):
             malformed_fields.append(section_name)
             continue
+        if section_name == "controls":
+            answer = section.get("answer")
+            if answer is None:
+                sections_missing.append("controls.answer")
+            elif not isinstance(answer, dict):
+                malformed_fields.append("controls.answer")
+            else:
+                answer_availability = answer.get("availability")
+                if answer_availability is None:
+                    sections_missing.append("controls.answer.availability")
+                elif (
+                    not isinstance(answer_availability, str)
+                    or answer_availability not in _CONTROL_AVAILABILITY_VALUES
+                ):
+                    malformed_fields.append("controls.answer.availability")
+                for field_name in ("visible", "enabled", "actionAllowed"):
+                    _optional_bool(answer, field_name, malformed_fields)
+                _optional_enum(answer, "ambiguity", _ANSWER_CONTROL_AMBIGUITY_VALUES, malformed_fields)
+                for field_name in ("controlKind", "controlScope", "stableControlId", "selectorContract"):
+                    _optional_nonempty_string(answer, field_name, malformed_fields)
+
+            hangup = section.get("hangup")
+            if hangup is None:
+                sections_missing.append("controls.hangup")
+                continue
+            if not isinstance(hangup, dict):
+                malformed_fields.append("controls.hangup")
+                continue
+            availability = hangup.get("availability")
+            if availability is None:
+                sections_missing.append("controls.hangup.availability")
+            elif not isinstance(availability, str) or availability not in _CONTROL_AVAILABILITY_VALUES:
+                malformed_fields.append("controls.hangup.availability")
+            if (
+                isinstance(answer, dict)
+                and isinstance(answer.get("availability"), str)
+                and answer.get("availability") in _CONTROL_AVAILABILITY_VALUES
+                and isinstance(hangup, dict)
+                and isinstance(hangup.get("availability"), str)
+                and hangup.get("availability") in _CONTROL_AVAILABILITY_VALUES
+            ):
+                sections_present.append(section_name)
+
+            for field_name in ("visible", "enabled", "actionAllowed"):
+                _optional_bool(hangup, field_name, malformed_fields)
+            _optional_enum(hangup, "ambiguity", _HANGUP_CONTROL_AMBIGUITY_VALUES, malformed_fields)
+            for field_name in ("controlKind", "controlScope", "stableControlId", "selectorContract"):
+                _optional_nonempty_string(hangup, field_name, malformed_fields)
+            continue
         availability = section.get("availability")
         if availability is None:
             sections_missing.append(f"{section_name}.availability")
@@ -214,6 +285,24 @@ def validate_apntalk_runtime_bridge(payload: Any) -> APNTalkBridgeValidationResu
                 "hasRingtoneElement",
             ):
                 _optional_bool(section, field_name, malformed_fields)
+        elif section_name == "peerConnection":
+            for field_name in (
+                "hasPeerConnection",
+                "hasLocalDescription",
+                "hasRemoteDescription",
+            ):
+                _optional_bool(section, field_name, malformed_fields)
+            for field_name in (
+                "signalingState",
+                "iceConnectionState",
+                "connectionState",
+            ):
+                _optional_nonempty_string(section, field_name, malformed_fields)
+            for field_name in ("senderCount", "receiverCount", "transceiverCount"):
+                value = section.get(field_name)
+                if value is not None and not isinstance(value, int):
+                    malformed_fields.append(f"peerConnection.{field_name}")
+            _optional_enum(section, "ambiguity", _PEER_CONNECTION_AMBIGUITY_VALUES, malformed_fields)
 
     if malformed_fields:
         return APNTalkBridgeValidationResult(
@@ -269,8 +358,8 @@ APNTALK_SURFACE_CONTRACTS: dict[str, APNTalkSurfaceContract] = {
     ),
     "wait_for_registration": APNTalkSurfaceContract(
         tool_name="wait_for_registration",
-        selector_name="registration_badge",
         runtime_probe_name="registration_snapshot",
+        runtime_probe_path="window.__apnTalkTestBridge.registration",
     ),
     "wait_for_incoming_call": APNTalkSurfaceContract(
         tool_name="wait_for_incoming_call",
@@ -280,12 +369,16 @@ APNTALK_SURFACE_CONTRACTS: dict[str, APNTalkSurfaceContract] = {
     "answer_call": APNTalkSurfaceContract(
         tool_name="answer_call",
         selector_name="answer_call_button",
-        runtime_probe_name="active_call_snapshot",
+        selector_css='[data-apntalk-bridge-control-id="softphone-main-answer"]',
+        runtime_probe_name="answer_control_snapshot",
+        runtime_probe_path="window.__apnTalkTestBridge.controls.answer",
     ),
     "hangup_call": APNTalkSurfaceContract(
         tool_name="hangup_call",
         selector_name="hangup_call_button",
-        runtime_probe_name="active_call_snapshot",
+        selector_css='[data-apntalk-bridge-control-id="softphone-main-hangup"]',
+        runtime_probe_name="hangup_control_snapshot",
+        runtime_probe_path="window.__apnTalkTestBridge.controls.hangup",
     ),
     "get_registration_status": APNTalkSurfaceContract(
         tool_name="get_registration_status",
@@ -299,6 +392,7 @@ APNTALK_SURFACE_CONTRACTS: dict[str, APNTalkSurfaceContract] = {
     "get_peer_connection_summary": APNTalkSurfaceContract(
         tool_name="get_peer_connection_summary",
         runtime_probe_name="peer_connection_summary",
+        runtime_probe_path="window.__apnTalkTestBridge.peerConnection",
     ),
 }
 

@@ -8,7 +8,7 @@ not ad hoc browser clicking.
 
 | Scenario ID | Target | Evidence Source | Expected Outcome |
 |---|---|---|---|
-| `apntalk-modernization-baseline` | APNTalk | bounded live UI adapter path | `login_agent` can submit the visible login form and confirm an authenticated landing page; `wait_for_ready` and `wait_for_registration` still fail closed until their selectors/runtime truth is implemented |
+| `apntalk-modernization-baseline` | APNTalk | bounded live UI adapter path | `login_agent` can submit the visible login form and confirm an authenticated landing page; bridge-backed `wait_for_ready` and `wait_for_registration` can succeed only when the emitted APNTalk bridge satisfies the exact bounded consumer contracts |
 | `fake-dialer-happy-path` | Fake Dialer | `success`, `delayed_registration`, `registration_flapping` | `wait_for_registration` succeeds when the runtime eventually reaches `registered` |
 
 ## Inbound Signaling
@@ -21,13 +21,14 @@ not ad hoc browser clicking.
 
 | Scenario ID | Target | Evidence Source | Expected Outcome |
 |---|---|---|---|
+| `apntalk-modernization-baseline` | APNTalk | bridge-backed visible-control contract | `answer_call` succeeds only when the emitted APNTalk bridge exposes a unique visible incoming-call answer control, the selector resolves uniquely, and post-click bridge facts prove a connected state; all ambiguity fails closed |
 | `fake-dialer-happy-path` | Fake Dialer | `success`, `answer_fails`, `missing_answer`, `answer_mismatch` | answer success produces a connected call state; failures produce diagnostics and a debug bundle |
 
 ## Call Teardown
 
 | Scenario ID | Target | Evidence Source | Expected Outcome |
 |---|---|---|---|
-| `apntalk-modernization-baseline` | APNTalk | adapter capabilities | hangup remains explicitly unsupported until a truthful adapter action is implemented |
+| `apntalk-modernization-baseline` | APNTalk | bridge-backed visible-control contract | `hangup_call` succeeds only when the emitted APNTalk bridge exposes a unique visible main-call hangup control, the selector resolves uniquely, and post-click bridge facts prove a terminal state; all ambiguity fails closed |
 
 ## UI/Store Sync
 

@@ -32,19 +32,38 @@ def test_registry_descriptors_expose_adapter_metadata() -> None:
     assert apntalk["contract_version"] == "apntalk.v1"
     assert apntalk["support_status"] == "login_ui_plus_bridge_observation"
     assert apntalk["capabilities"]["supports_login"] is True
+    assert apntalk["capabilities"]["supports_registration_detection"] is True
     assert apntalk["capabilities"]["supports_incoming_call_detection"] is True
-    assert apntalk["capabilities"]["supports_webrtc_summary"] is False
+    assert apntalk["capabilities"]["supports_answer_action"] is True
+    assert apntalk["capabilities"]["supports_hangup_action"] is True
+    assert apntalk["capabilities"]["supports_webrtc_summary"] is True
     ready_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_ready")
+    registration_wait_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_registration"
+    )
     incoming_truth = next(
         item for item in apntalk["capability_truth"] if item["capability"] == "wait_for_incoming_call"
     )
     registration_truth = next(
         item for item in apntalk["capability_truth"] if item["capability"] == "get_registration_status"
     )
+    peer_connection_truth = next(
+        item for item in apntalk["capability_truth"] if item["capability"] == "get_peer_connection_summary"
+    )
+    answer_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "answer_call")
+    hangup_truth = next(item for item in apntalk["capability_truth"] if item["capability"] == "hangup_call")
     assert ready_truth["declared_support"] == "supported_with_runtime_probe"
     assert ready_truth["binding_status"] == "runtime_probe_bound"
+    assert registration_wait_truth["declared_support"] == "supported_with_runtime_probe"
+    assert registration_wait_truth["binding_status"] == "runtime_probe_bound"
     assert incoming_truth["declared_support"] == "supported_with_runtime_probe"
     assert incoming_truth["binding_status"] == "runtime_probe_bound"
     assert registration_truth["declared_support"] == "supported_with_runtime_probe"
     assert registration_truth["binding_status"] == "runtime_probe_bound"
+    assert peer_connection_truth["declared_support"] == "supported_with_runtime_probe"
+    assert peer_connection_truth["binding_status"] == "runtime_probe_bound"
+    assert answer_truth["declared_support"] == "supported_with_selector_binding"
+    assert answer_truth["binding_status"] == "selector_bound"
+    assert hangup_truth["declared_support"] == "supported_with_selector_binding"
+    assert hangup_truth["binding_status"] == "selector_bound"
     assert "s022-067.apntelecom.com" in apntalk["domains"]
